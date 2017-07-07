@@ -1,0 +1,26 @@
+{
+  "context-menu": {
+    "atom-text-editor": [
+      {
+        "label": "Toggle atom-livecoder",
+        "command": "atom-livecoder:toggle"
+      }
+    ]
+  },
+  "menu": [
+    {
+      "label": "Packages",
+      "submenu": [
+        {
+          "label": "atom-livecoder",
+          "submenu": [
+            {
+              "label": "Toggle",
+              "command": "atom-livecoder:toggle"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
