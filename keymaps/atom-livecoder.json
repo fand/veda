@@ -1,5 +1,5 @@
 {
   "atom-workspace": {
-    "ctrl-alt-o": "atom-livecoder:toggle"
+    "cmd-enter": "atom-livecoder:runshader"
   }
 }
