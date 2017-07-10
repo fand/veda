@@ -17,11 +17,20 @@
     "glslify": "^6.1.0",
     "pify": "^3.0.0",
     "three": "^0.86.0",
-    "tmp": "^0.0.31"
+    "tmp": "^0.0.31",
+    "which": "^1.2.14"
   },
   "package-deps": [
     "language-glsl",
     "linter-glsl",
     "autocomplete-glsl"
-  ]
+  ],
+  "devDependencies": {
+    "babel-eslint": "^7.2.3",
+    "eslint": "^4.2.0",
+    "eslint-config-xo": "^0.18.2"
+  },
+  "scripts": {
+    "lint": "eslint lib"
+  }
 }

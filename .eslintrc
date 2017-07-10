@@ -1,0 +1,19 @@
+{
+    "extends": "xo",
+    "parser": "babel-eslint",
+    "rules": {
+        "indent": ["error", 2],
+        "comma-dangle": ["error", "always-multiline"],
+        "object-curly-spacing": ["error", "always"],
+        "no-mixed-operators": 0,
+        "no-implicit-coercion": 0,
+        "capitalized-comments": 0,
+    },
+    "globals": {
+        "atom": false,
+        "document": false,
+        "window": false,
+        "navigator": false,
+        "requestAnimationFrame": false,
+    }
+}
