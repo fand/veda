@@ -10,6 +10,21 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
 
+atom-package-deps@^4.6.0:
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/atom-package-deps/-/atom-package-deps-4.6.0.tgz#bb83f0a976563b48be4eab89e7c8631c3eec848d"
+  dependencies:
+    atom-package-path "^1.1.0"
+    sb-exec "^3.0.1"
+    sb-fs "^3.0.0"
+    semver "^5.3.0"
+
+atom-package-path@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/atom-package-path/-/atom-package-path-1.1.0.tgz#b51fedbc00e7c8ce5223d0d803db7a3f4f69614f"
+  dependencies:
+    sb-callsite "^1.1.2"
+
 balanced-match@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
@@ -46,6 +61,12 @@ concat-stream@^1.5.2:
     inherits "^2.0.3"
     readable-stream "^2.2.2"
     typedarray "^0.0.6"
+
+consistent-env@^1.2.0:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/consistent-env/-/consistent-env-1.3.1.tgz#f68234d7c69fc6dd9656f8ae23429ce0499b65fb"
+  dependencies:
+    lodash.uniq "^4.5.0"
 
 core-util-is@~1.0.0:
   version "1.0.2"
@@ -341,6 +362,10 @@ is-symbol@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/is-symbol/-/is-symbol-1.0.1.tgz#3cc59f00025194b6ab2e38dbae6689256b660572"
 
+is-utf8@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/is-utf8/-/is-utf8-0.2.1.tgz#4b0da1442104d1b336340e80797e865cf39f7d72"
+
 isarray@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/isarray/-/isarray-0.0.1.tgz#8a18acfca9a8f4177e09abfc6038939b05d1eedf"
@@ -355,6 +380,10 @@ levn@~0.3.0:
   dependencies:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
+
+lodash.uniq@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
 
 map-limit@0.0.1:
   version "0.0.1"
@@ -466,6 +495,44 @@ safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.1.tgz#893312af69b2123def71f57889001671eeb2c853"
 
+sb-callsite@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/sb-callsite/-/sb-callsite-1.1.2.tgz#28191fb66d64e3a3ee92084a95a90fcb5102243b"
+
+sb-exec@^3.0.1:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/sb-exec/-/sb-exec-3.1.0.tgz#34cc65088a116752eb720fddeff66d2c2e95ec51"
+  dependencies:
+    consistent-env "^1.2.0"
+    lodash.uniq "^4.5.0"
+    sb-npm-path "^2.0.0"
+
+sb-fs@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/sb-fs/-/sb-fs-3.0.0.tgz#fbdcdd3010e80a1b8e27490cef336064974203b8"
+  dependencies:
+    sb-promisify "^2.0.1"
+    strip-bom-buf "^1.0.0"
+
+sb-memoize@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/sb-memoize/-/sb-memoize-1.0.2.tgz#128375c62ddb9cc4ffa905d0c5a597c19baead8e"
+
+sb-npm-path@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/sb-npm-path/-/sb-npm-path-2.0.0.tgz#0f6cc2cf371debca7d936ed76b7d4c3cc1eb3d58"
+  dependencies:
+    sb-memoize "^1.0.2"
+    sb-promisify "^2.0.1"
+
+sb-promisify@^2.0.1:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/sb-promisify/-/sb-promisify-2.0.2.tgz#4277a54754488aa9675d886e354db894c9bdc981"
+
+semver@^5.3.0:
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-5.3.0.tgz#9b2ce5d3de02d17c6012ad326aa6b4d0cf54f94f"
+
 shallow-copy@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/shallow-copy/-/shallow-copy-0.0.1.tgz#415f42702d73d810330292cc5ee86eae1a11a170"
@@ -507,6 +574,12 @@ string_decoder@~1.0.3:
   resolved "https://registry.yarnpkg.com/string_decoder/-/string_decoder-1.0.3.tgz#0fc67d7c141825de94282dd536bec6b9bce860ab"
   dependencies:
     safe-buffer "~5.1.0"
+
+strip-bom-buf@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/strip-bom-buf/-/strip-bom-buf-1.0.0.tgz#1cb45aaf57530f4caf86c7f75179d2c9a51dd572"
+  dependencies:
+    is-utf8 "^0.2.1"
 
 tape@^4.6.0:
   version "4.7.0"

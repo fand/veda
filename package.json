@@ -13,9 +13,15 @@
     "atom": ">=1.0.0 <2.0.0"
   },
   "dependencies": {
+    "atom-package-deps": "^4.6.0",
     "glslify": "^6.1.0",
     "pify": "^3.0.0",
     "three": "^0.86.0",
     "tmp": "^0.0.31"
-  }
+  },
+  "package-deps": [
+    "language-glsl",
+    "linter-glsl",
+    "autocomplete-glsl"
+  ]
 }
