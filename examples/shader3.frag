@@ -10,11 +10,11 @@ void main() {
 
   // float freq = texture2D(spectrum, vec2(abs(p.x), .5)).r * 2.;
   float freq = (
-    texture2D(spectrum, vec2(abs(p.x * 1.), .5)).r *.3
-    // * texture2D(spectrum, vec2(abs(p.y * 0.3), .5)).r * 2.
+    texture2D(spectrum, vec2(abs(p.x * .3), .5)).r *.3
+    * texture2D(spectrum, vec2(abs(p.y * 0.3), .5)).r * 2.
   );
 
-  freq *= freq;
+  // freq *= freq;
 
 	gl_FragColor = vec4(
     freq / length(p + vec2(sin(time * 1.23 + 3.), 0)),
