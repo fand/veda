@@ -1,7 +1,7 @@
 precision mediump float;
 uniform float time;
 uniform vec2 resolution;
-uniform sampler2D backBuffer;
+uniform sampler2D backbuffer;
 
 void main() {
 	vec2 p = (gl_FragCoord.xy * 2. - resolution) / min(resolution.x, resolution.y);
@@ -14,7 +14,7 @@ void main() {
 	c += 0.01 / length(p - vec2(sin(t * .9 + time), cos(t * 1.7)));
 	c += 0.01 / length(p - vec2(cos(t * .47), sin(t * 1.9 + time)));
 
-	vec4 b = texture2D(backBuffer, gl_FragCoord.xy / resolution);
+	vec4 b = texture2D(backbuffer, gl_FragCoord.xy / resolution);
 
 	gl_FragColor = c * vec4(0.2, 0.3, 0.8, 1) + b * 0.9;
 }
