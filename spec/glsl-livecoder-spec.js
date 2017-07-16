@@ -1,43 +1,43 @@
 'use babel';
 
-import AtomLivecoder from '../lib/atom-livecoder';
+import GlslLivecoder from '../lib/glsl-livecoder';
 
 // Use the command `window:run-package-specs` (cmd-alt-ctrl-p) to run specs.
 //
 // To run a specific `it` or `describe` block add an `f` to the front (e.g. `fit`
 // or `fdescribe`). Remove the `f` to unfocus the block.
 
-describe('AtomLivecoder', () => {
+describe('GlslLivecoder', () => {
   let workspaceElement, activationPromise;
 
   beforeEach(() => {
     workspaceElement = atom.views.getView(atom.workspace);
-    activationPromise = atom.packages.activatePackage('atom-livecoder');
+    activationPromise = atom.packages.activatePackage('glsl-livecoder');
   });
 
-  describe('when the atom-livecoder:toggle event is triggered', () => {
+  describe('when the glsl-livecoder:toggle event is triggered', () => {
     it('hides and shows the modal panel', () => {
       // Before the activation event the view is not on the DOM, and no panel
       // has been created
-      expect(workspaceElement.querySelector('.atom-livecoder')).not.toExist();
+      expect(workspaceElement.querySelector('.glsl-livecoder')).not.toExist();
 
       // This is an activation event, triggering it will cause the package to be
       // activated.
-      atom.commands.dispatch(workspaceElement, 'atom-livecoder:toggle');
+      atom.commands.dispatch(workspaceElement, 'glsl-livecoder:toggle');
 
       waitsForPromise(() => {
         return activationPromise;
       });
 
       runs(() => {
-        expect(workspaceElement.querySelector('.atom-livecoder')).toExist();
+        expect(workspaceElement.querySelector('.glsl-livecoder')).toExist();
 
-        let atomLivecoderElement = workspaceElement.querySelector('.atom-livecoder');
+        let atomLivecoderElement = workspaceElement.querySelector('.glsl-livecoder');
         expect(atomLivecoderElement).toExist();
 
         let atomLivecoderPanel = atom.workspace.panelForItem(atomLivecoderElement);
         expect(atomLivecoderPanel.isVisible()).toBe(true);
-        atom.commands.dispatch(workspaceElement, 'atom-livecoder:toggle');
+        atom.commands.dispatch(workspaceElement, 'glsl-livecoder:toggle');
         expect(atomLivecoderPanel.isVisible()).toBe(false);
       });
     });
@@ -51,11 +51,11 @@ describe('AtomLivecoder', () => {
       // workspaceElement to the DOM are generally slower than those off DOM.
       jasmine.attachToDOM(workspaceElement);
 
-      expect(workspaceElement.querySelector('.atom-livecoder')).not.toExist();
+      expect(workspaceElement.querySelector('.glsl-livecoder')).not.toExist();
 
       // This is an activation event, triggering it causes the package to be
       // activated.
-      atom.commands.dispatch(workspaceElement, 'atom-livecoder:toggle');
+      atom.commands.dispatch(workspaceElement, 'glsl-livecoder:toggle');
 
       waitsForPromise(() => {
         return activationPromise;
@@ -63,9 +63,9 @@ describe('AtomLivecoder', () => {
 
       runs(() => {
         // Now we can test for view visibility
-        let atomLivecoderElement = workspaceElement.querySelector('.atom-livecoder');
+        let atomLivecoderElement = workspaceElement.querySelector('.glsl-livecoder');
         expect(atomLivecoderElement).toBeVisible();
-        atom.commands.dispatch(workspaceElement, 'atom-livecoder:toggle');
+        atom.commands.dispatch(workspaceElement, 'glsl-livecoder:toggle');
         expect(atomLivecoderElement).not.toBeVisible();
       });
     });

@@ -1,4 +1,4 @@
-# atom-livecoder
+# glsl-livecoder
 
 Live coding environment for GLSL.
 

@@ -2,8 +2,8 @@
   "context-menu": {
     "atom-text-editor": [
       {
-        "label": "Toggle atom-livecoder",
-        "command": "atom-livecoder:toggle"
+        "label": "Toggle glsl-livecoder",
+        "command": "glsl-livecoder:toggle"
       }
     ]
   },
@@ -12,11 +12,11 @@
       "label": "Packages",
       "submenu": [
         {
-          "label": "atom-livecoder",
+          "label": "glsl-livecoder",
           "submenu": [
             {
               "label": "Toggle",
-              "command": "atom-livecoder:toggle"
+              "command": "glsl-livecoder:toggle"
             }
           ]
         }

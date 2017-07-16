@@ -1,13 +1,13 @@
 {
-  "name": "atom-livecoder",
+  "name": "glsl-livecoder",
   "main": "./lib/index",
   "version": "0.0.0",
   "description": "A short description of your package",
   "keywords": [],
   "activationCommands": {
-    "atom-workspace": "atom-livecoder:toggle"
+    "atom-workspace": "glsl-livecoder:toggle"
   },
-  "repository": "https://github.com/atom/atom-livecoder",
+  "repository": "https://github.com/fand/glsl-livecoder",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"

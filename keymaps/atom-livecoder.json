@@ -1,8 +1,0 @@
-{
-  "atom-workspace": {
-    "ctrl-enter": "atom-livecoder:load-shader",
-    "ctrl-shift-enter": "atom-livecoder:watch-shader",
-    "ctrl-alt-enter": "atom-livecoder:watch-active-shader",
-    "ctrl-.": "atom-livecoder:stop-watching"
-  }
-}
