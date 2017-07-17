@@ -1,5 +1,5 @@
 {
-  "atom-workspace": {
+  ".workspace .editor:not(.mini)": {
     "ctrl-enter": "glsl-livecoder:load-shader",
     "ctrl-shift-enter": "glsl-livecoder:watch-shader",
     "ctrl-alt-enter": "glsl-livecoder:watch-active-shader",
