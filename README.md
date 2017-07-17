@@ -7,8 +7,7 @@ Live coding environment for GLSL.
 
 ## Usage
 
-- On shaders
-  - `ctrl-enter`: Load the shader on current editor
-  - `ctrl-shift-enter`: Autoload the shader on current editor
-  - `ctrl-alt-enter`: Autoload the shader on active editor
-  - `ctrl-.`: Stop watching
+- `ctrl-enter`: Load the shader on current editor
+- `ctrl-shift-enter`: Autoload the shader on current editor
+- `ctrl-alt-enter`: Autoload the shader on active editor
+- `ctrl-.`: Stop watching
