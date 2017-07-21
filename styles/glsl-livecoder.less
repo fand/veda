@@ -12,3 +12,33 @@
   height: 100%;
   z-index: -1;
 }
+
+body.glsl-livecoder-enabled {
+  &,
+  atom-workspace,
+  .header *,
+  .footer *,
+  atom-workspace-axis :not(.cursor):not(autocomplete-suggestion-list):not(atom-overlay):not(span):not(.region),
+  atom-workspace *:before {
+    background: transparent !important;
+    border: none !important;
+    text-shadow: 0 1px 1px black;
+    box-shadow: none !important;
+  }
+  .line > span {
+    background: rgba(0,0,0,0.7) !important;
+  }
+  .cursor {
+    width: 0 !important;
+    box-shadow: 0 0 3px #0FF !important;
+    border-left: 4px solid #0FF !important;
+  }
+  autocomplete-suggestion-list,
+  atom-overlay {
+    background: rgba(0, 0, 0, 0.9) !important;
+  }
+  .region {
+    background: rgba(0,255,255,0.4) !important;
+    z-index: 9 !important;
+  }
+}
