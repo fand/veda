@@ -1,3 +1,6 @@
+## 0.2.0
+* Add `uniform sampler2D note` to get MIDI notes
+
 ## 0.1.2
 * Fix the style of the selected item in sidebar
 
