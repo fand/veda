@@ -1,3 +1,7 @@
+## 0.3.0
+* Add `Pixel Ratio` and `Frameskip` to config
+* Ignore non-GLSL files while watching active tab
+
 ## 0.2.0
 * Add `uniform sampler2D note` to get MIDI notes
 
