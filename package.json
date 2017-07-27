@@ -17,6 +17,7 @@
     "atom-package-deps": "^4.6.0",
     "chokidar": "^1.7.0",
     "glslify": "^6.1.0",
+    "is-video": "^1.0.1",
     "json5": "^0.5.1",
     "pify": "^3.0.0",
     "rc": "^1.2.1",
