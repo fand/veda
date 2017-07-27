@@ -1,3 +1,6 @@
+## 0.4.0
+* Support loading images / videos with `.liverc`
+
 ## 0.3.0
 * Add `Pixel Ratio` and `Frameskip` to config
 * Ignore non-GLSL files while watching active tab
