@@ -3,26 +3,20 @@
 ![apm version](https://img.shields.io/apm/v/glsl-livecoder.svg)
 ![license MIT](https://img.shields.io/apm/l/glsl-livecoder.svg)
 
-Live coding environment for GLSL.
+An Atom package for VJ / Live Coding in GLSL.
 
-![screenshot](https://user-images.githubusercontent.com/1403842/28001497-f4191842-6567-11e7-8a4c-ee6df7b9d49b.png)
+![screenshot](https://user-images.githubusercontent.com/1403842/28673275-1d42b062-731d-11e7-92b0-bde5ca1f1cae.gif)
 
 
 ## Features
 
 - GLSL Sandbox style `uniform` variables
+- Load images / videos
 - Additional `uniform` variables useful for live coding
   - Audio input
   - MIDI input
 - Auto completion w/ [autocomplete-glsl](https://atom.io/packages/autocomplete-glsl/)
 - Linting w/ [linter-glsl](https://atom.io/packages/linter-glsl/)
-
-
-## Upcoming Features
-
-- Image input
-- Video input
-- [glslify](https://github.com/stackgl/glslify) support
 
 
 ## Install
@@ -48,7 +42,7 @@ or install from Atom GUI.
   - Stop `watch-shader` and `watch-active-editor`.
 
 
-## `uniform` variables
+## Preset `uniform` variables
 
 - `float time`:
   - The elapsed time since `glsl-livecoder` has started.
@@ -112,11 +106,75 @@ For example, `texture2D(note, vec2(60. / 128., 0)).x` yields the volume of note 
 See [examples](./blob/master/examples/note.frag) for actual usage.
 
 
+### Loading images / videos using `.liverc`
+
+You can load images and videos from local or via URL.
+To use images / videos, `.liverc` is required.
+
+- `.liverc` must be located in your project's root directory.
+- `.liverc` is parsed as [JSON5 format](https://github.com/json5/json5)
+  - You can write comments in `.liverc`.
+- `.liverc` is loaded on startup and reloaded automatically when you edit it.
+- Write image / video paths in `IMPORTED` property.
+  - The structure of `.liverc` is based on [Interactive Shader Format](https://www.interactiveshaderformat.com/)
+
+For example, create `.liverc` like this:
+
+```javascript
+{
+	"IMPORTED": {
+		"image1": {
+			"PATH": "1.jpg",
+		},
+		"image2": {
+			"PATH": "../2.png",
+		},
+		"video1": {
+			"PATH": "/Users/foo/Movies/1.mp4",
+		},
+		"video2": {
+			"PATH": "http://example.com/2.mp4",
+		},
+	},
+}
+```
+
+Then use it in your GLSL file:
+
+```glsl
+precision mediump float;
+uniform vec2 resolution;
+
+uniform sampler2D image1;
+uniform sampler2D image2;
+uniform sampler2D video1;
+uniform sampler2D video2;
+
+void main() {
+	vec2 uv = gl_FragCoord.xy / resolution;
+
+	gl_FragColor = (
+		texture2D(image1, uv) +
+		texture2D(image2, uv) +
+		texture2D(video1, uv) +
+		texture2D(video2, uv)
+  );
+}
+```
+
+See these examples for actual usage.
+
+- [.liverc](./blob/master/examples/.liverc)
+- [image.frag](./blob/master/examples/image.frag)
+- [video.frag](./blob/master/examples/video.frag)
+
+
 ## Author
 
 Takayosi Amagi
 - Twitter: [@amagitakayosi](https://twitter.com/amagitakayosi/)
 - GitHub: [fand](https://github.com/fand/)
+
 
 ## LICENSE
 
