@@ -1,0 +1,30 @@
+{
+	// .liverc must be written in JSON5 format.
+	// https://github.com/json5/json5
+
+	"IMPORTED": {
+		// These images are works of Antonio Roberts.
+		// https://www.flickr.com/photos/hellocatfood/
+		"image1": {
+			"PATH": "./images/1.jpg",
+		},
+		"image2": {
+			"PATH": "./images/2.jpg",
+		},
+		"image3": {
+			"PATH": "./images/3.jpg",
+		},
+
+		// These videos are BEEPLE's works.
+		// https://vimeo.com/channels/beeple/
+		"video1": {
+			"PATH": "./videos/1.mp4",
+		},
+		"video2": {
+			"PATH": "./videos/2.mp4",
+		},
+		"video3": {
+			"PATH": "./videos/3.mp4",
+		},
+	},
+}
