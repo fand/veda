@@ -2,7 +2,7 @@
   "name": "glsl-livecoder",
   "main": "./lib/index",
   "version": "0.4.0",
-  "description": "A short description of your package",
+  "description": "VJ / Live Coding environment with GLSL",
   "keywords": [],
   "activationCommands": {
     "atom-workspace": "glsl-livecoder:toggle"
