@@ -3,9 +3,32 @@
 ![apm version](https://img.shields.io/apm/v/glsl-livecoder.svg)
 ![license MIT](https://img.shields.io/apm/l/glsl-livecoder.svg)
 
-An Atom package for VJ / Live Coding in GLSL.
+<p align="center">
+  <img alt="logo" src="https://user-images.githubusercontent.com/1403842/28923702-d8155d46-7899-11e7-817b-1193d138e5b8.png" width="144"/>
+</p>
 
-![screenshot](https://user-images.githubusercontent.com/1403842/28673275-1d42b062-731d-11e7-92b0-bde5ca1f1cae.gif)
+<p align="center">
+  <i>VJ / Live Coding on Atom with GLSL.</i>
+</p>
+
+<p align="center">
+  <img alt="screenshot" src="https://user-images.githubusercontent.com/1403842/28673275-1d42b062-731d-11e7-92b0-bde5ca1f1cae.gif" style="width: 100% !important;"/>  
+</div>
+
+---
+
+##### TOC
+
+- [Features](#features)
+- [Install](#install)
+- [Commands](#commands)
+- [Usage](#usage)
+  - [Commands](#commands)
+  - [Preset `uniform` variables](#preset-uniform-variables)
+  - [Audio Input](#audio-inputs)
+  - [MIDI Events](#midi-events)
+  - [Loading images / videos](#loading-images--videos)
+- [Author](#author)
 
 
 ## Features
@@ -21,12 +44,50 @@ An Atom package for VJ / Live Coding in GLSL.
 
 ## Install
 
+### Install `glslangValidator`
+
+`glsl-livecoder` requires `glslangValidator`.<br>
+Follow the below steps to install `glslangValidator`.
+
+#### macOS
+
+If you are uning macOS, `glslangValidator` can be installed by homebrew.
+
+```sh
+brew install glslang
+```
+
+
+#### Windows or Linux
+
+If you are uning Windows or Linux, the best way to install `glslangValidator` is to install Vulkan SDK.<br>
+Get the SDK from here:
+
+https://www.lunarg.com/vulkan-sdk/
+
+After that, add installed `glslangValidator` to your `PATH` environment variable.<br>
+In Windows, `glslangValidator` will be installed in `C:\VulkanSDK\( version )\Bin`.
+
+The path of `glslangValidator` can also be specified in the settings of `glsl-livecoder`.
+
+
+### Install `glsl-livecoder`
+
+Just install from Atom GUI or `apm`.
+
 `$ apm install glsl-livecoder`
 
-or install from Atom GUI.
+If Atom shows an error like below, try rebuilding the package from 🐞 icon on the footer.
+
+```
+Failed to require the main module of 'glsl-livecoder' because it requires an incompatible native module.
+Run `apm rebuild` in the package directory to resolve.
+```
 
 
-## Commands
+## Usage
+
+### Commands
 
 `glsl-livecoder` installs following commands to Atom.
 
@@ -41,8 +102,14 @@ or install from Atom GUI.
 - `stop-watching` (key: `ctrl-.`)
   - Stop `watch-shader` and `watch-active-editor`.
 
+A typical workflow can be like this:
 
-## Preset `uniform` variables
+1. Enable `glsl-livecoder` by running `glsl-liveder:toggle` from the Command Palette of Atom.
+2. Edit your GLSL code.
+3. Hit `ctrl-enter` to run `glsl-livecoder:load-shader`.
+
+
+### Preset `uniform` variables
 
 - `float time`:
   - The elapsed time since `glsl-livecoder` has started.
@@ -67,6 +134,7 @@ or install from Atom GUI.
 - `sampler2D note`
   - States of note numbers of MIDI devices.
   - `x`: the volume of the note
+
 
 ### Audio inputs
 
@@ -106,7 +174,7 @@ For example, `texture2D(note, vec2(60. / 128., 0)).x` yields the volume of note 
 See [examples](./blob/master/examples/note.frag) for actual usage.
 
 
-### Loading images / videos using `.liverc`
+### Loading images / videos
 
 You can load images and videos from local or via URL.
 To use images / videos, `.liverc` is required.
@@ -174,8 +242,9 @@ See these examples for actual usage.
 Takayosi Amagi
 - Twitter: [@amagitakayosi](https://twitter.com/amagitakayosi/)
 - GitHub: [fand](https://github.com/fand/)
+- Blog: [マルシテイア](http://amagitakayosi.hatenablog.com/)
 
 
-## LICENSE
+## License
 
 MIT
