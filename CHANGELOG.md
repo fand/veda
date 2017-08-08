@@ -1,3 +1,16 @@
+## 0.4.5
+* Improve performance on loading images / videos
+* Fix styles
+
+## 0.4.3, 0.4.4
+* Update README
+
+## 0.4.2
+* Fix unexpected sound output caused by audio inputs and videos
+
+## 0.4.1
+* Windows Support!!
+
 ## 0.4.0
 * Support loading images / videos with `.liverc`
 
