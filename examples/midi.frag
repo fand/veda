@@ -41,8 +41,8 @@ void main() {
 	float t = time * 2.7;
 
 	gl_FragColor = (
-		circle(p, t) * texture2D(midi, vec2(224. / 256., .0)).x * 2. +
-		plasma(p, t) * texture2D(midi, vec2(225. / 256., .5)).x * 2. +
-		rects(p, t) * texture2D(midi, vec2(226. / 256., .5)).x * 2.
+		circle(p, t) * texture2D(midi, vec2(176. / 256., 0. / 128.)).x * 2. +
+		plasma(p, t) * texture2D(midi, vec2(176. / 256., 1. / 128.)).x * 2. +
+		rects(p, t)  * texture2D(midi, vec2(176. / 256., 2. / 128.)).x * 2.
 	);
 }
