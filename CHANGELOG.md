@@ -1,3 +1,6 @@
+## 0.4.6
+* Fix midi implementation
+
 ## 0.4.5
 * Improve performance on loading images / videos
 * Fix styles

@@ -130,8 +130,7 @@ A typical workflow can be like this:
   - The volume of the audio input.
 - `sampler2D midi`
   - Last MIDI event for each channel of MIDI devices.
-  - `x`: 2nd byte of the event
-  - `y`: 3rd byte of the event
+  - `x`: 3rd byte of the event
 - `sampler2D note`
   - States of note numbers of MIDI devices.
   - `x`: the volume of the note
@@ -156,7 +155,7 @@ See [examples](./blob/master/examples/audio.frag) for actual usage.
 ### MIDI Events
 
 `sampler2D midi` stores MIDI events obtained by [Web MIDI API](https://www.w3.org/TR/webmidi/).
-The size of `midi` is `256x1`.
+The size of `midi` is `256x128`.
 Each pixel stores the last event of the corresponding MIDI Events.
 
 For example, `texture2D(midi, vec2(144. / 256., 0)).x` yields the note number of last `note on` event of MIDI Channel 1.
