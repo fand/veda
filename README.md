@@ -28,6 +28,7 @@
   - [Preset `uniform` variables](#preset-uniform-variables)
   - [Audio Input](#audio-inputs)
   - [MIDI Events](#midi-events)
+  - [Webcam Input](#webcam-inputs)
   - [Loading images / videos](#loading-images--videos)
 - [Author](#author)
 
@@ -39,6 +40,7 @@
 - Additional `uniform` variables useful for live coding
   - Audio input
   - MIDI input
+  - Webcam input
 - Auto completion w/ [autocomplete-glsl](https://atom.io/packages/autocomplete-glsl/)
 - Linting w/ [linter-glsl](https://atom.io/packages/linter-glsl/)
 
@@ -172,6 +174,14 @@ Each pixel stores the volume of the last event for corresponding MIDI note.
 For example, `texture2D(note, vec2(60. / 128., 0)).x` yields the volume of note `C4` (Middle C).
 
 See [examples](./blob/master/examples/note.frag) for actual usage.
+
+
+### Webcam Inputs
+
+`sampler2D camera` stores the images from the webcam.
+`texture2D(camera, uv)` returns vec3 color.
+
+See [examples](./blob/master/examples/camera.frag) for actual usage.
 
 
 ### Loading images / videos
