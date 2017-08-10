@@ -33,7 +33,9 @@
   "devDependencies": {
     "babel-eslint": "^7.2.3",
     "eslint": "^4.2.0",
-    "eslint-config-xo": "^0.18.2"
+    "eslint-config-xo": "^0.18.2",
+    "eslint-plugin-flowtype": "^2.35.0",
+    "flow-bin": "^0.52.0"
   },
   "scripts": {
     "lint": "eslint lib"

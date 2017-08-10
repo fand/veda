@@ -1,6 +1,7 @@
 {
     "extends": "xo",
     "parser": "babel-eslint",
+    "plugins": ["flowtype"],
     "rules": {
         "indent": ["error", 2],
         "comma-dangle": ["error", "always-multiline"],
@@ -9,6 +10,7 @@
         "no-implicit-coercion": 0,
         "capitalized-comments": 0,
         "yoda": 0,
+        "flowtype/define-flow-type": 1,
     },
     "globals": {
         "atom": false,
