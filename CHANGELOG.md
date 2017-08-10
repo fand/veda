@@ -1,3 +1,6 @@
+## 0.5.0
+* Webcam Support!
+
 ## 0.4.6
 * Fix midi implementation
 
