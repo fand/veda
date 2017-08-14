@@ -1,3 +1,6 @@
+## 0.7.0
+* Keyboard Support!
+
 ## 0.6.0
 * Gamepad Support!
 

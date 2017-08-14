@@ -29,6 +29,7 @@
   - [Audio Input](#audio-inputs)
   - [MIDI Events](#midi-events)
   - [Webcam Input](#webcam-inputs)
+  - [Keyboard Input](#keyboard-inputs)  
   - [Gamepad Input](#gamepad-inputs)
   - [Loading images / videos](#loading-images--videos)
 - [Author](#author)
@@ -42,6 +43,7 @@
   - Audio input
   - MIDI input
   - Webcam input
+  - Keyboard input
   - Gamepad input
 - Auto completion w/ [autocomplete-glsl](https://atom.io/packages/autocomplete-glsl/)
 - Linting w/ [linter-glsl](https://atom.io/packages/linter-glsl/)
@@ -184,6 +186,16 @@ See [examples](./blob/master/examples/note.frag) for actual usage.
 `texture2D(camera, uv)` returns vec3 color.
 
 See [examples](./blob/master/examples/camera.frag) for actual usage.
+
+
+### Keyboard Inputs
+
+`sampler2D key` stores the status of keyboard.
+The size of `keyboard` is `256x1`.
+
+For example, `texture2D(key, vec2(65. / 256., 0.))` returns 1.0 when `a` is pressed.
+
+See [examples](./blob/master/examples/key.frag) for actual usage.
 
 
 ### Gamepad Inputs
