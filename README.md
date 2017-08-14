@@ -29,6 +29,7 @@
   - [Audio Input](#audio-inputs)
   - [MIDI Events](#midi-events)
   - [Webcam Input](#webcam-inputs)
+  - [Gamepad Input](#gamepad-inputs)
   - [Loading images / videos](#loading-images--videos)
 - [Author](#author)
 
@@ -41,6 +42,7 @@
   - Audio input
   - MIDI input
   - Webcam input
+  - Gamepad input
 - Auto completion w/ [autocomplete-glsl](https://atom.io/packages/autocomplete-glsl/)
 - Linting w/ [linter-glsl](https://atom.io/packages/linter-glsl/)
 
@@ -182,6 +184,17 @@ See [examples](./blob/master/examples/note.frag) for actual usage.
 `texture2D(camera, uv)` returns vec3 color.
 
 See [examples](./blob/master/examples/camera.frag) for actual usage.
+
+
+### Gamepad Inputs
+
+`sampler2D gamepad` stores the status of gamepads connected to the PC.
+The size of `gamepad` is `128x2`.
+The status of buttons and axes are stored in `y = 0.0` and `y = 1.0`.
+
+For example, `texture2D(gamepad, vec2(3. / 128., 0.))` returns 1.0 when the 3rd button is pressed.
+
+See [examples](./blob/master/examples/gamepad.frag) for actual usage.
 
 
 ### Loading images / videos
