@@ -1,3 +1,6 @@
+## 0.6.0
+* Gamepad Support!
+
 ## 0.5.0
 * Webcam Support!
 
