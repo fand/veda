@@ -8,7 +8,7 @@ void main() {
 	float t = time * 2.7;
 	p = p * p * 2.;
 
-  float c = 0.;
+    float c = 0.;
 	c += 0.01 / length(p - vec2(sin(t * 2.), cos(t * 1.)));
 	c += 0.01 / length(p - vec2(sin(t * 1.3), cos(t * .8)));
 	c += 0.01 / length(p - vec2(sin(t * .9 + time), cos(t * 1.7)));
