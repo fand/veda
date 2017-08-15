@@ -195,6 +195,8 @@ The size of `keyboard` is `256x1`.
 
 For example, `texture2D(key, vec2(65. / 256., 0.))` returns 1.0 when `a` is pressed.
 
+Hitting `ESC` key resets the states of all key inputs.
+
 See [examples](./blob/master/examples/key.frag) for actual usage.
 
 
