@@ -1,3 +1,7 @@
+## 0.7.1
+* Fix audio inputs not working
+* Improve performance on disabling glsl-livecoder
+
 ## 0.7.0
 * Keyboard Support!
 
