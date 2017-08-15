@@ -45,9 +45,9 @@ float shot(in vec2 p, in vec2 c) {
     vec2 d = p - c * 2.;
     float l = length(d);
     float a = atan(d.y, d.x) * 2.;
-    float n = noise(vec2(a * 4. + floor(time * 30.) * 2.)) * .5 * (random(vec2(time * 2.)) * .6 + .4);
+    float n = noise(vec2(a * 3. + floor(time * 30.) * 2.)) * .4 * (random(vec2(time * 2.)) * .6 + .4);
 
-    return (1. - step(n, l)) * strength;
+    return (1. - step(n + .1, l)) * strength;
 }
 
 void main() {
@@ -61,5 +61,6 @@ void main() {
     float l = .003 / length(p - c * 2.);
     gl_FragColor = vec4(color * l, 1);
     gl_FragColor += vec4(shot(p, c) * color, 1);
-    gl_FragColor += texture2D(backbuffer, vec2(uv.x, uv.y + .002)) * 0.95;
+    gl_FragColor += texture2D(backbuffer, vec2(uv.x, uv.y)) * 0.4;
+    gl_FragColor += texture2D(backbuffer, vec2(uv.x, uv.y + noise(vec2(uv.x  * 100.)) * .01)) * 0.5;
 }
