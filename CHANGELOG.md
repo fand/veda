@@ -1,3 +1,6 @@
+## 0.7.2
+* Fix error on glsl-livecoder:toggle #13
+
 ## 0.7.1
 * Fix audio inputs not working
 * Improve performance on disabling glsl-livecoder
