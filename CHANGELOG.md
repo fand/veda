@@ -1,3 +1,6 @@
+## 0.8.0
+* Vertex Shaders Support!!
+
 ## 0.7.2
 * Fix error on glsl-livecoder:toggle #13
 
