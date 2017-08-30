@@ -1,3 +1,7 @@
+/*{
+  "vertexCount": 3000,
+  "vertexMode": "TRIANGLES",
+}*/
 precision mediump float;
 attribute float vertexId;
 uniform float vertexCount;
