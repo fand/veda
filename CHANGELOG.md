@@ -1,3 +1,6 @@
+## 0.8.1
+* Fix error on empty editor #14
+
 ## 0.8.0
 * Vertex Shaders Support!!
 
