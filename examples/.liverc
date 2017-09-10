@@ -15,12 +15,6 @@
       "PATH": "./images/3.jpg",
     },
 
-    // This texture is made by otaviogood.
-    // https://www.shadertoy.com/user/otaviogood
-    "font": {
-      "PATH": "./images/font.png",
-    },
-
     // These videos are BEEPLE's works.
     // https://vimeo.com/channels/beeple/
     "video1": {

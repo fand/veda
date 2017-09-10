@@ -1,3 +1,4 @@
+/*{ "camera": true }*/
 precision mediump float;
 uniform float time;
 uniform vec2 resolution;
@@ -16,8 +17,11 @@ void main() {
     vec2 uv = gl_FragCoord.xy / resolution;
     uv -= .5;
     uv.y *= resolution.y / resolution.x;
-    // uv *= uv;
-    uv = rotate(uv, t) + .5;
 
-    gl_FragColor = texture2D(camera, uv);
+    uv *= uv;
+    uv = rotate(uv, t) + .5;
+    // uv = fract(uv * fract(time) * 2.);
+
+    gl_FragColor = fract(texture2D(camera, uv) * 3.);
+    gl_FragColor.r *= .7;
 }

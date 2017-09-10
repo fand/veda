@@ -1,6 +1,7 @@
 /*{
+  "pixelRatio": 1,
   "vertexCount": 3000,
-  "vertexMode": "TRIANGLES",
+  "vertexMode": "POINTS",
 }*/
 precision mediump float;
 attribute float vertexId;

@@ -1,3 +1,7 @@
+/*{
+    "midi": true,
+    "frameskip": 1
+}*/
 precision mediump float;
 uniform float time;
 uniform vec2 resolution;
