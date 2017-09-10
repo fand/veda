@@ -1,3 +1,8 @@
+/*{
+  "pixelRatio": 1,
+  "vertexCount": 3000,
+  "vertexMode": "POINTS",
+}*/
 precision mediump float;
 attribute float vertexId;
 uniform float vertexCount;

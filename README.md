@@ -1,52 +1,58 @@
-# glsl-livecoder
-
-<p align="center">
-  <img alt="logo" src="https://user-images.githubusercontent.com/1403842/28923702-d8155d46-7899-11e7-817b-1193d138e5b8.png" width="144"/>
-</p>
-
-<p align="center">
-  <i>VJ / Live Coding on Atom with GLSL.</i>
-</p>
-
-<p align="center">
-  <img alt="screenshot" src="https://user-images.githubusercontent.com/1403842/28673275-1d42b062-731d-11e7-92b0-bde5ca1f1cae.gif" style="width: 100% !important;"/>  
+<div align="center">
+  <img alt="logo" src="https://user-images.githubusercontent.com/1403842/28923702-d8155d46-7899-11e7-817b-1193d138e5b8.png" width="192"/>  
 </div>
 
----
-
-![apm version](https://img.shields.io/apm/v/glsl-livecoder.svg)
-![license MIT](https://img.shields.io/apm/l/glsl-livecoder.svg)
+<div align="center">
+  <h1>glsl-livecoder</h1>
+  <i>VJ / Live Coding on Atom with GLSL.</i>
+  <br>
+  <br>  
+  <br>
+  <img alt="screenshot" src="https://user-images.githubusercontent.com/1403842/28673275-1d42b062-731d-11e7-92b0-bde5ca1f1cae.gif" style="width: 100% !important;"/>  
+  <br>
+  <br>
+  ![apm version](https://img.shields.io/apm/v/glsl-livecoder.svg)
+  ![license MIT](https://img.shields.io/apm/l/glsl-livecoder.svg)
+  [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)  
+  <br>
+  <br>
+</div>
 
 
 ##### TOC
 
 - [Features](#features)
 - [Install](#install)
-- [Commands](#commands)
 - [Usage](#usage)
-  - [Commands](#commands)
-  - [Preset `uniform` variables](#preset-uniform-variables)
-  - [Audio Input](#audio-inputs)
-  - [MIDI Events](#midi-events)
-  - [Webcam Input](#webcam-inputs)
-  - [Keyboard Input](#keyboard-inputs)  
-  - [Gamepad Input](#gamepad-inputs)
-  - [Loading images / videos](#loading-images--videos)
-- [Author](#author)
+- [Examples](#examples)
 
 
-## Features
+## What's this?
 
-- GLSL Sandbox style `uniform` variables
-- Load images / videos
+`glsl-livecoder` is a GLSL runtime environment for Atom.
+When you write GLSL code in Atom, glsl-livecoder immediately evaluates it and shows the result on the background.
+It's just like [GLSL sandbox](http://glslsandbox.com/) or [Shadertoy](https://www.shadertoy.com/), but you can use autocomplete and linter by using existing Atom packages.
+Moreover, It supports Audio inputs , MIDI inputs, loading videos and images, etc...!!!!
+
+`glsl-livecoder` has following features.
+
+- Fragment shaders runtime like [GLSL Sandbox](http://glslsandbox.com/)
+- Vertex shader runtime like [vertexshaderart.com](https://www.vertexshaderart.com/)
+- Loading images / videos
 - Additional `uniform` variables useful for live coding
   - Audio input
   - MIDI input
   - Webcam input
   - Keyboard input
   - Gamepad input
-- Auto completion w/ [autocomplete-glsl](https://atom.io/packages/autocomplete-glsl/)
-- Linting w/ [linter-glsl](https://atom.io/packages/linter-glsl/)
+- Auto completion (thx to [autocomplete-glsl](https://atom.io/packages/autocomplete-glsl/))
+- Linting (thx to [linter-glsl](https://atom.io/packages/linter-glsl/))
+
+
+## Tutorial
+
+- [English](https://medium.com/@amagitakayosi/vj-live-coding-on-atom-glsl-livecoder-329eec5462df)
+- [日本語](http://blog.gmork.in/entry/2017/08/04/173000)
 
 
 ## Install
@@ -92,7 +98,7 @@ Run `apm rebuild` in the package directory to resolve.
 ```
 
 
-## Usage
+## Features
 
 ### Commands
 
@@ -142,6 +148,152 @@ A typical workflow can be like this:
   - `x`: the volume of the note
 
 
+### Settings
+
+The settings of `glsl-livecoder` can be configured in 3 ways: global settings, project settings, and file settings.
+
+- Global settings are loaded from Settings page of Atom.
+- Project settings are loaded from `.liverc`.
+- File settings are loaded from the comments of the shader.
+
+The order of priority is as follows:
+
+`File Settings > Project Settings > Global Settings`
+
+When File Settings and Global Settings has same properties, File Settings are used.
+
+
+#### Global Settings
+
+Global settings are most general settings.
+You can change settings in `Settings` page of Atom.
+
+If there are no project `.liverc` or valid comments, glsl-livecoder will use the global settings as default.
+
+
+#### Project Settings: `.liverc`
+
+Project settings is loaded from `.liverc` on your project root.
+
+- `.liverc` must be located in your project's root directory.
+- `.liverc` is parsed as [JSON5 format](https://github.com/json5/json5).
+  - You can write comments in `.liverc`.
+- `.liverc` is loaded on startup and reloaded automatically when you edit it.
+
+For example, when you write `.liverc` like this:
+
+```javascript
+{
+	"IMPORTED": {
+		"image1": {
+			"PATH": "./1.jpg",
+		},
+	},
+    "vertexMode": "LINES",
+    "pixelRatio": 2,
+    "audio": true,
+    "midi": true,
+}
+```
+
+Then `glsl-livecoder` interpret like this:
+
+- Load `./1.jpg` as a texture `image1`
+- Draw lines on vertex shaders
+- Enable audio input
+- Enable MIDI input
+
+
+#### File Settings
+
+You can also write settings specific for the file.
+Write comments on the head of the file like this:
+
+```glsl
+/*{ "audio": true }*/
+
+void main() {
+    ...
+}
+```
+
+The comment must be written in the same format as `.liverc`.
+
+
+## Examples
+
+### Fragment Shaders
+
+You can write fragment shaders like [GLSL Sandbox](glsl-livecoder also supports).
+
+Fragment shaders must be named like `*.frag`.
+Create a file `foo.frag` like this:
+
+```glsl
+precision mediump float;
+uniform float time;
+uniform vec2 resolution;
+
+void main() {
+    vec2 uv = gl_FragCoord.xy / resolution.xy;
+    gl_FragColor = vec4(uv, 0.5 + 0.5 * sin(time), 1.0);
+}
+```
+
+Then save it and hit `ctrl-enter` to run it.
+glsl-livecoder will show the result on the background.
+
+See [examples](./blob/master/examples/shader1.frag) for actual usage.
+
+
+### Vertex Shaders
+
+glsl-livecoder also supports vertex shaders like [vertexshaderart.com](https://vertexshaderart.com/).
+
+Vertex shaders must be named like `*.vert`.
+Create a file `foo.vert` like this:
+
+```glsl
+/*{ "vertexCount": 300 }*/
+precision mediump float;
+attribute float vertexId;
+uniform float vertexCount;
+uniform float time;
+uniform vec2 resolution;
+varying vec4 v_color;
+
+void main() {
+  float i = vertexId + time *2.;
+
+  vec3 pos = vec3(
+    cos(i * 1.0),
+    sin(i * 1.1),
+    cos(i * 1.2)
+  );
+
+  gl_Position = vec4(pos.x, pos.y, pos.z, 1);
+
+  v_color = vec4(fract(vertexId / 3.), 1, 1, 1);
+}
+```
+
+Then save it and hit `ctrl-enter` to run it.
+glsl-livecoder will show the result on the background.
+
+See [examples](./blob/master/examples/vertex.vert) for actual usage.
+
+
+### Optional Inputs
+
+To use these features, you have to enable them by adding following lines to `.liverc` or header comments.
+
+- Audio inputs: `"audio": true`
+- MIDI inputs: `"audio": true`
+- Webcam inputs: `"camera": true`
+- Keyboard inputs: `"keyboard": true`
+- Gamepad inputs: `"gamepad": true`
+
+
 ### Audio inputs
 
 You can use audio data of the audio input.
@@ -154,7 +306,6 @@ This is useful for drawing waveforms.
 This is useful to draw the volume of specific frequency band, such as spectrum visualizer.
 
 `float volume` is the average of all the frequency bands in `spectrum`.
-
 See [examples](./blob/master/examples/audio.frag) for actual usage.
 
 
@@ -213,40 +364,28 @@ See [examples](./blob/master/examples/gamepad.frag) for actual usage.
 
 ### Loading images / videos
 
-You can load images and videos from local or via URL.
-To use images / videos, `.liverc` is required.
-
-- `.liverc` must be located in your project's root directory.
-- `.liverc` is parsed as [JSON5 format](https://github.com/json5/json5)
-  - You can write comments in `.liverc`.
-- `.liverc` is loaded on startup and reloaded automatically when you edit it.
-- Write image / video paths in `IMPORTED` property.
-  - The structure of `.liverc` is based on [Interactive Shader Format](https://www.interactiveshaderformat.com/)
-
-For example, create `.liverc` like this:
-
-```javascript
-{
-	"IMPORTED": {
-		"image1": {
-			"PATH": "1.jpg",
-		},
-		"image2": {
-			"PATH": "../2.png",
-		},
-		"video1": {
-			"PATH": "/Users/foo/Movies/1.mp4",
-		},
-		"video2": {
-			"PATH": "http://example.com/2.mp4",
-		},
-	},
-}
-```
-
-Then use it in your GLSL file:
+You can load images and videos by adding `IMPORTED` property in `.liverc` or header comments.
+If you write the path or URL of the resourece, it will be loaded automatically:
 
 ```glsl
+/*
+{
+  "IMPORTED": {
+    "image1": {
+      "PATH": "1.jpg",
+    },
+    "image2": {
+      "PATH": "../2.png",
+    },
+    "video1": {
+      "PATH": "/Users/foo/Movies/1.mp4",
+    },
+    "video2": {
+      "PATH": "http://example.com/2.mp4",
+    },
+  },
+}
+*/
 precision mediump float;
 uniform vec2 resolution;
 
@@ -262,10 +401,12 @@ void main() {
 		texture2D(image1, uv) +
 		texture2D(image2, uv) +
 		texture2D(video1, uv) +
-		texture2D(video2, uv)
+    texture2D(video2, uv)
   );
 }
 ```
+
+The structure of `IMPORTED` properties is based on [Interactive Shader Format](https://www.interactiveshaderformat.com/).
 
 See these examples for actual usage.
 

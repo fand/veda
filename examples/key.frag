@@ -1,3 +1,9 @@
+/*{
+  "keyboard": true,
+  "IMPORTED": {
+    "font": { "PATH": "./images/font.png" },
+  }
+}*/
 precision mediump float;
 uniform float time;
 uniform vec2 resolution;

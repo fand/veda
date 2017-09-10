@@ -1,3 +1,6 @@
+## 0.9.0
+* Support header comments to change settings per file
+
 ## 0.8.1
 * Fix error on empty editor #14
 
