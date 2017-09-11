@@ -1,7 +1,7 @@
 {
   "name": "glsl-livecoder",
   "main": "./lib/index",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "VJ / Live Coding environment with GLSL",
   "keywords": [],
   "activationCommands": {
