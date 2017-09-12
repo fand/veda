@@ -1,3 +1,6 @@
+## 0.9.2
+* Support `.fs` and `.vs` files
+
 ## 0.9.1
 * Fix bugs around IMPORTED
 
