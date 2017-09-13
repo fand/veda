@@ -1,3 +1,6 @@
+## 0.9.3
+* Fix bugs in `glsl-livecoder:toggle` #19
+
 ## 0.9.2
 * Support `.fs` and `.vs` files
 
