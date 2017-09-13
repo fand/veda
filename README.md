@@ -288,7 +288,7 @@ See [examples](./blob/master/examples/vertex.vert) for actual usage.
 To use these features, you have to enable them by adding following lines to `.liverc` or header comments.
 
 - Audio inputs: `"audio": true`
-- MIDI inputs: `"audio": true`
+- MIDI inputs: `"midi": true`
 - Webcam inputs: `"camera": true`
 - Keyboard inputs: `"keyboard": true`
 - Gamepad inputs: `"gamepad": true`
