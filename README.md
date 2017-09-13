@@ -15,6 +15,7 @@
 
 <div align="center">
 
+![TravisCI](https://img.shields.io/travis/fand/glsl-livecoder.svg)
 ![apm version](https://img.shields.io/apm/v/glsl-livecoder.svg)
 ![license MIT](https://img.shields.io/apm/l/glsl-livecoder.svg)
 ![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)
