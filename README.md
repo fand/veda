@@ -11,12 +11,16 @@
   <img alt="screenshot" src="https://user-images.githubusercontent.com/1403842/28673275-1d42b062-731d-11e7-92b0-bde5ca1f1cae.gif" style="width: 100% !important;"/>  
   <br>
   <br>
-  ![apm version](https://img.shields.io/apm/v/glsl-livecoder.svg)
-  ![license MIT](https://img.shields.io/apm/l/glsl-livecoder.svg)
-  [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)  
-  <br>
-  <br>
 </div>
+
+<div align="center">
+
+![apm version](https://img.shields.io/apm/v/glsl-livecoder.svg)
+![license MIT](https://img.shields.io/apm/l/glsl-livecoder.svg)
+![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)
+</div>
+<br>
+<br>
 
 
 ##### TOC
