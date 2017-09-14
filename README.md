@@ -420,6 +420,16 @@ See these examples for actual usage.
 - [video.frag](./blob/master/examples/video.frag)
 
 
+### glslify
+
+glsl-livecoder supports [glslify](https://github.com/stackgl/glslify).
+
+If `"glslify": true` is in the settings, glsl-livecoder bundles the code with glslify before evaluating.
+Note that it will cause lint errors because linter-glsl doesn't support glslify.
+
+See [examples](./blob/master/examples/glslify.frag) for actual usage.
+
+
 ## Author
 
 Takayosi Amagi
