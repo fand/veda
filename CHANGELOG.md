@@ -1,3 +1,6 @@
+## 0.10.0
+* Glslify Support!!
+
 ## 0.9.3, 0.9.4
 * Fix bugs in `glsl-livecoder:toggle` #19
 
