@@ -1,3 +1,6 @@
+## 0.10.2
+* Fix bugs on initializing vertex shaders
+
 ## 0.10.1
 * Fix bugs in gamepad support and some errors
 
