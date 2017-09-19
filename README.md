@@ -248,7 +248,7 @@ void main() {
 Then save it and hit `ctrl-enter` to run it.
 glsl-livecoder will show the result on the background.
 
-See [examples](./blob/master/examples/shader1.frag) for actual usage.
+See [examples](./examples/shader1.frag) for actual usage.
 
 
 ### Vertex Shaders
@@ -285,7 +285,7 @@ void main() {
 Then save it and hit `ctrl-enter` to run it.
 glsl-livecoder will show the result on the background.
 
-See [examples](./blob/master/examples/vertex.vert) for actual usage.
+See [examples](./examples/vertex.vert) for actual usage.
 
 
 ### Optional Inputs
@@ -311,7 +311,7 @@ This is useful for drawing waveforms.
 This is useful to draw the volume of specific frequency band, such as spectrum visualizer.
 
 `float volume` is the average of all the frequency bands in `spectrum`.
-See [examples](./blob/master/examples/audio.frag) for actual usage.
+See [examples](./examples/audio.frag) for actual usage.
 
 
 ### MIDI Events
@@ -325,7 +325,7 @@ For example, `texture2D(midi, vec2(144. / 256., 0)).x` yields the note number of
 - `144.` (0x90): `note on` event of MIDI Channel 1
 - `.x` (2nd byte): Note number
 
-See [examples](./blob/master/examples/midi.frag) for actual usage.
+See [examples](./examples/midi.frag) for actual usage.
 
 `sampler2D note` stores the volumes for each note number
 The size of `midi` is `128x1`.
@@ -333,7 +333,7 @@ Each pixel stores the volume of the last event for corresponding MIDI note.
 
 For example, `texture2D(note, vec2(60. / 128., 0)).x` yields the volume of note `C4` (Middle C).
 
-See [examples](./blob/master/examples/note.frag) for actual usage.
+See [examples](./examples/note.frag) for actual usage.
 
 
 ### Webcam Inputs
@@ -341,7 +341,7 @@ See [examples](./blob/master/examples/note.frag) for actual usage.
 `sampler2D camera` stores the images from the webcam.
 `texture2D(camera, uv)` returns vec3 color.
 
-See [examples](./blob/master/examples/camera.frag) for actual usage.
+See [examples](./examples/camera.frag) for actual usage.
 
 
 ### Keyboard Inputs
@@ -353,7 +353,7 @@ For example, `texture2D(key, vec2(65. / 256., 0.))` returns 1.0 when `a` is pres
 
 Hitting `ESC` key resets the states of all key inputs.
 
-See [examples](./blob/master/examples/key.frag) for actual usage.
+See [examples](./examples/key.frag) for actual usage.
 
 
 ### Gamepad Inputs
@@ -364,7 +364,7 @@ The status of buttons and axes are stored in `y = 0.0` and `y = 1.0`.
 
 For example, `texture2D(gamepad, vec2(3. / 128., 0.))` returns 1.0 when the 3rd button is pressed.
 
-See [examples](./blob/master/examples/gamepad.frag) for actual usage.
+See [examples](./examples/gamepad.frag) for actual usage.
 
 
 ### Loading images / videos
@@ -415,9 +415,9 @@ The structure of `IMPORTED` properties is based on [Interactive Shader Format](h
 
 See these examples for actual usage.
 
-- [.liverc](./blob/master/examples/.liverc)
-- [image.frag](./blob/master/examples/image.frag)
-- [video.frag](./blob/master/examples/video.frag)
+- [.liverc](./examples/.liverc)
+- [image.frag](./examples/image.frag)
+- [video.frag](./examples/video.frag)
 
 
 ### glslify
@@ -427,7 +427,7 @@ glsl-livecoder supports [glslify](https://github.com/stackgl/glslify).
 If `"glslify": true` is in the settings, glsl-livecoder bundles the code with glslify before evaluating.
 Note that it will cause lint errors because linter-glsl doesn't support glslify.
 
-See [examples](./blob/master/examples/glslify.frag) for actual usage.
+See [examples](./examples/glslify.frag) for actual usage.
 
 
 ## Author
