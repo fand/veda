@@ -1,3 +1,6 @@
+## 0.10.1
+* Fix bugs in gamepad support and some errors
+
 ## 0.10.0
 * Glslify Support!!
 
