@@ -1,3 +1,6 @@
+## 0.10.3
+* Fix bugs on initializing configs
+
 ## 0.10.2
 * Fix bugs on initializing vertex shaders
 
