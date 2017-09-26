@@ -420,6 +420,32 @@ See these examples for actual usage.
 - [video.frag](./examples/video.frag)
 
 
+### Multipass Rendering
+
+glsl-livecoder supports multipass rendering.
+You can define passes in `PASSES` property in `.liverc` or header comments.
+
+
+```glsl
+/*
+{
+  "PASSES": [
+    { "TARGET": "buffer" },
+    {},
+  ],
+}
+*/
+```
+
+The structure of `PASSES` property is based on [Interactive Shader Format](https://www.interactiveshaderformat.com/).
+However, glsl-livecoder doesn't support `PERSISTENT`, `WIDTH` and `HEIGHT` property.
+
+See these examples for actual usage.
+
+- [multipass.frag](./examples/multipass.frag)
+- [multipass.vert](./examples/multipass.vert)
+
+
 ### glslify
 
 glsl-livecoder supports [glslify](https://github.com/stackgl/glslify).
