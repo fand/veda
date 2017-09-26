@@ -1,3 +1,6 @@
+## 0.11.0
+* Supports Multipass Rendering!
+
 ## 0.10.3
 * Fix bugs on initializing configs
 
