@@ -1,7 +1,6 @@
 /*{
     "PASSES": [{
         "TARGET": "renderBuffer",
-        "PERSISTENT": true,
     }, {}]
 }*/
 precision mediump float;

@@ -4,7 +4,6 @@
     "vertexMode": "POINTS",
     "PASSES": [{
         "TARGET": "vertexBuffer",
-        "PERSISTENT": true,
     }, {}]
 }*/
 precision mediump float;
