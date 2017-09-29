@@ -446,6 +446,27 @@ See these examples for actual usage.
 - [multipass.vert](./examples/multipass.vert)
 
 
+### Combining VS and FS
+
+In `PASSES` you can specify vertex shader path from fragment shader, and vice versa.
+For example, when you write header comments like below in fragment shader, glsl-livecoder will use `./vertex.vert` for vertex shader instead of default vertex shader.
+
+```glsl
+/*
+{
+  "PASSES": [{
+    "vs": "./vertex.vert",
+  }],
+}
+*/
+```
+
+See these examples for actual usage.
+
+- [combination.frag](./examples/combination.frag) and [combination.vert](./examples/combination.vert)
+- [particles.frag](./examples/particles.frag) and [particles.vert](./examples/particles.vert)
+
+
 ### glslify
 
 glsl-livecoder supports [glslify](https://github.com/stackgl/glslify).
