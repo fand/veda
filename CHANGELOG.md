@@ -1,3 +1,6 @@
+## 0.12.0
+* Supports combining vs and fs
+
 ## 0.11.0
 * Supports Multipass Rendering!
 
