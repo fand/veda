@@ -6,7 +6,8 @@
         "TARGET": "renderBuffer",
         "vs": "./particle.vert",
     }, {
-    }]
+    }],
+    "server": 5000,
 }*/
 precision mediump float;
 uniform float time;
@@ -29,6 +30,6 @@ void main() {
         texture2D(renderBuffer, p + vec2(0, d)) +
         texture2D(renderBuffer, p - vec2(0, d))
     ).b);
-    gl_FragColor += texture2D(backbuffer, uv).b * .8;
+    gl_FragColor += texture2D(backbuffer, uv).b * .7;
     gl_FragColor.r = texture2D(backbuffer, uv + .004).b;
 }
