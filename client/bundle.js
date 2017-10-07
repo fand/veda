@@ -6591,19 +6591,7 @@ Object.defineProperty(exports, "__esModule", {
 var DEFAULT_VERTEX_SHADER = exports.DEFAULT_VERTEX_SHADER = "\nvoid main() {\n  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n}\n";
 var DEFAULT_FRAGMENT_SHADER = exports.DEFAULT_FRAGMENT_SHADER = "\nprecision mediump float;\nvarying vec4 v_color;\nvoid main() {\n  gl_FragColor = v_color;\n}\n";
 
-// export const INITIAL_FRAGMENT_SHADER = `
-// precision mediump float;
-// uniform float time;
-// uniform vec2 mouse;
-// uniform vec2 resolution;
-//
-// void main() {
-//   vec2 uv = gl_FragCoord.xy / resolution.xy;
-//   gl_FragColor = vec4(uv,0.5+0.5*sin(time),1.0);
-// }
-// `;
-
-var INITIAL_FRAGMENT_SHADER = exports.INITIAL_FRAGMENT_SHADER = "\nprecision mediump float;\nvoid main() {\n  gl_FragColor = vec4(0);\n}\n";
+var INITIAL_FRAGMENT_SHADER = exports.INITIAL_FRAGMENT_SHADER = "\nprecision mediump float;\nuniform float time;\nuniform vec2 mouse;\nuniform vec2 resolution;\n\nvoid main() {\n  vec2 uv = gl_FragCoord.xy / resolution.xy;\n  gl_FragColor = vec4(uv,0.5+0.5*sin(time),1.0);\n}\n";
 
 /***/ }),
 /* 24 */
@@ -6647,8 +6635,6 @@ var _view = __webpack_require__(61);
 
 var _view2 = _interopRequireDefault(_view);
 
-var _constants = __webpack_require__(23);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -6670,16 +6656,16 @@ var PlayerClient = function () {
       autoConnect: false
     });
 
-    this._socket.on('create', function (rc) {
+    this._socket.on('create', function (_ref) {
+      var rc = _ref.rc,
+          isPlaying = _ref.isPlaying;
+
       clearTimeout(_this._timer);
       if (!_this._player) {
         var view = new _view2.default(_this._wrapper);
-        _this._player = new _player2.default(view, rc);
+        _this._player = new _player2.default(view, rc, isPlaying);
+        console.log('created', rc, isPlaying);
       }
-      _this._player.loadShader([{
-        fs: _constants.INITIAL_FRAGMENT_SHADER
-      }]);
-      _this._player.play();
     });
     this._socket.on('destroy', function () {
       return _this._player.destroy();
@@ -6694,12 +6680,15 @@ var PlayerClient = function () {
       return _this._player.stop();
     });
     this._socket.on('loadShader', function (passes) {
-      console.log('>> loadShader', passes);
+      console.log('[glsl-livecoder] Updated shaders', passes);
       _this._player.loadShader(passes);
     });
     this._socket.on('connect', function () {
-      console.log('>> connected', _this._socket);
+      console.log('[glsl-livecoder] Connected to the server');
       _this.poll();
+    });
+    this._socket.on('disconnect', function () {
+      console.log('[glsl-livecoder] Disconnected');
     });
   }
 
@@ -9905,12 +9894,14 @@ var _threeShader = __webpack_require__(51);
 
 var _threeShader2 = _interopRequireDefault(_threeShader);
 
+var _constants = __webpack_require__(23);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Player = function () {
-  function Player(view, rc) {
+  function Player(view, rc, isPlaying) {
     var _this = this;
 
     _classCallCheck(this, Player);
@@ -9966,6 +9957,14 @@ var Player = function () {
     this._view = view;
     this._three = new _threeShader2.default(rc);
     this._three.setCanvas(this._view.getCanvas());
+
+    this.loadShader([{
+      fs: _constants.INITIAL_FRAGMENT_SHADER
+    }]);
+
+    if (isPlaying) {
+      this.play();
+    }
   }
 
   _createClass(Player, [{
