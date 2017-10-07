@@ -9958,6 +9958,10 @@ var Player = function () {
     this._three = new _threeShader2.default(rc);
     this._three.setCanvas(this._view.getCanvas());
 
+    Object.keys(rc.IMPORTED || {}).forEach(function (key) {
+      _this._three.loadTexture(key, rc.IMPORTED[key].PATH);
+    });
+
     this.loadShader([{
       fs: _constants.INITIAL_FRAGMENT_SHADER
     }]);

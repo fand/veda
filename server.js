@@ -1,16 +1,17 @@
 #!/usr/bin/env node
 
-// const path = require('path');
+const PORT = process.argv[2] || 3000;
+const DIR = process.argv[3];
+
 const http = require('http');
 const express = require('express');
 const app = express();
 
 app.use(express.static('./client'));
+app.use('/link', express.static(DIR));
 
 const server = http.Server(app);
 const io = require('socket.io')(server);
-
-const PORT = process.argv[2] || 3000;
 
 io.on('connection', socket => {
   socket.on('ready', () => {
