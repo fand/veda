@@ -6593,6 +6593,10 @@ var DEFAULT_FRAGMENT_SHADER = exports.DEFAULT_FRAGMENT_SHADER = "\nprecision med
 
 var INITIAL_FRAGMENT_SHADER = exports.INITIAL_FRAGMENT_SHADER = "\nprecision mediump float;\nuniform float time;\nuniform vec2 mouse;\nuniform vec2 resolution;\n\nvoid main() {\n  vec2 uv = gl_FragCoord.xy / resolution.xy;\n  gl_FragColor = vec4(uv,0.5+0.5*sin(time),1.0);\n}\n";
 
+var INITIAL_SHADER = exports.INITIAL_SHADER = [{
+  fs: INITIAL_FRAGMENT_SHADER
+}];
+
 /***/ }),
 /* 24 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -6658,13 +6662,13 @@ var PlayerClient = function () {
 
     this._socket.on('create', function (_ref) {
       var rc = _ref.rc,
-          isPlaying = _ref.isPlaying;
+          isPlaying = _ref.isPlaying,
+          lastShader = _ref.lastShader;
 
       clearTimeout(_this._timer);
       if (!_this._player) {
         var view = new _view2.default(_this._wrapper);
-        _this._player = new _player2.default(view, rc, isPlaying);
-        console.log('created', rc, isPlaying);
+        _this._player = new _player2.default(view, rc, isPlaying, lastShader);
       }
     });
     this._socket.on('destroy', function () {
@@ -9888,20 +9892,20 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _threeShader = __webpack_require__(51);
 
 var _threeShader2 = _interopRequireDefault(_threeShader);
 
-var _constants = __webpack_require__(23);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Player = function () {
-  function Player(view, rc, isPlaying) {
+  function Player(view, rc, isPlaying, shader) {
     var _this = this;
 
     _classCallCheck(this, Player);
@@ -9962,9 +9966,13 @@ var Player = function () {
       _this._three.loadTexture(key, rc.IMPORTED[key].PATH);
     });
 
-    this.loadShader([{
-      fs: _constants.INITIAL_FRAGMENT_SHADER
-    }]);
+    this.onChange({
+      newConfig: rc,
+      added: _extends({}, rc),
+      removed: { IMPORTED: {} }
+    });
+
+    this.loadShader(shader);
 
     if (isPlaying) {
       this.play();
@@ -10366,7 +10374,7 @@ var ThreeShader = function () {
           spectrum: { type: 't', value: this._audioLoader.spectrum },
           samples: { type: 't', value: this._audioLoader.samples }
         });
-      } else {
+      } else if (this._uniforms.spectrum) {
         this._uniforms.spectrum.value.dispose();
         this._uniforms.samples.value.dispose();
         this._audioLoader.disable();
@@ -10381,7 +10389,7 @@ var ThreeShader = function () {
           midi: { type: 't', value: this._midiLoader.midiTexture },
           note: { type: 't', value: this._midiLoader.noteTexture }
         });
-      } else {
+      } else if (this._uniforms.midi) {
         this._uniforms.midi.value.dispose();
         this._uniforms.note.value.dispose();
         this._midiLoader.disable();
@@ -10480,7 +10488,7 @@ var AudioLoader = function () {
       var _this = this;
 
       this._willPlay = new Promise(function (resolve, reject) {
-        navigator.webkitGetUserMedia({ audio: true }, function (stream) {
+        navigator.mediaDevices.getUserMedia({ audio: true }).then(function (stream) {
           _this._stream = stream;
           _this._input = _this._ctx.createMediaStreamSource(stream);
           _this._input.connect(_this._analyser);
@@ -10729,7 +10737,7 @@ var CameraLoader = function () {
       var _this = this;
 
       this._willPlay = new Promise(function (resolve, reject) {
-        navigator.webkitGetUserMedia({ video: true }, function (stream) {
+        navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
           _this._stream = stream;
           _this._video.src = window.URL.createObjectURL(stream);
           _this._video.play();
