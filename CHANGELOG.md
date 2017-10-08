@@ -1,3 +1,6 @@
+## 0.13.0
+* Add server mode
+
 ## 0.12.0
 * Supports combining vs and fs
 
