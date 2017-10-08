@@ -6,5 +6,6 @@
 [libs]
 
 [options]
+module.name_mapper='^atom$' -> './atom'
 
 [lints]
