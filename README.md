@@ -477,6 +477,27 @@ Note that it will cause lint errors because linter-glsl doesn't support glslify.
 See [examples](./examples/glslify.frag) for actual usage.
 
 
+### Server Mode
+
+If you wanna hide code and show only the shaders, you can use server mode.
+When `server` is specified, glsl-livecoder launches a web server instead of running shaders in the background of Atom.
+
+In this example, glsl-livecoder runs server on `http://localhost:3000`.
+You can run shaders on the browsers by opening the url.
+
+```glsl
+/*
+{
+  "server": 3000,
+}
+*/
+```
+
+Warning: Currently we can't use videos/images outside the project directory in server mode.
+
+See an [example](./examples/server.frag) for actual usage.
+
+
 ## Author
 
 Takayosi Amagi
