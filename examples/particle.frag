@@ -7,7 +7,6 @@
         "vs": "./particle.vert",
     }, {
     }],
-    "server": 5000,
 }*/
 precision mediump float;
 uniform float time;
