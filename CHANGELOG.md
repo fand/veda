@@ -1,3 +1,6 @@
+## 0.13.1
+* Fix server mode on Windows
+
 ## 0.13.0
 * Add server mode
 
