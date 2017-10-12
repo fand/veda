@@ -2,8 +2,8 @@
   "context-menu": {
     "atom-text-editor": [
       {
-        "label": "Toggle glsl-livecoder",
-        "command": "glsl-livecoder:toggle"
+        "label": "Toggle veda",
+        "command": "veda:toggle"
       }
     ]
   },
@@ -12,11 +12,11 @@
       "label": "Packages",
       "submenu": [
         {
-          "label": "glsl-livecoder",
+          "label": "veda",
           "submenu": [
             {
               "label": "Toggle",
-              "command": "glsl-livecoder:toggle"
+              "command": "veda:toggle"
             }
           ]
         }

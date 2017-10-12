@@ -38,5 +38,5 @@ io.on('connection', socket => {
 });
 
 server.listen(PORT, () => {
-  console.log(`[glsl-livecoder] Server launched on http://localhost:${PORT}/`);
+  console.log(`[VEDA] Server launched on http://localhost:${PORT}/`);
 });

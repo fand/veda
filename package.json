@@ -5,9 +5,9 @@
   "description": "VJ / Live Coding environment with GLSL",
   "keywords": [],
   "activationCommands": {
-    "atom-workspace": "glsl-livecoder:toggle"
+    "atom-workspace": "veda:toggle"
   },
-  "repository": "https://github.com/fand/glsl-livecoder",
+  "repository": "https://github.com/fand/veda",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"

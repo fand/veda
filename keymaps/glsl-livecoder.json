@@ -1,8 +1,8 @@
 {
   ".workspace .editor:not(.mini)": {
-    "ctrl-enter": "glsl-livecoder:load-shader",
-    "ctrl-shift-enter": "glsl-livecoder:watch-shader",
-    "ctrl-alt-enter": "glsl-livecoder:watch-active-shader",
-    "ctrl-.": "glsl-livecoder:stop-watching"
+    "ctrl-enter": "veda:load-shader",
+    "ctrl-shift-enter": "veda:watch-shader",
+    "ctrl-alt-enter": "veda:watch-active-shader",
+    "ctrl-.": "veda:stop-watching"
   }
 }
