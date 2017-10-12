@@ -7,8 +7,8 @@ import CameraLoader from './camera-loader';
 import GamepadLoader from './gamepad-loader';
 import KeyLoader from './key-loader';
 import isVideo from 'is-video';
-import type { Rc } from './config';
-import { DEFAULT_VERTEX_SHADER, DEFAULT_FRAGMENT_SHADER } from './constants';
+import type { Rc } from '../lib/config';
+import { DEFAULT_VERTEX_SHADER, DEFAULT_FRAGMENT_SHADER } from '../lib/constants';
 
 const DUMMY_TEXTURE = new THREE.Texture();
 
