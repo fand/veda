@@ -4,6 +4,7 @@
 [include]
 
 [libs]
+./flowtypes
 
 [options]
 module.name_mapper='^atom$' -> './atom'

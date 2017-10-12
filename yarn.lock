@@ -5187,6 +5187,10 @@ three@^0.86.0:
   version "0.86.0"
   resolved "https://registry.yarnpkg.com/three/-/three-0.86.0.tgz#1c33e476a1537e9a8a18f5792d024b1046cd2000"
 
+three@^0.87.1:
+  version "0.87.1"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.87.1.tgz#466a34edc4543459ced9b9d7d276b65216fe2ba8"
+
 through2@^0.6.3:
   version "0.6.5"
   resolved "https://registry.yarnpkg.com/through2/-/through2-0.6.5.tgz#41ab9c67b29d57209071410e1d7a7a968cd3ad48"
@@ -5454,6 +5458,13 @@ validate-npm-package-license@^3.0.1:
 vary@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
+
+vedajs@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/vedajs/-/vedajs-0.0.1.tgz#733c225bfd65ad9a969a2073aeea2b710b800cca"
+  dependencies:
+    is-video "^1.0.1"
+    three "^0.87.1"
 
 verror@1.10.0:
   version "1.10.0"
