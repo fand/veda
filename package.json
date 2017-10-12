@@ -1,5 +1,5 @@
 {
-  "name": "glsl-livecoder",
+  "name": "veda",
   "main": "./lib/index",
   "version": "0.13.1",
   "description": "VJ / Live Coding environment with GLSL",
