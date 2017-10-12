@@ -3,7 +3,7 @@
 </div>
 
 <div align="center">
-  <h1>glsl-livecoder</h1>
+  <h1>VEDA</h1>
   <i>VJ / Live Coding on Atom with GLSL.</i>
   <br>
   <br>  
@@ -15,9 +15,9 @@
 
 <div align="center">
 
-![TravisCI](https://img.shields.io/travis/fand/glsl-livecoder.svg)
-![apm version](https://img.shields.io/apm/v/glsl-livecoder.svg)
-![license MIT](https://img.shields.io/apm/l/glsl-livecoder.svg)
+![TravisCI](https://img.shields.io/travis/fand/veda.svg)
+![apm version](https://img.shields.io/apm/v/veda.svg)
+![license MIT](https://img.shields.io/apm/l/veda.svg)
 ![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)
 </div>
 <br>
@@ -34,12 +34,12 @@
 
 ## What's this?
 
-`glsl-livecoder` is a GLSL runtime environment for Atom.
-When you write GLSL code in Atom, glsl-livecoder immediately evaluates it and shows the result on the background.
+`VEDA` is a GLSL runtime environment for Atom.
+When you write GLSL code in Atom, VEDA immediately evaluates it and shows the result on the background.
 It's just like [GLSL sandbox](http://glslsandbox.com/) or [Shadertoy](https://www.shadertoy.com/), but you can use autocomplete and linter by using existing Atom packages.
 Moreover, It supports Audio inputs , MIDI inputs, loading videos and images, etc...!!!!
 
-`glsl-livecoder` has following features.
+`VEDA` has following features.
 
 - Fragment shaders runtime like [GLSL Sandbox](http://glslsandbox.com/)
 - Vertex shader runtime like [vertexshaderart.com](https://www.vertexshaderart.com/)
@@ -64,7 +64,7 @@ Moreover, It supports Audio inputs , MIDI inputs, loading videos and images, etc
 
 ### Install `glslangValidator`
 
-`glsl-livecoder` requires `glslangValidator`.<br>
+`VEDA` requires `glslangValidator`.<br>
 Follow the below steps to install `glslangValidator`.
 
 #### macOS
@@ -86,19 +86,19 @@ https://www.lunarg.com/vulkan-sdk/
 After that, add installed `glslangValidator` to your `PATH` environment variable.<br>
 In Windows, `glslangValidator` will be installed in `C:\VulkanSDK\( version )\Bin`.
 
-The path of `glslangValidator` can also be specified in the settings of `glsl-livecoder`.
+The path of `glslangValidator` can also be specified in the settings of `VEDA`.
 
 
-### Install `glsl-livecoder`
+### Install `VEDA`
 
 Just install from Atom GUI or `apm`.
 
-`$ apm install glsl-livecoder`
+`$ apm install veda`
 
 If Atom shows an error like below, try rebuilding the package from 🐞 icon on the footer.
 
 ```
-Failed to require the main module of 'glsl-livecoder' because it requires an incompatible native module.
+Failed to require the main module of 'veda' because it requires an incompatible native module.
 Run `apm rebuild` in the package directory to resolve.
 ```
 
@@ -107,10 +107,10 @@ Run `apm rebuild` in the package directory to resolve.
 
 ### Commands
 
-`glsl-livecoder` installs following commands to Atom.
+`VEDA` installs following commands to Atom.
 
 - `toggle`
-  - Start / Stop glsl-livecoder.
+  - Start / Stop VEDA.
 - `load-shader` (key: `ctrl-enter`)
   - Load the shader on current editor.  
 - `watch-shader` (key: `ctrl-shift-enter`)
@@ -122,15 +122,15 @@ Run `apm rebuild` in the package directory to resolve.
 
 A typical workflow can be like this:
 
-1. Enable `glsl-livecoder` by running `glsl-liveder:toggle` from the Command Palette of Atom.
+1. Enable `VEDA` by running `veda:toggle` from the Command Palette of Atom.
 2. Edit your GLSL code.
-3. Hit `ctrl-enter` to run `glsl-livecoder:load-shader`.
+3. Hit `ctrl-enter` to run `veda:load-shader`.
 
 
 ### Preset `uniform` variables
 
 - `float time`:
-  - The elapsed time since `glsl-livecoder` has started.
+  - The elapsed time since `VEDA` has started.
 - `vec2 resolution`
   - The resolution of the screen.
 - `vec2 mouse`
@@ -155,7 +155,7 @@ A typical workflow can be like this:
 
 ### Settings
 
-The settings of `glsl-livecoder` can be configured in 3 ways: global settings, project settings, and file settings.
+The settings of `VEDA` can be configured in 3 ways: global settings, project settings, and file settings.
 
 - Global settings are loaded from Settings page of Atom.
 - Project settings are loaded from `.liverc`.
@@ -173,7 +173,7 @@ When File Settings and Global Settings has same properties, File Settings are us
 Global settings are most general settings.
 You can change settings in `Settings` page of Atom.
 
-If there are no project `.liverc` or valid comments, glsl-livecoder will use the global settings as default.
+If there are no project `.liverc` or valid comments, VEDA will use the global settings as default.
 
 
 #### Project Settings: `.liverc`
@@ -201,7 +201,7 @@ For example, when you write `.liverc` like this:
 }
 ```
 
-Then `glsl-livecoder` interpret like this:
+Then `VEDA` interpret like this:
 
 - Load `./1.jpg` as a texture `image1`
 - Draw lines on vertex shaders
@@ -229,7 +229,7 @@ The comment must be written in the same format as `.liverc`.
 
 ### Fragment Shaders
 
-You can write fragment shaders like [GLSL Sandbox](glsl-livecoder also supports).
+You can write fragment shaders like [GLSL Sandbox](http://glslsandbox.com).
 
 Fragment shaders must be named like `*.frag`.
 Create a file `foo.frag` like this:
@@ -246,14 +246,14 @@ void main() {
 ```
 
 Then save it and hit `ctrl-enter` to run it.
-glsl-livecoder will show the result on the background.
+VEDA will show the result on the background.
 
 See [examples](./examples/shader1.frag) for actual usage.
 
 
 ### Vertex Shaders
 
-glsl-livecoder also supports vertex shaders like [vertexshaderart.com](https://vertexshaderart.com/).
+VEDA also supports vertex shaders like [vertexshaderart.com](https://vertexshaderart.com/).
 
 Vertex shaders must be named like `*.vert`.
 Create a file `foo.vert` like this:
@@ -283,7 +283,7 @@ void main() {
 ```
 
 Then save it and hit `ctrl-enter` to run it.
-glsl-livecoder will show the result on the background.
+VEDA will show the result on the background.
 
 See [examples](./examples/vertex.vert) for actual usage.
 
@@ -422,7 +422,7 @@ See these examples for actual usage.
 
 ### Multipass Rendering
 
-glsl-livecoder supports multipass rendering.
+VEDA supports multipass rendering.
 You can define passes in `PASSES` property in `.liverc` or header comments.
 
 
@@ -438,7 +438,7 @@ You can define passes in `PASSES` property in `.liverc` or header comments.
 ```
 
 The structure of `PASSES` property is based on [Interactive Shader Format](https://www.interactiveshaderformat.com/).
-However, glsl-livecoder doesn't support `PERSISTENT`, `WIDTH` and `HEIGHT` property.
+However, VEDA doesn't support `PERSISTENT`, `WIDTH` and `HEIGHT` property.
 
 See these examples for actual usage.
 
@@ -449,7 +449,7 @@ See these examples for actual usage.
 ### Combining VS and FS
 
 In `PASSES` you can specify vertex shader path from fragment shader, and vice versa.
-For example, when you write header comments like below in fragment shader, glsl-livecoder will use `./vertex.vert` for vertex shader instead of default vertex shader.
+For example, when you write header comments like below in fragment shader, VEDA will use `./vertex.vert` for vertex shader instead of default vertex shader.
 
 ```glsl
 /*
@@ -469,9 +469,9 @@ See these examples for actual usage.
 
 ### glslify
 
-glsl-livecoder supports [glslify](https://github.com/stackgl/glslify).
+VEDA supports [glslify](https://github.com/stackgl/glslify).
 
-If `"glslify": true` is in the settings, glsl-livecoder bundles the code with glslify before evaluating.
+If `"glslify": true` is in the settings, VEDA bundles the code with glslify before evaluating.
 Note that it will cause lint errors because linter-glsl doesn't support glslify.
 
 See [examples](./examples/glslify.frag) for actual usage.
@@ -480,9 +480,9 @@ See [examples](./examples/glslify.frag) for actual usage.
 ### Server Mode
 
 If you wanna hide code and show only the shaders, you can use server mode.
-When `server` is specified, glsl-livecoder launches a web server instead of running shaders in the background of Atom.
+When `server` is specified, VEDA launches a web server instead of running shaders in the background of Atom.
 
-In this example, glsl-livecoder runs server on `http://localhost:3000`.
+In this example, VEDA runs server on `http://localhost:3000`.
 You can run shaders on the browsers by opening the url.
 
 ```glsl
