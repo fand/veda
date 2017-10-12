@@ -27,7 +27,7 @@ type RenderPass = {
   camera: THREE.Camera;
   target: ?RenderPassTarget;
 }
-export type Pass = {
+type Pass = {
   TARGET?: string;
   vs?: string;
   fs?: string;
