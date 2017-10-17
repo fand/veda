@@ -31,8 +31,6 @@
     "tmp": "^0.0.33",
     "vedajs": "0.0.1",
     "webpack": "^3.6.0",
-    "webpack-dev-middleware": "^1.12.0",
-    "webpack-dev-server": "^2.9.1",
     "which": "^1.2.14"
   },
   "package-deps": [
