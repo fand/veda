@@ -1,3 +1,12 @@
+type vertexMode =
+  'POINTS' |
+  'LINE_STRIP' |
+  'LINE_LOOP' |
+  'LINES' |
+  'TRI_STRIP' |
+  'TRI_FAN' |
+  'TRIANGLES';
+
 declare module 'veda' {
   declare interface VedaOptions {
     pixelRatio: number;
