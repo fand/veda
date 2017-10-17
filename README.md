@@ -15,7 +15,7 @@
 
 <div align="center">
 
-![TravisCI](https://img.shields.io/travis/fand/veda.svg)
+![TravisCI](https://img.shields.io/travis/fand/atom-veda.svg)
 ![apm version](https://img.shields.io/apm/v/veda.svg)
 ![license MIT](https://img.shields.io/apm/l/veda.svg)
 ![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)
