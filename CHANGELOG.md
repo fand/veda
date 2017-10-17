@@ -1,3 +1,13 @@
+## 1.0.1
+* Fix keybinding confliction on non-GLSL files
+
+## 1.0.0
+
+🔥🔥 VEDA Released 🔥🔥
+
+* Rename package to `veda`
+* Move GLSL runtime engine to [fand/veda](https://github.com/fand/veda)
+
 ## 0.13.1
 * Fix server mode on Windows
 
