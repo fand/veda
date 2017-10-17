@@ -1,5 +1,5 @@
 {
-  ".workspace .editor:not(.mini)": {
+  ".workspace .editor[data-grammar~='glsl']:not(.mini)": {
     "ctrl-enter": "veda:load-shader",
     "ctrl-shift-enter": "veda:watch-shader",
     "ctrl-alt-enter": "veda:watch-active-shader",
