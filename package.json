@@ -20,6 +20,7 @@
     "chokidar": "^1.7.0",
     "execa": "^0.8.0",
     "express": "^4.16.1",
+    "flow": "^0.2.3",
     "glslify": "^6.1.0",
     "is-video": "^1.0.1",
     "json5": "^0.5.1",
@@ -52,13 +53,15 @@
     "npm-run-all": "^4.1.1"
   },
   "scripts": {
-    "ci": "npm-run-all -p lint test",
+    "ci": "npm-run-all -p lint test flow build",
     "test": "ava test",
     "lint": "eslint lib",
+    "flow": "flow",
     "dev": "npm-run-all -p watch serve",
     "build": "webpack",
     "watch": "webpack -w",
-    "serve": "node lib/server.js"
+    "serve": "node lib/server.js",
+    "prepublish": "npm run ci"
   },
   "ava": {
     "require": [
