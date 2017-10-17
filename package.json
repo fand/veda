@@ -58,7 +58,7 @@
     "dev": "npm-run-all -p watch serve",
     "build": "webpack",
     "watch": "webpack -w",
-    "serve": "node server.js"
+    "serve": "node lib/server.js"
   },
   "ava": {
     "require": [
