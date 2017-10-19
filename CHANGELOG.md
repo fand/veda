@@ -1,3 +1,6 @@
+## 1.1.0
+* Support animated GIF
+
 ## 1.0.1
 * Fix keybinding confliction on non-GLSL files
 
