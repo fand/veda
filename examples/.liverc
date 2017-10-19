@@ -15,6 +15,10 @@
       "PATH": "./images/3.jpg",
     },
 
+    "gif": {
+      "PATH": "./images/lgtm.gif",
+    },
+
     // These videos are BEEPLE's works.
     // https://vimeo.com/channels/beeple/
     "video1": {
