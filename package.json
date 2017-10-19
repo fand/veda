@@ -30,7 +30,7 @@
     "socket.io-client": "^2.0.3",
     "three": "^0.87.1",
     "tmp": "^0.0.33",
-    "vedajs": "0.0.1",
+    "vedajs": "^0.1.0",
     "webpack": "^3.6.0",
     "which": "^1.2.14"
   },
