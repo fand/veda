@@ -6636,7 +6636,7 @@ var _player = __webpack_require__(48);
 
 var _player2 = _interopRequireDefault(_player);
 
-var _view = __webpack_require__(61);
+var _view = __webpack_require__(62);
 
 var _view2 = _interopRequireDefault(_view);
 
@@ -9902,6 +9902,10 @@ var Player = function () {
 
     _classCallCheck(this, Player);
 
+    this._resize = function () {
+      _this._veda.resize(window.innerWidth, window.innerHeight);
+    };
+
     this.onChange = function (_ref) {
       var newConfig = _ref.newConfig,
           added = _ref.added,
@@ -9951,8 +9955,9 @@ var Player = function () {
     };
 
     this._view = view;
-    this._veda = new _vedajs2.default(rc);
+    this._veda = new _vedajs2.default(_extends({}, rc));
     this._veda.setCanvas(this._view.getCanvas());
+    window.addEventListener('resize', this._resize);
 
     Object.keys(rc.IMPORTED || {}).forEach(function (key) {
       _this._veda.loadTexture(key, rc.IMPORTED[key].PATH);
@@ -9975,6 +9980,7 @@ var Player = function () {
     key: 'destroy',
     value: function destroy() {
       this._veda.stop();
+      window.addEventListener('resize', this._resize);
       this._view.destroy();
     }
   }, {
@@ -10021,6 +10027,7 @@ function _interopRequireDefault(obj) {
 }
 
 exports.default = _veda2.default;
+module.exports = exports['default'];
 
 /***/ }),
 /* 50 */
@@ -10063,23 +10070,27 @@ var _videoLoader = __webpack_require__(53);
 
 var _videoLoader2 = _interopRequireDefault(_videoLoader);
 
-var _cameraLoader = __webpack_require__(54);
+var _gifLoader = __webpack_require__(54);
+
+var _gifLoader2 = _interopRequireDefault(_gifLoader);
+
+var _cameraLoader = __webpack_require__(55);
 
 var _cameraLoader2 = _interopRequireDefault(_cameraLoader);
 
-var _gamepadLoader = __webpack_require__(55);
+var _gamepadLoader = __webpack_require__(56);
 
 var _gamepadLoader2 = _interopRequireDefault(_gamepadLoader);
 
-var _keyLoader = __webpack_require__(56);
+var _keyLoader = __webpack_require__(57);
 
 var _keyLoader2 = _interopRequireDefault(_keyLoader);
 
-var _isVideo = __webpack_require__(57);
+var _isVideo = __webpack_require__(58);
 
 var _isVideo2 = _interopRequireDefault(_isVideo);
 
-var _constants = __webpack_require__(60);
+var _constants = __webpack_require__(61);
 
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : { default: obj };
@@ -10106,22 +10117,28 @@ var DEFAULT_VEDA_OPTIONS = {
   vertexMode: 'TRIANGLES'
 };
 
-var ThreeShader = function () {
-  function ThreeShader(_rc) {
+var isGif = function isGif(file) {
+  return file.match(/\.gif$/i);
+};
+
+var Veda = function () {
+  function Veda(_rc) {
     var _this = this;
 
-    _classCallCheck(this, ThreeShader);
+    _classCallCheck(this, Veda);
 
-    this.mousemove = function (e) {
-      _this._uniforms.mouse.value.x = e.clientX / window.innerWidth;
-      _this._uniforms.mouse.value.y = 1 - e.clientY / window.innerHeight;
+    this._mousemove = function (e) {
+      var rect = _this._canvas.getBoundingClientRect();
+      var root = document.documentElement;
+      if (root) {
+        var left = rect.top + root.scrollLeft;
+        var top = rect.top + root.scrollTop;
+        _this._uniforms.mouse.value.x = (e.pageX - left) / _this._canvas.offsetWidth;
+        _this._uniforms.mouse.value.y = 1 - (e.pageY - top) / _this._canvas.offsetHeight;
+      }
     };
 
-    this._resize = function () {
-      var _ref = [window.innerWidth, window.innerHeight],
-          width = _ref[0],
-          height = _ref[1];
-
+    this.resize = function (width, height) {
       _this._renderer.setSize(width, height);
 
       var bufferWidth = width / _this._pixelRatio,
@@ -10170,6 +10187,7 @@ var ThreeShader = function () {
     this._keyLoader = new _keyLoader2.default();
     this._midiLoader = new _midiLoader2.default();
     this._videoLoader = new _videoLoader2.default();
+    this._gifLoader = new _gifLoader2.default();
 
     // Prepare uniforms
     this._start = Date.now();
@@ -10185,12 +10203,15 @@ var ThreeShader = function () {
     this._textureLoader = new THREE.TextureLoader();
   }
 
-  _createClass(ThreeShader, [{
+  _createClass(Veda, [{
     key: 'setPixelRatio',
     value: function setPixelRatio(pixelRatio) {
+      if (!this._canvas) {
+        return;
+      }
       this._pixelRatio = pixelRatio;
       this._renderer.setPixelRatio(1 / pixelRatio);
-      this._resize();
+      this.resize(this._canvas.offsetWidth, this._canvas.offsetHeight);
     }
   }, {
     key: 'setFrameskip',
@@ -10210,15 +10231,15 @@ var ThreeShader = function () {
   }, {
     key: 'setCanvas',
     value: function setCanvas(canvas) {
-      if (!canvas) {
-        return;
+      if (this._canvas) {
+        window.removeEventListener('mousemove', this._mousemove);
       }
 
+      this._canvas = canvas;
       this._renderer = new THREE.WebGLRenderer({ canvas: canvas });
       this._renderer.setPixelRatio(1 / this._pixelRatio);
-      this._resize();
-      window.addEventListener('resize', this._resize);
-      window.addEventListener('mousemove', this.mousemove);
+      this.resize(canvas.offsetWidth, canvas.offsetHeight);
+      window.addEventListener('mousemove', this._mousemove);
 
       this._frame = 0;
       this.animate();
@@ -10303,16 +10324,33 @@ var ThreeShader = function () {
         this._uniforms[targetName] = DUMMY_TEXTURE;
         target = {
           name: targetName,
-          targets: [new THREE.WebGLRenderTarget(window.innerWidth / this._pixelRatio, window.innerHeight / this._pixelRatio, { minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter, format: THREE.RGBAFormat }), new THREE.WebGLRenderTarget(window.innerWidth / this._pixelRatio, window.innerHeight / this._pixelRatio, { minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter, format: THREE.RGBAFormat })]
+          targets: [new THREE.WebGLRenderTarget(this._canvas.offsetWidth / this._pixelRatio, this._canvas.offsetHeight / this._pixelRatio, { minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter, format: THREE.RGBAFormat }), new THREE.WebGLRenderTarget(this._canvas.offsetWidth / this._pixelRatio, this._canvas.offsetHeight / this._pixelRatio, { minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter, format: THREE.RGBAFormat })]
         };
       }
 
       return { scene: scene, camera: camera, target: target };
     }
   }, {
+    key: 'loadFragmentShader',
+    value: function loadFragmentShader(fs) {
+      this.loadShader([{ fs: fs }]);
+    }
+  }, {
+    key: 'loadVertexShader',
+    value: function loadVertexShader(vs) {
+      this.loadShader([{ vs: vs }]);
+    }
+  }, {
     key: 'loadShader',
-    value: function loadShader(passes) {
+    value: function loadShader(shader) {
       var _this2 = this;
+
+      var passes = void 0;
+      if (shader instanceof Array) {
+        passes = shader;
+      } else {
+        passes = [shader];
+      }
 
       // Dispose old targets
       this._passes.forEach(function (pass) {
@@ -10325,13 +10363,17 @@ var ThreeShader = function () {
 
       // Create new Passes
       this._passes = passes.map(function (pass) {
+        if (!pass.fs && !pass.vs) {
+          throw new TypeError('Veda.loadShader: Invalid argument. Shaders must have fs or vs property.');
+        }
         return _this2._createRenderPass(pass);
       });
     }
   }, {
     key: 'loadTexture',
     value: function loadTexture(name, textureUrl) {
-      var texture = (0, _isVideo2.default)(textureUrl) ? this._videoLoader.load(name, textureUrl) : this._textureLoader.load(textureUrl);
+      var texture = (0, _isVideo2.default)(textureUrl) ? this._videoLoader.load(name, textureUrl) : isGif(textureUrl) ? this._gifLoader.load(name, textureUrl) : this._textureLoader.load(textureUrl);
+
       this._uniforms[name] = {
         type: 't',
         value: texture
@@ -10345,6 +10387,9 @@ var ThreeShader = function () {
 
       if (remove && (0, _isVideo2.default)(textureUrl)) {
         this._videoLoader.unload(textureUrl);
+      }
+      if (remove && isGif(textureUrl)) {
+        this._gifLoader.unload(textureUrl);
       }
     }
   }, {
@@ -10371,6 +10416,8 @@ var ThreeShader = function () {
       this._uniforms.time.value = (Date.now() - this._start) / 1000;
       this._targets = [this._targets[1], this._targets[0]];
       this._uniforms.backbuffer.value = this._targets[0].texture;
+
+      this._gifLoader.update();
 
       if (this._audioLoader.isEnabled) {
         this._audioLoader.update();
@@ -10475,10 +10522,11 @@ var ThreeShader = function () {
     }
   }]);
 
-  return ThreeShader;
+  return Veda;
 }();
 
-exports.default = ThreeShader;
+exports.default = Veda;
+module.exports = exports['default'];
 
 /***/ }),
 /* 51 */
@@ -10589,6 +10637,7 @@ var AudioLoader = function () {
 
 exports.default = AudioLoader;
 AudioLoader.ctx = new (window.AudioContext || window.webkitAudioContext)();
+module.exports = exports['default'];
 
 /***/ }),
 /* 52 */
@@ -10684,6 +10733,7 @@ var MidiLoader = function () {
 }();
 
 exports.default = MidiLoader;
+module.exports = exports['default'];
 
 /***/ }),
 /* 53 */
@@ -10734,7 +10784,9 @@ var VideoLoader = function () {
       var video = document.createElement('video');
       document.body.appendChild(video);
 
-      video.classList.add('glsl-livecoder-video');
+      video.classList.add('veda-video-source');
+      video.style.position = 'fixed';
+      video.style.top = '-100%';
       video.src = url;
       video.autoplay = true;
       video.loop = true;
@@ -10764,9 +10816,104 @@ var VideoLoader = function () {
 }();
 
 exports.default = VideoLoader;
+module.exports = exports['default'];
 
 /***/ }),
 /* 54 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _three = __webpack_require__(2);
+
+var THREE = _interopRequireWildcard(_three);
+
+function _interopRequireWildcard(obj) {
+  if (obj && obj.__esModule) {
+    return obj;
+  } else {
+    var newObj = {};if (obj != null) {
+      for (var key in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
+      }
+    }newObj.default = obj;return newObj;
+  }
+}
+
+var GifLoader = function () {
+  function GifLoader() {
+    _classCallCheck(this, GifLoader);
+
+    this._cache = {};
+  }
+
+  _createClass(GifLoader, [{
+    key: 'update',
+    value: function update() {
+      var _this = this;
+
+      Object.keys(this._cache).forEach(function (k) {
+        var cache = _this._cache[k];
+        if (cache) {
+          cache.texture.needsUpdate = true;
+        }
+      });
+    }
+  }, {
+    key: 'load',
+    value: function load(name, url) {
+      var cache = this._cache[url];
+      if (cache) {
+        return cache.texture;
+      }
+
+      var img = document.createElement('img');
+      document.body.appendChild(img);
+
+      img.classList.add('veda-video-source');
+      img.style.position = 'fixed';
+      img.style.top = '99.99999%';
+      img.style.width = '1px';
+      img.style.height = '1px';
+      img.src = url;
+
+      var texture = new THREE.Texture(img);
+      texture.minFilter = THREE.LinearFilter;
+      texture.magFilter = THREE.LinearFilter;
+      texture.format = THREE.RGBFormat;
+
+      this._cache[url] = { img: img, texture: texture };
+
+      return texture;
+    }
+  }, {
+    key: 'unload',
+    value: function unload(url) {
+      var cache = this._cache[url];
+      if (cache) {
+        document.body.removeChild(cache.img);
+      }
+      this._cache[url] = null;
+    }
+  }]);
+
+  return GifLoader;
+}();
+
+exports.default = GifLoader;
+module.exports = exports['default'];
+
+/***/ }),
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10850,9 +10997,10 @@ var CameraLoader = function () {
 }();
 
 exports.default = CameraLoader;
+module.exports = exports['default'];
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10939,9 +11087,10 @@ var GamepadLoader = function () {
 }();
 
 exports.default = GamepadLoader;
+module.exports = exports['default'];
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11015,16 +11164,17 @@ var KeyLoader = function () {
 }();
 
 exports.default = KeyLoader;
+module.exports = exports['default'];
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var path = __webpack_require__(58);
-var videoExtensions = __webpack_require__(59);
+var path = __webpack_require__(59);
+var videoExtensions = __webpack_require__(60);
 var exts = Object.create(null);
 
 videoExtensions.forEach(function (el) {
@@ -11036,7 +11186,7 @@ module.exports = function (filepath) {
 };
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11264,13 +11414,13 @@ var substr = 'ab'.substr(-1) === 'b' ? function (str, start, len) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports) {
 
 module.exports = ["3g2","3gp","aaf","asf","avchd","avi","drc","flv","m2v","m4p","m4v","mkv","mng","mov","mp2","mp4","mpe","mpeg","mpg","mpv","mxf","nsv","ogg","ogv","qt","rm","rmvb","roq","svi","vob","webm","wmv","yuv"]
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11284,7 +11434,7 @@ var DEFAULT_VERTEX_SHADER = exports.DEFAULT_VERTEX_SHADER = "\nvoid main() {\n  
 var DEFAULT_FRAGMENT_SHADER = exports.DEFAULT_FRAGMENT_SHADER = "\nprecision mediump float;\nvarying vec4 v_color;\nvoid main() {\n  gl_FragColor = v_color;\n}\n";
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
