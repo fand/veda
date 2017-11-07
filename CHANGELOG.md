@@ -1,3 +1,6 @@
+## 1.1.2
+* Fix background-color of canvas
+
 ## 1.1.1
 * Fix MIDI not working on Windows
 
