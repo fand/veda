@@ -10110,6 +10110,9 @@ function _interopRequireWildcard(obj) {
 
 var DUMMY_TEXTURE = new THREE.Texture();
 
+// ref. https://github.com/mrdoob/three.js/wiki/Uniforms-types
+
+
 var DEFAULT_VEDA_OPTIONS = {
   pixelRatio: 1,
   frameskip: 1,
@@ -10229,6 +10232,11 @@ var Veda = function () {
       this._vertexMode = mode;
     }
   }, {
+    key: 'resetTime',
+    value: function resetTime() {
+      this._start = Date.now();
+    }
+  }, {
     key: 'setCanvas',
     value: function setCanvas(canvas) {
       if (this._canvas) {
@@ -10236,7 +10244,7 @@ var Veda = function () {
       }
 
       this._canvas = canvas;
-      this._renderer = new THREE.WebGLRenderer({ canvas: canvas });
+      this._renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
       this._renderer.setPixelRatio(1 / this._pixelRatio);
       this.resize(canvas.offsetWidth, canvas.offsetHeight);
       window.addEventListener('mousemove', this._mousemove);
@@ -10391,6 +10399,11 @@ var Veda = function () {
       if (remove && isGif(textureUrl)) {
         this._gifLoader.unload(textureUrl);
       }
+    }
+  }, {
+    key: 'setUniform',
+    value: function setUniform(name, type, value) {
+      this._uniforms[name] = { type: type, value: value };
     }
   }, {
     key: 'play',
@@ -10678,6 +10691,14 @@ var MidiLoader = function () {
 
     this._isEnabled = false;
 
+    this.onstatechange = function (access) {
+      access.inputs.forEach(function (i) {
+        i.onmidimessage = function (m) {
+          return _this.onmidimessage(m.data);
+        };
+      });
+    };
+
     this.onmidimessage = function (midi) {
       if (!_this._isEnabled) {
         return;
@@ -10707,11 +10728,10 @@ var MidiLoader = function () {
     this.noteTexture = new THREE.DataTexture(this._noteArray, 128, 1, THREE.LuminanceFormat, THREE.UnsignedByteType);
 
     navigator.requestMIDIAccess({ sysex: false }).then(function (access) {
-      access.inputs.forEach(function (i) {
-        i.onmidimessage = function (m) {
-          return _this.onmidimessage(m.data);
-        };
-      });
+      _this.onstatechange(access);
+      access.onstatechange = function () {
+        return _this.onstatechange(access);
+      };
     }).catch(function (e) {
       return console.log('Failed to load MIDI API', e);
     });

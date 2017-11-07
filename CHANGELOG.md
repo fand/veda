@@ -1,3 +1,6 @@
+## 1.1.1
+* Fix MIDI not working on Windows
+
 ## 1.1.0
 * Support animated GIF
 
