@@ -10762,21 +10762,28 @@ var MidiLoader = function () {
 
     this.midiTexture = new THREE.DataTexture(this._midiArray, 256, 128, THREE.LuminanceFormat, THREE.UnsignedByteType);
     this.noteTexture = new THREE.DataTexture(this._noteArray, 128, 1, THREE.LuminanceFormat, THREE.UnsignedByteType);
-
-    navigator.requestMIDIAccess({ sysex: false }).then(function (access) {
-      _this.onstatechange(access);
-      access.onstatechange = function () {
-        return _this.onstatechange(access);
-      };
-    }).catch(function (e) {
-      return console.log('Failed to load MIDI API', e);
-    });
   }
 
   _createClass(MidiLoader, [{
     key: 'enable',
     value: function enable() {
+      var _this2 = this;
+
       this._isEnabled = true;
+
+      if (!navigator.requestMIDIAccess) {
+        console.error('[VEDA] This browser doesn\'t support Web MIDI API.');
+        return;
+      }
+
+      navigator.requestMIDIAccess({ sysex: false }).then(function (access) {
+        _this2.onstatechange(access);
+        access.onstatechange = function () {
+          return _this2.onstatechange(access);
+        };
+      }).catch(function (e) {
+        return console.log('Failed to load MIDI API', e);
+      });
     }
   }, {
     key: 'disable',
