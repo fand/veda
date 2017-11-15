@@ -1,3 +1,6 @@
+## 2.0.0
+* OSC Support!
+
 ## 1.1.2
 * Fix background-color of canvas
 

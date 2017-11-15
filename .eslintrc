@@ -11,6 +11,7 @@
         "no-negated-condition": 0,
         "capitalized-comments": 0,
         "yoda": 0,
+        "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
         "flowtype/define-flow-type": 1,
         "flowtype/use-flow-type": 1,
     },
