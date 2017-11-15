@@ -47,6 +47,7 @@ Moreover, It supports Audio inputs , MIDI inputs, loading videos and images, etc
 - Additional `uniform` variables useful for live coding
   - Audio input
   - MIDI input
+  - OSC input
   - Webcam input
   - Keyboard input
   - Gamepad input
@@ -334,6 +335,20 @@ Each pixel stores the volume of the last event for corresponding MIDI note.
 For example, `texture2D(note, vec2(60. / 128., 0)).x` yields the volume of note `C4` (Middle C).
 
 See [examples](./examples/note.frag) for actual usage.
+
+
+### OSC Inputs
+
+VEDA accepts OSC messages on the port written in `osc` property of the settings.
+When you write `"osc": 4000` to `.liverc` or the header comment, messages will be stored and passed as textures:
+
+- Texture name will be automatically generated from addresses.
+  - `/foo`: `sampler2D osc_foo`
+  - `/foo/bar`: `sampler2D osc_foo_bar`
+- Arguments are translated to float. Strings are ignored.
+  - `/foo 0.1 hello 100` yields a texture that contains `[0.1 0 100]`
+
+See [examples](./examples/osc.frag) for actual usage.
 
 
 ### Webcam Inputs
