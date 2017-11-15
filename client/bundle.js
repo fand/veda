@@ -10032,11 +10032,6 @@ var Player = function () {
       }
     }
   }, {
-    key: 'removeOsc',
-    value: function removeOsc(name) {
-      this._textures[name].dispose();
-    }
-  }, {
     key: 'Shader',
     value: function Shader(shader) {
       this._veda.loadShader(shader);
