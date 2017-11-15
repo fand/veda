@@ -6688,8 +6688,8 @@ var PlayerClient = function () {
       console.log('[VEDA] Updated shader', shader);
       _this._player.loadShader(shader);
     });
-    this._socket.on('setOsc', function (name, data) {
-      _this._player.setOsc(name, data);
+    this._socket.on('setOsc', function (msg) {
+      _this._player.setOsc(msg.name, msg.data);
     });
     this._socket.on('connect', function () {
       console.log('[VEDA] Connected to the server');
