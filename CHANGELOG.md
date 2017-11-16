@@ -1,3 +1,6 @@
+## 2.0.1
+* Fix OSC initialization on server mode
+
 ## 2.0.0
 * OSC Support!
 
