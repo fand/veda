@@ -5322,9 +5322,9 @@ vary@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
 
-vedajs@0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/vedajs/-/vedajs-0.3.1.tgz#47df137dcb5ac9bfe44021590b70ef7d5eebcd15"
+vedajs@0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/vedajs/-/vedajs-0.3.2.tgz#9efab3f6f7cfdc65a66637ffa29cd0faa0186f78"
   dependencies:
     is-video "^1.0.1"
     three "^0.87.1"

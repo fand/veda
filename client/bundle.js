@@ -9936,7 +9936,7 @@ var Player = function () {
         _this._veda.unloadTexture(key, path, !importedPaths[path]);
       });
       Object.keys(added.IMPORTED || {}).forEach(function (key) {
-        _this._veda.loadTexture(key, added.IMPORTED[key].PATH);
+        _this._veda.loadTexture(key, added.IMPORTED[key].PATH, added.IMPORTED[key].SPEED);
       });
       if (added.vertexMode) {
         _this._veda.setVertexMode(added.vertexMode);
@@ -9973,7 +9973,7 @@ var Player = function () {
     window.addEventListener('resize', this._resize);
 
     Object.keys(rc.IMPORTED || {}).forEach(function (key) {
-      _this._veda.loadTexture(key, rc.IMPORTED[key].PATH);
+      _this._veda.loadTexture(key, rc.IMPORTED[key].PATH, rc.IMPORTED[key].SPEED);
     });
 
     this.onChange({
@@ -10418,7 +10418,9 @@ var Veda = function () {
   }, {
     key: 'loadTexture',
     value: function loadTexture(name, textureUrl) {
-      var texture = (0, _isVideo2.default)(textureUrl) ? this._videoLoader.load(name, textureUrl) : isGif(textureUrl) ? this._gifLoader.load(name, textureUrl) : this._textureLoader.load(textureUrl);
+      var speed = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
+
+      var texture = (0, _isVideo2.default)(textureUrl) ? this._videoLoader.load(name, textureUrl, speed) : isGif(textureUrl) ? this._gifLoader.load(name, textureUrl) : this._textureLoader.load(textureUrl);
 
       this._uniforms[name] = {
         type: 't',
@@ -10840,9 +10842,10 @@ var VideoLoader = function () {
 
   _createClass(VideoLoader, [{
     key: 'load',
-    value: function load(name, url) {
+    value: function load(name, url, speed) {
       var cache = this._cache[url];
       if (cache) {
+        cache.video.playbackRate = speed;
         return cache.texture;
       }
 
@@ -10856,6 +10859,7 @@ var VideoLoader = function () {
       video.autoplay = true;
       video.loop = true;
       video.muted = true;
+      video.playbackRate = speed;
 
       var texture = new THREE.VideoTexture(video);
       texture.minFilter = THREE.LinearFilter;

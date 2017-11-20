@@ -402,6 +402,7 @@ If you write the path or URL of the resourece, it will be loaded automatically:
     },
     "video2": {
       "PATH": "http://example.com/2.mp4",
+      "SPEED": 2,  // played 2x faster
     },
   },
 }

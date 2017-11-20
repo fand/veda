@@ -1,3 +1,6 @@
+## 2.1.0
+* Add `IMPORTED.SPEED` to Change video speed
+
 ## 2.0.1
 * Fix OSC initialization on server mode
 
