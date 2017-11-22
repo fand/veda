@@ -1,3 +1,6 @@
+## 2.1.1
+* Fix OSC not working because of native modules
+
 ## 2.1.0
 * Add `IMPORTED.SPEED` to Change video speed
 
