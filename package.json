@@ -1,7 +1,7 @@
 {
   "name": "veda",
   "main": "./lib/index",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "VJ / Live Coding environment with GLSL",
   "keywords": [],
   "activationCommands": {
