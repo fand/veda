@@ -1,3 +1,6 @@
+## 2.1.2
+* Fix style bug in video, camera etc.
+
 ## 2.1.1
 * Fix OSC not working because of native modules
 
