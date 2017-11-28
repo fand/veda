@@ -17,7 +17,6 @@
     "atom-package-deps": "^4.6.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
-    "chokidar": "^1.7.0",
     "execa": "^0.8.0",
     "express": "^4.16.1",
     "flow": "^0.2.3",
