@@ -1,3 +1,6 @@
+## 2.1.3
+* Remove native addons from dependencies
+
 ## 2.1.2
 * Fix style bug in video, camera etc.
 
