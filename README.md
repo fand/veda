@@ -159,7 +159,7 @@ A typical workflow can be like this:
 The settings of `VEDA` can be configured in 3 ways: global settings, project settings, and file settings.
 
 - Global settings are loaded from Settings page of Atom.
-- Project settings are loaded from `.liverc`.
+- Project settings are loaded from `.vedarc`.
 - File settings are loaded from the comments of the shader.
 
 The order of priority is as follows:
@@ -174,19 +174,19 @@ When File Settings and Global Settings has same properties, File Settings are us
 Global settings are most general settings.
 You can change settings in `Settings` page of Atom.
 
-If there are no project `.liverc` or valid comments, VEDA will use the global settings as default.
+If there are no project `.vedarc` or valid comments, VEDA will use the global settings as default.
 
 
-#### Project Settings: `.liverc`
+#### Project Settings: `.vedarc`
 
-Project settings is loaded from `.liverc` on your project root.
+Project settings is loaded from `.vedarc` on your project root.
 
-- `.liverc` must be located in your project's root directory.
-- `.liverc` is parsed as [JSON5 format](https://github.com/json5/json5).
-  - You can write comments in `.liverc`.
-- `.liverc` is loaded on startup and reloaded automatically when you edit it.
+- `.vedarc` must be located in your project's root directory.
+- `.vedarc` is parsed as [JSON5 format](https://github.com/json5/json5).
+  - You can write comments in `.vedarc`.
+- `.vedarc` is loaded on startup and reloaded automatically when you edit it.
 
-For example, when you write `.liverc` like this:
+For example, when you write `.vedarc` like this:
 
 ```javascript
 {
@@ -223,7 +223,7 @@ void main() {
 }
 ```
 
-The comment must be written in the same format as `.liverc`.
+The comment must be written in the same format as `.vedarc`.
 
 
 ## Examples
@@ -291,7 +291,7 @@ See [examples](./examples/vertex.vert) for actual usage.
 
 ### Optional Inputs
 
-To use these features, you have to enable them by adding following lines to `.liverc` or header comments.
+To use these features, you have to enable them by adding following lines to `.vedarc` or header comments.
 
 - Audio inputs: `"audio": true`
 - MIDI inputs: `"midi": true`
@@ -340,7 +340,7 @@ See [examples](./examples/note.frag) for actual usage.
 ### OSC Inputs
 
 VEDA accepts OSC messages on the port written in `osc` property of the settings.
-When you write `"osc": 4000` to `.liverc` or the header comment, messages will be stored and passed as textures:
+When you write `"osc": 4000` to `.vedarc` or the header comment, messages will be stored and passed as textures:
 
 - Texture name will be automatically generated from addresses.
   - `/foo`: `sampler2D osc_foo`
@@ -384,7 +384,7 @@ See [examples](./examples/gamepad.frag) for actual usage.
 
 ### Loading images / videos
 
-You can load images and videos by adding `IMPORTED` property in `.liverc` or header comments.
+You can load images and videos by adding `IMPORTED` property in `.vedarc` or header comments.
 If you write the path or URL of the resourece, it will be loaded automatically:
 
 ```glsl
@@ -431,7 +431,7 @@ The structure of `IMPORTED` properties is based on [Interactive Shader Format](h
 
 See these examples for actual usage.
 
-- [.liverc](./examples/.liverc)
+- [.vedarc](./examples/.vedarc)
 - [image.frag](./examples/image.frag)
 - [video.frag](./examples/video.frag)
 
@@ -439,7 +439,7 @@ See these examples for actual usage.
 ### Multipass Rendering
 
 VEDA supports multipass rendering.
-You can define passes in `PASSES` property in `.liverc` or header comments.
+You can define passes in `PASSES` property in `.vedarc` or header comments.
 
 
 ```glsl
