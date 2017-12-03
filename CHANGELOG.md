@@ -1,3 +1,6 @@
+## 2.1.4
+* Rename `.liverc` to `.vedarc`
+
 ## 2.1.3
 * Remove native addons from dependencies
 
