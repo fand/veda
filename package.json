@@ -31,7 +31,7 @@
     "socket.io-client": "^2.0.3",
     "three": "^0.88.0",
     "tmp": "^0.0.33",
-    "vedajs": "0.3.2",
+    "vedajs": "^0.3.3",
     "webpack": "^3.6.0",
     "which": "^1.2.14"
   },
@@ -64,7 +64,7 @@
     "watch": "webpack -w",
     "serve": "node lib/server.js",
     "prepublish": "npm run ci",
-    "precommit": "npm run ci && git add client/bundle.js"
+    "prepush": "npm run ci && git add client/bundle.js && git commit --amend --no-edit"
   },
   "ava": {
     "require": [

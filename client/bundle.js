@@ -11017,9 +11017,13 @@ var CameraLoader = function () {
     _classCallCheck(this, CameraLoader);
 
     this._video = document.createElement('video');
-    this._video.classList.add('glsl-livecoder-video');
+    this._video.classList.add('veda-video-source');
     this._video.loop = true;
     this._video.muted = true;
+    this._video.style.position = 'fixed';
+    this._video.style.top = '99.99999%';
+    this._video.style.width = '1px';
+    this._video.style.height = '1px';
 
     document.body.appendChild(this._video);
 

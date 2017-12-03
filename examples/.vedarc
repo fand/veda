@@ -1,5 +1,5 @@
 {
-  // .liverc must be written in JSON5 format.
+  // .vedarc must be written in JSON5 format.
   // https://github.com/json5/json5
 
   "IMPORTED": {
