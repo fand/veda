@@ -1,3 +1,7 @@
+## 2.1.5
+* Fix styles
+* Allow loading cross-origin textures
+
 ## 2.1.4
 * Rename `.liverc` to `.vedarc`
 
