@@ -7,7 +7,7 @@
   "activationCommands": {
     "atom-workspace": "veda:toggle"
   },
-  "repository": "https://github.com/fand/atom-veda",
+  "repository": "https://github.com/fand/veda",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
