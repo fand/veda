@@ -64,7 +64,7 @@
     "watch": "webpack -w",
     "serve": "node lib/server.js",
     "prepublish": "npm run ci",
-    "prepush": "npm run ci && git add client/bundle.js && git commit --amend --no-edit"
+    "precommit": "npm run ci && git add client/bundle.js"
   },
   "ava": {
     "require": [
