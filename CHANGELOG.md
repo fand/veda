@@ -1,3 +1,6 @@
+## 2.2.0
+* Add `fftSize` and `fftSmoothingTimeConstant` to settings
+
 ## 2.1.5
 * Fix styles
 * Allow loading cross-origin textures
