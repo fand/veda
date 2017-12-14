@@ -8992,9 +8992,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 	// Some AMD build optimizers, like r.js, check for specific condition patterns
 	// like the following:
 	if ("function" == 'function' && _typeof(__webpack_require__(17)) == 'object' && __webpack_require__(17)) {
-		!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
+		!(__WEBPACK_AMD_DEFINE_RESULT__ = (function () {
 			return utf8;
-		}.call(exports, __webpack_require__, exports, module),
+		}).call(exports, __webpack_require__, exports, module),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	} else if (freeExports && !freeExports.nodeType) {
 		if (freeModule) {
@@ -10491,10 +10491,12 @@ class Veda {
       this._uniforms = _extends({}, this._uniforms, {
         volume: { type: 'f', value: 0 },
         spectrum: { type: 't', value: this._audioLoader.spectrum },
+        intspectrum: { type: 't', value: this._audioLoader.intspectrum },
         samples: { type: 't', value: this._audioLoader.samples }
       });
     } else if (this._uniforms.spectrum) {
       this._uniforms.spectrum.value.dispose();
+      this._uniforms.intspectrum.value.dispose();
       this._uniforms.samples.value.dispose();
       this._audioLoader.disable();
     }
@@ -10609,10 +10611,13 @@ class AudioLoader {
 
     this._analyser.fftSize = rc.fftSize;
     this._analyser.smoothingTimeConstant = rc.fftSmoothingTimeConstant;
+
     this._spectrumArray = new Uint8Array(this._analyser.frequencyBinCount);
+    this._intspectrumArray = new Uint8Array(this._analyser.frequencyBinCount);
     this._samplesArray = new Uint8Array(this._analyser.frequencyBinCount);
 
     this.spectrum = new THREE.DataTexture(this._spectrumArray, this._analyser.frequencyBinCount, 1, THREE.LuminanceFormat, THREE.UnsignedByteType);
+    this.intspectrum = new THREE.DataTexture(this._intspectrumArray, this._analyser.frequencyBinCount, 1, THREE.LuminanceFormat, THREE.UnsignedByteType);
     this.samples = new THREE.DataTexture(this._samplesArray, this._analyser.frequencyBinCount, 1, THREE.LuminanceFormat, THREE.UnsignedByteType);
   }
 
@@ -10644,7 +10649,13 @@ class AudioLoader {
   update() {
     this._analyser.getByteFrequencyData(this._spectrumArray);
     this._analyser.getByteTimeDomainData(this._samplesArray);
+
+    this._spectrumArray.forEach((amplitude, i) => {
+      this._intspectrumArray[i] += amplitude;
+    });
+
     this.spectrum.needsUpdate = true;
+    this.intspectrum.needsUpdate = true;
     this.samples.needsUpdate = true;
   }
 
@@ -10655,9 +10666,12 @@ class AudioLoader {
   setFftSize(fftSize) {
     this._analyser.fftSize = fftSize;
     this._spectrumArray = new Uint8Array(this._analyser.frequencyBinCount);
+    this._intspectrumArray = new Uint8Array(this._analyser.frequencyBinCount);
     this._samplesArray = new Uint8Array(this._analyser.frequencyBinCount);
     this.spectrum.image.data = this._spectrumArray;
     this.spectrum.image.width = this._analyser.frequencyBinCount;
+    this.intspectrum.image.data = this._intspectrumArray;
+    this.intspectrum.image.width = this._analyser.frequencyBinCount;
     this.samples.image.data = this._samplesArray;
     this.samples.image.width = this._analyser.frequencyBinCount;
   }
