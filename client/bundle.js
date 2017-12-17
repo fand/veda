@@ -6688,6 +6688,15 @@ var PlayerClient = function () {
       console.log('[VEDA] Updated shader', shader);
       _this._player.loadShader(shader);
     });
+    this._socket.on('loadSoundShader', function (shader) {
+      _this._player.loadSoundShader(shader);
+    });
+    this._socket.on('playSound', function () {
+      return _this._player.playSound();
+    });
+    this._socket.on('stopSound', function () {
+      return _this._player.stopSound();
+    });
     this._socket.on('setOsc', function (msg) {
       if (_this._player) {
         _this._player.setOsc(msg.name, msg.data);
@@ -9971,6 +9980,12 @@ var Player = function () {
       if (added.camera !== undefined) {
         _this._veda.toggleCamera(added.camera);
       }
+      if (added.sound !== undefined && added.sound !== null) {
+        _this._veda.setSoundMode(added.sound);
+      }
+      if (added.soundLength !== undefined) {
+        _this._veda.setSoundLength(added.soundLength);
+      }
     };
 
     this._view = view;
@@ -9999,6 +10014,7 @@ var Player = function () {
     key: 'destroy',
     value: function destroy() {
       this._veda.stop();
+      this._veda.stopSound();
       window.addEventListener('resize', this._resize);
       this._view.destroy();
     }
@@ -10018,6 +10034,21 @@ var Player = function () {
     key: 'loadShader',
     value: function loadShader(shader) {
       this._veda.loadShader(shader);
+    }
+  }, {
+    key: 'loadSoundShader',
+    value: function loadSoundShader(fs) {
+      this._veda.loadSoundShader(fs);
+    }
+  }, {
+    key: 'playSound',
+    value: function playSound() {
+      this._veda.playSound();
+    }
+  }, {
+    key: 'stopSound',
+    value: function stopSound() {
+      this._veda.stopSound();
     }
   }, {
     key: 'setOsc',
