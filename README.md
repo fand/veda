@@ -1,14 +1,14 @@
 <div align="center">
-  <img alt="logo" src="https://user-images.githubusercontent.com/1403842/28923702-d8155d46-7899-11e7-817b-1193d138e5b8.png" width="192"/>  
+  <img alt="logo" src="https://user-images.githubusercontent.com/1403842/28923702-d8155d46-7899-11e7-817b-1193d138e5b8.png" width="192"/>
 </div>
 
 <div align="center">
   <h1>VEDA</h1>
   <i>VJ / Live Coding on Atom with GLSL.</i>
   <br>
-  <br>  
   <br>
-  <img alt="screenshot" src="https://user-images.githubusercontent.com/1403842/28673275-1d42b062-731d-11e7-92b0-bde5ca1f1cae.gif" style="width: 100% !important;"/>  
+  <br>
+  <img alt="screenshot" src="https://user-images.githubusercontent.com/1403842/28673275-1d42b062-731d-11e7-92b0-bde5ca1f1cae.gif" style="width: 100% !important;"/>
   <br>
   <br>
 </div>
@@ -113,7 +113,7 @@ Run `apm rebuild` in the package directory to resolve.
 - `toggle`
   - Start / Stop VEDA.
 - `load-shader` (key: `ctrl-enter`)
-  - Load the shader on current editor.  
+  - Load the shader on current editor.
 - `watch-shader` (key: `ctrl-shift-enter`)
   - Watch current tab and load the shader automatically.
 - `watch-active-editor` (key: `ctrl-alt-enter`)
@@ -144,6 +144,8 @@ A typical workflow can be like this:
   - Samples of the audio input.
 - `sampler2D spectrum`
   - FFT result of the audio input.
+- `sampler2D intspectrum`
+  - Integrated FFT result of the audio input.
 - `float volume`
   - The volume of the audio input.
 - `sampler2D midi`
@@ -310,6 +312,10 @@ This is useful for drawing waveforms.
 
 `sampler2D spectrum` stores the FFT result.
 This is useful to draw the volume of specific frequency band, such as spectrum visualizer.
+Customizable through options `fftSize` and `fftSmoothingTimeConstant`.
+
+`sampler2D intspectrum` stores the integrated FFT result.
+This is the accumulation of all `spectrum` values over each frame.
 
 `float volume` is the average of all the frequency bands in `spectrum`.
 See [examples](./examples/audio.frag) for actual usage.
