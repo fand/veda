@@ -1,3 +1,6 @@
+## 2.2.1
+* Disable culling in vertex shader
+
 ## 2.2.0
 * Add `fftSize` and `fftSmoothingTimeConstant` to settings
 
