@@ -26,6 +26,8 @@
 
 ##### TOC
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/fand/veda.svg)](https://greenkeeper.io/)
+
 - [Features](#features)
 - [Install](#install)
 - [Usage](#usage)
