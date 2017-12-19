@@ -19,14 +19,13 @@
 ![apm version](https://img.shields.io/apm/v/veda.svg)
 ![license MIT](https://img.shields.io/apm/l/veda.svg)
 ![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)
+[![Greenkeeper badge](https://badges.greenkeeper.io/fand/veda.svg)](https://greenkeeper.io/)
 </div>
 <br>
 <br>
 
 
 ##### TOC
-
-[![Greenkeeper badge](https://badges.greenkeeper.io/fand/veda.svg)](https://greenkeeper.io/)
 
 - [Features](#features)
 - [Install](#install)
