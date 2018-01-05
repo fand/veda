@@ -11370,7 +11370,6 @@ class SoundRenderer {
 
     this._scene.add(plane);
     console.log('>>>>> loadSoundShader');
-    console.trace();
   }
 
   play() {
