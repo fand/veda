@@ -11242,9 +11242,9 @@ function _interopRequireWildcard(obj) {
   }
 }
 
-const WIDTH = 512; // sqrt(48000 * 30)
+const WIDTH = 32; // sqrt(48000 * 30)
 
-const HEIGHT = 512; // sqrt(48000 * 30)
+const HEIGHT = 256; // sqrt(48000 * 30)
 const PIXELS = WIDTH * HEIGHT;
 
 const createShader = (shader, width) => `
@@ -11295,11 +11295,11 @@ class SoundRenderer {
 
         j++;
         if (j < numBlocks) {
-          setTimeout(renderOnce, 100);
+          requestAnimationFrame(renderOnce);
         }
       };
 
-      setTimeout(renderOnce, 100);
+      requestAnimationFrame(renderOnce);
     };
 
     this._ctx = new window.AudioContext();
@@ -11369,6 +11369,8 @@ class SoundRenderer {
     this._camera.lookAt(this._scene.position);
 
     this._scene.add(plane);
+    console.log('>>>>> loadSoundShader');
+    console.trace();
   }
 
   play() {
@@ -11377,6 +11379,7 @@ class SoundRenderer {
       this._isPlaying = true;
       this._node.start();
     }
+    console.log('>>>>> playSound');
   }
 
   stop() {
