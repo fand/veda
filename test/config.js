@@ -16,35 +16,35 @@ test(t => {
 });
 
 test(t => {
-  c.setComment({ vertexCount: 123 });
+  c.setFileSettings({ vertexCount: 123 });
   const newRc = c.createRc();
-  t.deepEqual(newRc, { ...DEFAULT_RC, vertexCount: 123 }, 'setComment changes Config');
+  t.deepEqual(newRc, { ...DEFAULT_RC, vertexCount: 123 }, 'setFileSettings changes Config');
 });
 
 test(t => {
-  c.setProject({ vertexCount: 123 });
+  c.setProjectSettings({ vertexCount: 123 });
   const newRc = c.createRc();
-  t.deepEqual(newRc, { ...DEFAULT_RC, vertexCount: 123 }, 'setProject changes Config');
+  t.deepEqual(newRc, { ...DEFAULT_RC, vertexCount: 123 }, 'setProjectSettings changes Config');
 });
 
 test(t => {
-  c.setGlobal({ vertexCount: 123 });
+  c.setGlobalSettings({ vertexCount: 123 });
   const newRc = c.createRc();
-  t.deepEqual(newRc, { ...DEFAULT_RC, vertexCount: 123 }, 'setGlobal changes Config');
+  t.deepEqual(newRc, { ...DEFAULT_RC, vertexCount: 123 }, 'setGlobalSettings changes Config');
 });
 
 test(t => {
   const c = new Config('', {});
-  c.setComment({ vertexCount: 123 });
-  c.setProject({ vertexCount: 456, vertexMode: 'LINES' });
-  c.setGlobal({ vertexCount: 456, vertexMode: 'POINTS', audio: true });
+  c.setFileSettings({ vertexCount: 123 });
+  c.setProjectSettings({ vertexCount: 456, vertexMode: 'LINES' });
+  c.setGlobalSettings({ vertexCount: 456, vertexMode: 'POINTS', audio: true });
   const newRc = c.createRc();
   t.deepEqual(newRc, {
     ...DEFAULT_RC,
     vertexCount: 123,
     vertexMode: 'LINES',
     audio: true,
-  }, 'setComment > setProject > setGlobal');
+  }, 'setFileSettings > setProjectSettings > setGlobalSettings');
 });
 
 test(async t => {
@@ -53,7 +53,7 @@ test(async t => {
     diff = _diff;
   });
 
-  c.setComment({
+  c.setFileSettings({
     IMPORTED: { foo: { PATH: './foo.mp4' } },
     vertexCount: 123,
   });
@@ -69,7 +69,7 @@ test(async t => {
   }, 'added properties are correct');
   t.deepEqual(diff.removed, { IMPORTED: {} }, 'removed is empty');
 
-  c.setComment({
+  c.setFileSettings({
     IMPORTED: { foo: { PATH: './bar.mp4' } },
     vertexCount: 456,
   });
@@ -91,8 +91,8 @@ test(async t => {
   c.on('change', () => {
     called++;
   });
-  c.setComment({});
-  c.setComment({});
+  c.setFileSettings({});
+  c.setFileSettings({});
   t.is(called, 1, 'change event is throttled');
   await wait(100);
   t.is(called, 2, 'change event is throttled by 100ms');
