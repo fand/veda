@@ -6678,6 +6678,9 @@ var PlayerClient = function () {
     this._socket.on('onChange', function (rcDiff) {
       _this._player.onChange(rcDiff);
     });
+    this._socket.on('onChangeSound', function (rcDiff) {
+      _this._player.onChangeSound(rcDiff);
+    });
     this._socket.on('play', function () {
       return _this._player.play();
     });
@@ -9980,6 +9983,42 @@ var Player = function () {
       if (added.camera !== undefined) {
         _this._veda.toggleCamera(added.camera);
       }
+    };
+
+    this.onChangeSound = function (_ref2) {
+      var newConfig = _ref2.newConfig,
+          added = _ref2.added,
+          removed = _ref2.removed;
+
+      console.log('Update config', newConfig);
+      // Get paths for videos still in use
+      var importedPaths = {};
+      Object.values(newConfig.IMPORTED).forEach(function (imported) {
+        importedPaths[imported.PATH] = true;
+      });
+
+      Object.keys(removed.IMPORTED).forEach(function (key) {
+        var path = removed.IMPORTED[key].PATH;
+        _this._veda.unloadTexture(key, path, !importedPaths[path]);
+      });
+      Object.keys(added.IMPORTED || {}).forEach(function (key) {
+        _this._veda.loadTexture(key, added.IMPORTED[key].PATH, added.IMPORTED[key].SPEED);
+      });
+      if (added.audio !== undefined) {
+        _this._veda.toggleAudio(added.audio);
+      }
+      if (added.midi !== undefined) {
+        _this._veda.toggleMidi(added.midi);
+      }
+      if (added.keyboard !== undefined) {
+        _this._veda.toggleKeyboard(added.keyboard);
+      }
+      if (added.gamepad !== undefined) {
+        _this._veda.toggleGamepad(added.gamepad);
+      }
+      if (added.camera !== undefined) {
+        _this._veda.toggleCamera(added.camera);
+      }
       if (added.sound !== undefined && added.sound !== null) {
         _this._veda.setSoundMode(added.sound);
       }
@@ -11236,7 +11275,9 @@ class SoundRenderer {
       const outputDataR = this._audioBuffer.getChannelData(1);
 
       const numBlocks = this._ctx.sampleRate * this._soundLength / PIXELS;
-      for (let j = 0; j < numBlocks; j++) {
+
+      let j = 0;
+      const renderOnce = remain => {
         const off = j * PIXELS;
 
         // Update uniform
@@ -11251,7 +11292,14 @@ class SoundRenderer {
           outputDataL[off + i] = (pixels[i * 4 + 0] * 256 + pixels[i * 4 + 1]) / 65535 * 2 - 1;
           outputDataR[off + i] = (pixels[i * 4 + 2] * 256 + pixels[i * 4 + 3]) / 65535 * 2 - 1;
         }
-      }
+
+        j++;
+        if (j < numBlocks) {
+          setTimeout(renderOnce, 100);
+        }
+      };
+
+      setTimeout(renderOnce, 100);
     };
 
     this._ctx = new window.AudioContext();
