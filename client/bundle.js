@@ -11266,7 +11266,6 @@ void main(){
 class SoundRenderer {
 
   constructor() {
-    this._soundMode = 'LOOP';
     this._soundLength = 3;
     this._isPlaying = false;
 
@@ -11284,10 +11283,11 @@ class SoundRenderer {
       const timeOffset = (this._ctx.currentTime - this._start) % this._soundLength;
       let pixelsForTimeOffset = timeOffset * this._ctx.sampleRate;
       pixelsForTimeOffset -= pixelsForTimeOffset % PIXELS;
+      console.log(timeOffset, this._soundLength, pixelsForTimeOffset, allPixels);
 
       let j = 0;
       const renderOnce = remain => {
-        const off = j * PIXELS + pixelsForTimeOffset;
+        const off = (j * PIXELS + pixelsForTimeOffset) % allPixels;
 
         // Update uniform
         this._uniforms.iBlockOffset.value = off / this._ctx.sampleRate;
@@ -11341,31 +11341,18 @@ class SoundRenderer {
   }
 
   setLength(length) {
-    if (this._isPlaying) {
-      this._node.stop();
-    }
-    this._node.disconnect();
-
     this._soundLength = length;
     this._audioBuffer = this._ctx.createBuffer(2, this._ctx.sampleRate * this._soundLength, this._ctx.sampleRate);
-    // this._node.buffer = this._audioBuffer;
+    const node = this._createNode();
 
-    // Create new node
-    this._node = this._createNode();
-    this.setMode(this._soundMode);
-    if (this._isPlaying) {
-      this._node.start();
-    }
     this._start = this._ctx.currentTime;
-  }
 
-  setMode(mode) {
-    this._soundMode = mode.toUpperCase();
-    if (this._soundMode === 'LOOP') {
-      this._node.loop = true;
-    } else {
-      this._node.loop = false;
+    if (this._isPlaying) {
+      this._node.stop();
+      node.start();
     }
+    this._node.disconnect();
+    this._node = node;
   }
 
   loadShader(fs) {
@@ -11395,13 +11382,14 @@ class SoundRenderer {
   }
 
   stop() {
+    this._isPlaying = false;
+
     // Destroy old node
     this._node.stop();
     this._node.disconnect();
 
     // Create new node
     this._node = this._createNode();
-    this.setMode(this._soundMode);
   }
 
 }

@@ -1,21 +1,14 @@
 /*{
-  sound: "LOOP",
-  soundLength: 300,
-  // soundLength: 0.9,
-  // soundLength: 0.45,
-  // soundLength: 0.22,
+  soundLength: 10.66666667,
+  // soundLength: 0.666666667,
+  // soundLength: 0.333333334,
 }*/
 precision mediump float;
-
-// srtuss, 2014
-// quick and dirty 303 emulation (sort of) aswell as as some percussion and some other noise
-
-// most of the code and the values in it are just experimental. i'll tidy it up soon.
-
-// number of synthesized harmonics (tune for quality/preformance)
 #define NSPC 256
-
 #define pi2 6.283185307179586476925286766559
+
+// This shader is heavily inspired by struss's work.
+// https://www.shadertoy.com/view/ldfSW2
 
 // cheap and unrealistic distortion
 float dist(float s, float d)
@@ -44,8 +37,8 @@ float _filter(float h, float cut, float res)
 // randomize
 float nse(float x)
 {
-  return fract(sin(x * 110.082) * 19871.8972);
-  //return fract(sin(x * 110.082) * 13485.8372);
+  // return fract(sin(x * 110.082) * 19871.8972);
+  return fract(sin(x * 1100.082) * 13485.8372);
 }
 float nse_slide(float x)
 {
@@ -96,8 +89,6 @@ vec2 synth(float tseq, float t)
 
   float o = v.x * amp;//exp(max(tnote - 0.3, 0.0) * -5.0);
 
-  //o = dist(o, 2.5);
-
   return vec2(dist(v * amp, 2.0));
 }
 
@@ -108,10 +99,10 @@ float kick(float tb, float time)
   float aa = 5.0;
   tb = sqrt(tb * aa) / aa;
 
-  float amp = exp(max(tb - 0.15, 0.0) * -10.0);
-  float v = sin(tb * 100.0 * pi2) * amp;
-  v = dist(v, 4.0) * amp;
-  v += nse(quan(tb, 0.001)) * nse(quan(tb, 0.00001)) * exp(tb * -20.0) * 2.5;
+  // float amp = exp(max(tb - 0.15, 0.0) * -10.0);
+  float v = sin(tb * 100.0 * pi2);// * amp;
+  // v = dist(v, 4.0);// * amp;
+  // v += nse(quan(tb, 0.001)) * nse(quan(tb, 0.00001)) * exp(tb * -20.0) * 2.5;
   return v;
 }
 
@@ -122,44 +113,6 @@ float hat(float tb)
   float aa = 4.0;
   //tb = sqrt(tb * aa) / aa;
   return nse(sin(tb * 4000.0) * 0.0001) * smoothstep(0.0, 0.01, tb - 0.25) * exp(tb * -5.0);
-}
-
-float gate1(float t)
-{
-  #define stp 0.0625
-  float v;
-  v = abs(t - 0.00 - 0.015) - 0.015;
-  v = min(v, abs(t - stp*1. - 0.015) - 0.015);
-  v = min(v, abs(t - stp*2. - 0.015) - 0.015);
-  v = min(v, abs(t - stp*4. - 0.015) - 0.015);
-  v = min(v, abs(t - stp*6. - 0.015) - 0.015);
-  v = min(v, abs(t - stp*8. - 0.05) - 0.05);
-  v = min(v, abs(t - stp*11. - 0.05) - 0.05);
-  v = min(v, abs(t - stp*14. - 0.05) - 0.05);
-
-  return smoothstep(0.001, 0.0, v);
-}
-
-vec2 synth2(float time)
-{
-  float tb = mod(time * 9.0, 16.0) / 16.0;
-
-  float f = time * pi2 * ntof(87.0 - 12.0 + mod(tb, 4.0));
-  float v = dist(sin(f + sin(f * 0.5)), 5.0) * gate1(tb);
-
-  return vec2(v);
-}
-
-vec2 synth2_echo(float time, float tb)
-{
-  vec2 mx;
-  mx = synth2(time) * 0.5;// + synth2(time) * 0.5;
-  float ec = 0.3, fb = 0.6, et = 3.0 / 9.0, tm = 2.0 / 9.0;
-  mx += synth2(time - et) * ec * vec2(1.0, 0.2); ec *= fb; et += tm;
-  mx += synth2(time - et) * ec * vec2(0.2, 1.0); ec *= fb; et += tm;
-  mx += synth2(time - et) * ec * vec2(1.0, 0.2); ec *= fb; et += tm;
-  mx += synth2(time - et) * ec * vec2(0.2, 1.0); ec *= fb; et += tm;
-  return mx;
 }
 
 // oldschool explosion sound fx
@@ -175,59 +128,55 @@ float expl(float tb)
   return v;
 }
 
-vec2 synth1_echo(float tb, float time)
+float clap(in float tb)
 {
-  vec2 v;
-  v = synth(tb, time) * 0.5;// + synth2(time) * 0.5;
-  float ec = 0.4, fb = 0.6, et = 2.0 / 9.0, tm = 2.0 / 9.0;
-  v += synth(tb, time - et) * ec * vec2(1.0, 0.5); ec *= fb; et += tm;
-  v += synth(tb, time - et).yx * ec * vec2(0.5, 1.0); ec *= fb; et += tm;
-  v += synth(tb, time - et) * ec * vec2(1.0, 0.5); ec *= fb; et += tm;
-  v += synth(tb, time - et).yx * ec * vec2(0.5, 1.0); ec *= fb; et += tm;
-
-  return v;
+  tb = fract(tb / 6.0) * .5;
+  return fract(sin(tb * 2100.082) * 23485.8372) * smoothstep(.35, .351, tb);
 }
 
-vec2 mainSound(float time)
+vec2 synth1_echo(float tb, float time)
 {
+  tb = fract(tb / 4.0) * .5;
+  return synth(tb, time) * smoothstep(.25, .251, tb);
+}
+
+vec2 mainSound(float time) {
   vec2 mx = vec2(0.0);
+  float tb = mod(time * 12.0, 16.0);
 
-  float tb = mod(time * 9.0, 16.0);
+  // Bass
+  mx = synth1_echo(tb, time * 2.) *.8;
 
+  // Kick
+  float k = kick(tb, time) * 0.8;
+  mx += vec2(dist(k, 20.00)) * .4;
 
-  mx = synth1_echo(tb, time) * 0.8 * smoothstep(0.0, 0.01, abs(mod(time * 9.0, 256.0) + 8.0 - 128.0) - 8.0);
+  // Hi Hat
+  mx += hat(tb) * 1.2;
+  mx.y += hat(tb * 4.2) * 1.2;
 
-  float hi = 1.0;
-  float ki = smoothstep(0.01, 0.0, abs(mod(time * 9.0, 256.0) - 64.0 - 128.0) - 64.0);
-  float s2i = 1.0 - smoothstep(0.01, 0.0, abs(mod(time * 9.0, 256.0) - 64.0 - 128.0) - 64.0);
-  hi = ki;
+  // Crash
+  float s2i = 1.0 - smoothstep(0.01, 0.0, abs(mod(time * 12.0, 256.0) - 64.0 - 128.0) - 64.0);
+  mx += expl(mod(time * 12.0, 64.0) / 4.5) * 0.4 * s2i;
 
-  mx += expl(mod(time * 9.0, 64.0) / 4.5) * 0.4 * s2i;
-
-  mx += vec2(hat(tb) * 1.5) * hi;
-
-  //mx += dist(fract(tb / 16.0) * sin(ntof(77.0 - 36.0) * pi2 * time), 8.0) * 0.2;
-  //mx += expl(tb) * 0.5;
-
-  mx += vec2(synth2_echo(time, tb)) * 0.2 * s2i;
-
-  mx = mix(mx, mx * (1.0 - fract(tb / 4.0) * 0.5), ki);
-  float sc = sin(pi2 * tb) * 0.4 + 0.6;
-  float k = kick(tb, time) * 0.8 * sc * ki;// - kick(tb, time - 0.004) * 0.5 - kick(tb, time - 0.008) * 0.25);
-
-  mx += vec2(k);
-  mx = dist(mx, 1.00);
+  // Clap
+  mx.x += clap(tb) * .45;
 
   vec2 s = vec2(mx);
 
   // AM Effect
-  // s *= sin(time *3000.);
+  // s = s * sin(time *3000. + sin(time) * 1000.);
 
-  // Stutter Effect
-  // s *= step(.5, 1. - fract(time * 1.11 * 8.));
+  // Panning
+  // s.y *= cos(time * 16.) * .5 + .5;
+  // s.x *= sin(time * 16.) * .5 + .5;
 
-  // Distortion Effect
-  // s *= clamp(s * 2., -1., 1.);
+  // Distortion
+  // s = clamp(s * 3.2, -.5, .5);
+
+  // Bitcrusher
+  // float crush = 4.;
+  // s = floor(s * crush) / crush;
 
   return s;
 }
