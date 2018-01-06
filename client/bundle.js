@@ -11242,9 +11242,9 @@ function _interopRequireWildcard(obj) {
   }
 }
 
-const WIDTH = 32; // sqrt(48000 * 30)
+const WIDTH = 32;
 
-const HEIGHT = 256; // sqrt(48000 * 30)
+const HEIGHT = 64;
 const PIXELS = WIDTH * HEIGHT;
 
 const createShader = (shader, width) => `
@@ -11271,14 +11271,23 @@ class SoundRenderer {
     this._isPlaying = false;
 
     this.render = () => {
+      if (this._renderingId) {
+        cancelAnimationFrame(this._renderingId);
+      }
+
       const outputDataL = this._audioBuffer.getChannelData(0);
       const outputDataR = this._audioBuffer.getChannelData(1);
 
-      const numBlocks = this._ctx.sampleRate * this._soundLength / PIXELS;
+      const allPixels = this._ctx.sampleRate * this._soundLength;
+      const numBlocks = allPixels / PIXELS;
+
+      const timeOffset = (this._ctx.currentTime - this._start) % this._soundLength;
+      let pixelsForTimeOffset = timeOffset * this._ctx.sampleRate;
+      pixelsForTimeOffset -= pixelsForTimeOffset % PIXELS;
 
       let j = 0;
       const renderOnce = remain => {
-        const off = j * PIXELS;
+        const off = j * PIXELS + pixelsForTimeOffset;
 
         // Update uniform
         this._uniforms.iBlockOffset.value = off / this._ctx.sampleRate;
@@ -11289,22 +11298,26 @@ class SoundRenderer {
         this._wctx.readPixels(0, 0, WIDTH, HEIGHT, this._wctx.RGBA, this._wctx.UNSIGNED_BYTE, pixels);
 
         for (let i = 0; i < PIXELS; i++) {
-          outputDataL[off + i] = (pixels[i * 4 + 0] * 256 + pixels[i * 4 + 1]) / 65535 * 2 - 1;
-          outputDataR[off + i] = (pixels[i * 4 + 2] * 256 + pixels[i * 4 + 3]) / 65535 * 2 - 1;
+          const ii = (off + i) % allPixels;
+          outputDataL[ii] = (pixels[i * 4 + 0] * 256 + pixels[i * 4 + 1]) / 65535 * 2 - 1;
+          outputDataR[ii] = (pixels[i * 4 + 2] * 256 + pixels[i * 4 + 3]) / 65535 * 2 - 1;
         }
 
         j++;
         if (j < numBlocks) {
-          requestAnimationFrame(renderOnce);
+          this._renderingId = requestAnimationFrame(renderOnce);
+        } else {
+          this._renderingId = null;
         }
       };
 
-      requestAnimationFrame(renderOnce);
+      this._renderingId = requestAnimationFrame(renderOnce);
     };
 
     this._ctx = new window.AudioContext();
     this._audioBuffer = this._ctx.createBuffer(2, this._ctx.sampleRate * this._soundLength, this._ctx.sampleRate);
     this._node = this._createNode();
+    this._start = this._ctx.currentTime;
 
     const canvas = document.createElement('canvas');
     canvas.width = WIDTH;
@@ -11343,6 +11356,7 @@ class SoundRenderer {
     if (this._isPlaying) {
       this._node.start();
     }
+    this._start = this._ctx.currentTime;
   }
 
   setMode(mode) {
@@ -11369,16 +11383,15 @@ class SoundRenderer {
     this._camera.lookAt(this._scene.position);
 
     this._scene.add(plane);
-    console.log('>>>>> loadSoundShader');
   }
 
   play() {
-    this.render();
     if (!this._isPlaying) {
       this._isPlaying = true;
       this._node.start();
+      this._start = this._ctx.currentTime;
     }
-    console.log('>>>>> playSound');
+    this.render();
   }
 
   stop() {
