@@ -5040,10 +5040,6 @@ text-table@^0.2.0, text-table@~0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
 
-three@^0.87.1:
-  version "0.87.1"
-  resolved "https://registry.yarnpkg.com/three/-/three-0.87.1.tgz#466a34edc4543459ced9b9d7d276b65216fe2ba8"
-
 three@^0.89.0:
   version "0.89.0"
   resolved "https://registry.yarnpkg.com/three/-/three-0.89.0.tgz#4442d819a6168871b8d2cb37ad12a24310c170f5"
@@ -5289,12 +5285,12 @@ vary@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
 
-vedajs@^0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/vedajs/-/vedajs-0.4.1.tgz#b2922f5de1c1a7a677b68fd4b922dbb3aab387de"
+vedajs@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/vedajs/-/vedajs-0.5.0.tgz#cf24df04d5a4ea96adb0c23f28adfa7693c8b9bf"
   dependencies:
     is-video "^1.0.1"
-    three "^0.87.1"
+    three "^0.89.0"
 
 verror@1.10.0:
   version "1.10.0"
