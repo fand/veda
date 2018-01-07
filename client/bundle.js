@@ -10041,9 +10041,6 @@ var Player = function () {
       if (added.camera !== undefined) {
         _this._veda.toggleCamera(added.camera);
       }
-      if (added.sound !== undefined && added.sound !== null) {
-        _this._veda.setSoundMode(added.sound);
-      }
       if (added.soundLength !== undefined) {
         _this._veda.setSoundLength(added.soundLength);
       }
