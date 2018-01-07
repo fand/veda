@@ -1,3 +1,6 @@
+## 2.3.0
+* Sound shader (experimental)
+
 ## 2.2.1
 * Disable culling in vertex shader
 

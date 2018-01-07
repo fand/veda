@@ -1,7 +1,7 @@
 {
   "name": "veda",
   "main": "./lib/index",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "description": "VJ / Live Coding environment with GLSL",
   "keywords": [],
   "activationCommands": {
@@ -31,7 +31,7 @@
     "socket.io-client": "^2.0.3",
     "three": "^0.89.0",
     "tmp": "^0.0.33",
-    "vedajs": "^0.4.1",
+    "vedajs": "^0.5.0",
     "webpack": "^3.6.0",
     "which": "^1.2.14"
   },

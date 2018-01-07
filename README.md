@@ -515,6 +515,33 @@ Warning: Currently we can't use videos/images outside the project directory in s
 See an [example](./examples/server.frag) for actual usage.
 
 
+### Sound shader (experimental)
+
+VEDA supports sound shaders like [Shadertoy](https://www.shadertoy.com/results?filter=soundoutput).
+
+There are 2 command for sound shaders:
+
+- `Veda: Load Sound Shader` (`alt-enter`): Play current shader as a sound shader.
+- `Veda: Stop Sound Shader` (`alt-.`): Stop sound shaders.
+
+In sound shader you have to define `vec2 mainSound(float time)` function instead of `void main()`.
+`mainSound` takes current time stamp (`time`) and return the sample for stereo channels (`vec2`).
+
+For example, this shader plays 440Hz and 660Hz sine wave in left and right channel.
+
+```glsl
+#define PI 3.141592653
+vec2 mainSound(in float time) {
+  return vec2(
+    sin(2. * PI * time * 440.),
+    sin(2. * PI * time * 660.)
+  );
+}
+```
+
+See an [example](./examples/sound.frag) for actual usage.
+
+
 ## Author
 
 Takayosi Amagi

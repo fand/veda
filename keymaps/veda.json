@@ -3,6 +3,8 @@
     "ctrl-enter": "veda:load-shader",
     "ctrl-shift-enter": "veda:watch-shader",
     "ctrl-alt-enter": "veda:watch-active-shader",
-    "ctrl-.": "veda:stop-watching"
+    "ctrl-.": "veda:stop-watching",
+    "alt-enter": "veda:load-sound-shader",
+    "alt-.": "veda:stop-sound-shader"
   }
 }
