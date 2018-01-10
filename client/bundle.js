@@ -9987,6 +9987,8 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Player = function () {
@@ -10055,44 +10057,65 @@ var Player = function () {
       }
     };
 
-    this.onChangeSound = function (_ref2) {
-      var newConfig = _ref2.newConfig,
-          added = _ref2.added,
-          removed = _ref2.removed;
+    this.onChangeSound = function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(_ref3) {
+        var newConfig = _ref3.newConfig,
+            added = _ref3.added,
+            removed = _ref3.removed;
+        var importedPaths;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                console.log('Update config', newConfig);
+                // Get paths for videos still in use
+                importedPaths = {};
 
-      console.log('Update config', newConfig);
-      // Get paths for videos still in use
-      var importedPaths = {};
-      Object.values(newConfig.IMPORTED).forEach(function (imported) {
-        importedPaths[imported.PATH] = true;
-      });
+                Object.values(newConfig.IMPORTED).forEach(function (imported) {
+                  importedPaths[imported.PATH] = true;
+                });
 
-      Object.keys(removed.IMPORTED).forEach(function (key) {
-        var path = removed.IMPORTED[key].PATH;
-        _this._veda.unloadTexture(key, path, !importedPaths[path]);
-      });
-      Object.keys(added.IMPORTED || {}).forEach(function (key) {
-        _this._veda.loadTexture(key, added.IMPORTED[key].PATH, added.IMPORTED[key].SPEED);
-      });
-      if (added.audio !== undefined) {
-        _this._veda.toggleAudio(added.audio);
-      }
-      if (added.midi !== undefined) {
-        _this._veda.toggleMidi(added.midi);
-      }
-      if (added.keyboard !== undefined) {
-        _this._veda.toggleKeyboard(added.keyboard);
-      }
-      if (added.gamepad !== undefined) {
-        _this._veda.toggleGamepad(added.gamepad);
-      }
-      if (added.camera !== undefined) {
-        _this._veda.toggleCamera(added.camera);
-      }
-      if (added.soundLength !== undefined) {
-        _this._veda.setSoundLength(added.soundLength);
-      }
-    };
+                Object.keys(removed.IMPORTED).forEach(function (key) {
+                  var path = removed.IMPORTED[key].PATH;
+                  _this._veda.unloadTexture(key, path, !importedPaths[path]);
+                });
+                _context.next = 6;
+                return Promise.all(Object.keys(added.IMPORTED || {}).map(function (key) {
+                  return _this._veda.loadTexture(key, added.IMPORTED[key].PATH, added.IMPORTED[key].SPEED);
+                }));
+
+              case 6:
+                if (added.audio !== undefined) {
+                  _this._veda.toggleAudio(added.audio);
+                }
+                if (added.midi !== undefined) {
+                  _this._veda.toggleMidi(added.midi);
+                }
+                if (added.keyboard !== undefined) {
+                  _this._veda.toggleKeyboard(added.keyboard);
+                }
+                if (added.gamepad !== undefined) {
+                  _this._veda.toggleGamepad(added.gamepad);
+                }
+                if (added.camera !== undefined) {
+                  _this._veda.toggleCamera(added.camera);
+                }
+                if (added.soundLength !== undefined) {
+                  _this._veda.setSoundLength(added.soundLength);
+                }
+
+              case 12:
+              case 'end':
+                return _context.stop();
+            }
+          }
+        }, _callee, _this);
+      }));
+
+      return function (_x) {
+        return _ref2.apply(this, arguments);
+      };
+    }();
 
     this._view = view;
     this._veda = new _vedajs2.default(_extends({}, rc));
@@ -11371,7 +11394,7 @@ class SoundLoader {
   load(url) {
     const cache = this._cache[url];
     if (cache) {
-      return cache;
+      return Promise.resolve(cache);
     }
 
     let f;
