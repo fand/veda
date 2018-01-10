@@ -1,3 +1,6 @@
+## 2.4.0
+* Sound texture for sound shader
+
 ## 2.3.0
 * Sound shader (experimental)
 
