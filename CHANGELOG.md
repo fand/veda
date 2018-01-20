@@ -1,3 +1,6 @@
+## 2.4.1
+* Fix server mode not working #56
+
 ## 2.4.0
 * Sound texture for sound shader
 
