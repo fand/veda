@@ -1,3 +1,6 @@
+## 2.4.2
+* Fix comment bug #61
+
 ## 2.4.1
 * Fix server mode not working #56
 
