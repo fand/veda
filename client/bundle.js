@@ -19787,11 +19787,7 @@ function _asyncToGenerator(fn) {
   };
 }
 
-const DUMMY_TEXTURE = new THREE.Texture();
-
 // ref. https://github.com/mrdoob/three.js/wiki/Uniforms-types
-
-
 const DEFAULT_VEDA_OPTIONS = {
   pixelRatio: 1,
   frameskip: 1,
@@ -19873,7 +19869,8 @@ class Veda {
       resolution: { type: 'v2', value: new THREE.Vector2() },
       time: { type: 'f', value: 0.0 },
       vertexCount: { type: 'f', value: rc.vertexCount },
-      PASSINDEX: { type: 'i', value: 0 }
+      PASSINDEX: { type: 'i', value: 0 },
+      FRAMEINDEX: { type: 'i', value: 0 }
     };
 
     this._soundRenderer = new _soundRenderer2.default(this._uniforms);
@@ -20007,10 +20004,14 @@ class Veda {
     let target;
     if (pass.TARGET) {
       const targetName = pass.TARGET;
-      this._uniforms[targetName] = DUMMY_TEXTURE;
+      const textureType = pass.FLOAT ? THREE.FloatType : THREE.UnsignedByteType;
       target = {
         name: targetName,
-        targets: [new THREE.WebGLRenderTarget(this._canvas.offsetWidth / this._pixelRatio, this._canvas.offsetHeight / this._pixelRatio, { minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter, format: THREE.RGBAFormat }), new THREE.WebGLRenderTarget(this._canvas.offsetWidth / this._pixelRatio, this._canvas.offsetHeight / this._pixelRatio, { minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter, format: THREE.RGBAFormat })]
+        targets: [new THREE.WebGLRenderTarget(this._canvas.offsetWidth / this._pixelRatio, this._canvas.offsetHeight / this._pixelRatio, { minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter, format: THREE.RGBAFormat, type: textureType }), new THREE.WebGLRenderTarget(this._canvas.offsetWidth / this._pixelRatio, this._canvas.offsetHeight / this._pixelRatio, { minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter, format: THREE.RGBAFormat, type: textureType })]
+      };
+      this._uniforms[targetName] = {
+        type: 't',
+        value: target.targets[0].texture
       };
     }
 
@@ -20049,6 +20050,8 @@ class Veda {
       }
       return this._createRenderPass(pass);
     });
+
+    this._uniforms.FRAMEINDEX.value = 0;
   }
 
   loadTexture(name, textureUrl, speed = 1) {
@@ -20158,6 +20161,8 @@ class Veda {
 
     // Render result to backbuffer
     this._renderer.render(lastPass.scene, lastPass.camera, this._targets[1], true);
+
+    this._uniforms.FRAMEINDEX.value++;
   }
 
   toggleAudio(flag) {
