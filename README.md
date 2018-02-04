@@ -484,6 +484,52 @@ See these examples for actual usage.
 - [particles.frag](./examples/particles.frag) and [particles.vert](./examples/particles.vert)
 
 
+### Compute shader
+
+You can write compute shaders using multipass rendering.
+For compute shaders, we need to specify use float textures like this:
+
+```glsl
+/*{
+  "PASSES": [
+    {
+      "fs": "./velocity.frag",
+      "TARGET": "velocityTexture",
+      "FLOAT": true,
+    },
+    {
+      "fs": "./position.frag",
+      "TARGET": "positionTexture",
+      "FLOAT": true,
+    },
+    {
+      "vs": "./scene.vert",
+      "fs": "./scene.frag",
+      "TARGET": "sceneTexture",
+    },
+    {}
+  ]
+}*/
+```
+
+To initialize textures, use `uniform int FRAMEINDEX`.
+
+```glsl
+uniform int FRAMEINDEX;
+
+void main(){
+    if (FRAMEINDEX == 0) {
+        gl_FragColor = vec4(0);
+    }
+    else {
+        // Do what you want
+    }
+}
+```
+
+See an [example](./examples/gpgpu/post.frag) for actual usage.
+
+
 ### glslify
 
 VEDA supports [glslify](https://github.com/stackgl/glslify).
