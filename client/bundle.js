@@ -19813,6 +19813,13 @@ var Veda = function () {
       }
     };
 
+    this._mousedown = function (e) {
+      var b = e.buttons;
+      _this2._uniforms.mouseButtons.value = new THREE.Vector3(b >> 0 & 1, b >> 1 & 1, b >> 2 & 1);
+    };
+
+    this._mouseup = this._mousedown;
+
     this.resize = function (width, height) {
       _this2._renderer.setSize(width, height);
 
@@ -19873,6 +19880,7 @@ var Veda = function () {
     this._uniforms = {
       backbuffer: { type: 't', value: new THREE.Texture() },
       mouse: { type: 'v2', value: new THREE.Vector2() },
+      mouseButtons: { type: 'v3', value: new THREE.Vector3() },
       resolution: { type: 'v2', value: new THREE.Vector2() },
       time: { type: 'f', value: 0.0 },
       vertexCount: { type: 'f', value: rc.vertexCount },
@@ -19934,6 +19942,8 @@ var Veda = function () {
     value: function setCanvas(canvas) {
       if (this._canvas) {
         window.removeEventListener('mousemove', this._mousemove);
+        window.removeEventListener('mousedown', this._mousedown);
+        window.removeEventListener('mouseup', this._mouseup);
       }
 
       this._canvas = canvas;
@@ -19941,6 +19951,8 @@ var Veda = function () {
       this._renderer.setPixelRatio(1 / this._pixelRatio);
       this.resize(canvas.offsetWidth, canvas.offsetHeight);
       window.addEventListener('mousemove', this._mousemove);
+      window.addEventListener('mousedown', this._mousedown);
+      window.addEventListener('mouseup', this._mouseup);
 
       this._frame = 0;
       this.animate();
@@ -19964,6 +19976,9 @@ var Veda = function () {
           uniforms: this._uniforms,
           vertexShader: vs,
           fragmentShader: fs || _constants.DEFAULT_FRAGMENT_SHADER,
+          blending: THREE.AdditiveBlending,
+          depthTest: true,
+          transparent: true,
           extensions: {
             derivatives: true,
             drawBuffers: false,

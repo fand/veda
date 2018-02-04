@@ -5,19 +5,20 @@ uniform sampler2D positionTexture;
 uniform sampler2D key;
 uniform vec2 resolution;
 uniform vec2 mouse;
+uniform vec3 mouseButtons;
 uniform float time;
-const float SPEED = 0.06;
+const float SPEED = 0.03;
 
 const float PI = 3.1415926;
 const float PI2 = PI * 2.0;
 
 vec3 reset() {
-    vec2 p = gl_FragCoord.st / resolution;
-    float s =  sin(p.y * 10.23 * PI + time);
-    float x =  cos(p.x * 10.33 * PI2 + time) * s;
-    float y = -cos(p.y * 10.51 * PI + time * p.x);
-    float z =  sin(p.x * 10.72 * PI2 + time) * s;
-    return normalize(vec3(x, y, z)) * .7;
+    vec2 p = gl_FragCoord.st / resolution * 100.;
+    float s =  sin(p.y * PI);
+    float x =  cos(p.x * PI2 + p.y) * s;
+    float y = -cos(p.y * PI + p.x);
+    float z =  sin(p.x * PI2 + p.y) * s;
+    return normalize(vec3(x, y, z)) * .3;
 }
 
 void main(){
@@ -31,16 +32,14 @@ void main(){
         vec4 position = texture2D(positionTexture, uv);
         vec4 velocity = texture2D(velocityTexture, uv);
 
-        bool move = true;//fract(time) < .6;
+        float power = position.w * 0.95;
 
-        float power = position.w * 0.6;
+        bool move = mouseButtons.x > 0.;
         if (move) {
-            power = 0.5;
+            power = 1.0;
         }
 
         vec3 newPosition = position.xyz + velocity.xyz * power * SPEED;
-        newPosition = clamp(newPosition, -1., 1.);
-
         gl_FragColor = vec4(newPosition, power);
     }
 }

@@ -30,5 +30,5 @@ uniform sampler2D backbuffer;
 void main() {
   vec2 uv = gl_FragCoord.xy / resolution;
   gl_FragColor = texture2D(sceneTexture, uv);
-  gl_FragColor += texture2D(backbuffer, uv) * .5;
+  gl_FragColor += texture2D(backbuffer, (uv - .5) * .999 + .5) * .5;
 }

@@ -9,10 +9,11 @@ uniform vec2 resolution;
 attribute float vertexId;
 uniform float vertexCount;
 uniform float time;
-const float pointSize = 3.0;
+uniform vec3 mouseButtons;
+const float pointSize = 2.0;
 varying vec4 v_color;
 
-const vec4 globalColor = vec4(0.3, 0.8, 1., .2);
+const vec4 globalColor = vec4(.3, .4, .8, 0.7);
 
 void main(){
     vec2 uv = vec2(
@@ -24,8 +25,7 @@ void main(){
     vec4 velocity = texture2D(velocityTexture, uv);
 
     gl_Position = vec4(position.xyz, 1);
-    gl_PointSize = pointSize / max(length(velocity), 1.);
+    gl_PointSize = pointSize * max(position.w * 1.25, 0.75);
 
     v_color = globalColor;
-    v_color *= length(velocity) *.4 + 1.;
 }
