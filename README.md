@@ -455,7 +455,25 @@ You can define passes in `PASSES` property in `.vedarc` or header comments.
 ```
 
 The structure of `PASSES` property is based on [Interactive Shader Format](https://www.interactiveshaderformat.com/).
-However, VEDA doesn't support `PERSISTENT`, `WIDTH` and `HEIGHT` property.
+However, VEDA doesn't support `PERSISTENT` property.
+
+VEDA supports `WIDTH` and `HEIGHT` in PASSES.
+You can specify numbers for pixels or write expressions using `$WIDTH` and `$HEIGHT`.
+
+```glsl
+/*
+{
+  "PASSES": [
+    {
+      "TARGET": "buffer",
+      "WIDTH": 512,  // 512px
+      "HEIGHT": "$HEIGHT / 2",  // half of the render target (= Atom's width / pixelRatio)
+    },
+    {},
+  ],
+}
+*/
+```
 
 See these examples for actual usage.
 

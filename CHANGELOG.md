@@ -1,3 +1,6 @@
+## 2.6.0
+* Support `WIDTH` `HEIGHT` in `PASSES`
+
 ## 2.5.0
 * Support float textures with `FLOAT` in `PASSES`
 
