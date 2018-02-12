@@ -20039,8 +20039,30 @@ var Veda = function () {
       if (pass.TARGET) {
         var targetName = pass.TARGET;
         var textureType = pass.FLOAT ? THREE.FloatType : THREE.UnsignedByteType;
+
+        var getWidth = function getWidth($WIDTH, _) {
+          return $WIDTH;
+        };
+        var getHeight = function getHeight(_, $HEIGHT) {
+          return $HEIGHT;
+        };
+        if (pass.WIDTH) {
+          try {
+            // eslint-disable-next-line no-new-func
+            getWidth = new Function('$WIDTH', '$HEIGHT', 'return ' + pass.WIDTH);
+          } catch (e) {}
+        }
+        if (pass.HEIGHT) {
+          try {
+            // eslint-disable-next-line no-new-func
+            getHeight = new Function('$WIDTH', '$HEIGHT', 'return ' + pass.HEIGHT);
+          } catch (e) {}
+        }
+
         target = {
           name: targetName,
+          getWidth: getWidth,
+          getHeight: getHeight,
           targets: [new THREE.WebGLRenderTarget(this._canvas.offsetWidth / this._pixelRatio, this._canvas.offsetHeight / this._pixelRatio, { minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter, format: THREE.RGBAFormat, type: textureType }), new THREE.WebGLRenderTarget(this._canvas.offsetWidth / this._pixelRatio, this._canvas.offsetHeight / this._pixelRatio, { minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter, format: THREE.RGBAFormat, type: textureType })]
         };
         this._uniforms[targetName] = {
@@ -20235,6 +20257,9 @@ var Veda = function () {
 
         var target = pass.target;
         if (target) {
+          var $width = _this4._canvas.offsetWidth / _this4._pixelRatio;
+          var $height = _this4._canvas.offsetHeight / _this4._pixelRatio;
+          target.targets[1].setSize(target.getWidth($width, $height), target.getHeight($width, $height));
           _this4._renderer.render(pass.scene, pass.camera, target.targets[1], true);
 
           // Swap buffers after render so that we can use the buffer in latter passes
