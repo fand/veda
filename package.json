@@ -66,13 +66,17 @@
     "typescript": "^2.7.2"
   },
   "scripts": {
-    "ci": "npm-run-all -p lint test flow build",
+    "ci": "run-p lint test flow build",
     "test": "ava test",
     "lint": "eslint lib",
     "flow": "flow",
-    "dev": "npm-run-all -p watch serve",
-    "build": "webpack",
-    "watch": "webpack -w",
+    "dev": "run-p watch serve",
+    "build": "run-p build:ts build:client",
+    "build:ts": "tsc",
+    "build:client": "webpack",
+    "watch": "run-p watch:ts watch:client",
+    "watch:ts": "tsc -w",
+    "watch:client": "webpack -w",
     "serve": "node lib/server.js",
     "prepublish": "npm run ci",
     "precommit": "echo 'npm run ci && git add client/bundle.js'"

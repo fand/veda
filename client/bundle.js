@@ -61852,7 +61852,7 @@ const midi_loader_1 = __webpack_require__(383);
 const sound_loader_1 = __webpack_require__(384);
 const sound_renderer_1 = __webpack_require__(385);
 const video_loader_1 = __webpack_require__(386);
-const is_video_1 = __webpack_require__(387);
+const isVideo = __webpack_require__(387);
 const constants_1 = __webpack_require__(101);
 const isGif = (file) => file.match(/\.gif$/i);
 const isSound = (file) => file.match(/\.(mp3|wav)$/i);
@@ -62132,7 +62132,7 @@ class Veda {
     loadTexture(name, textureUrl, speed = 1) {
         return __awaiter(this, void 0, void 0, function* () {
             let texture;
-            if (is_video_1.default(textureUrl)) {
+            if (isVideo(textureUrl)) {
                 texture = this.videoLoader.load(name, textureUrl, speed);
             }
             else if (isGif(textureUrl)) {
@@ -62153,7 +62153,7 @@ class Veda {
     unloadTexture(name, textureUrl, remove) {
         const texture = this.uniforms[name];
         texture.value.dispose();
-        if (remove && is_video_1.default(textureUrl)) {
+        if (remove && isVideo(textureUrl)) {
             this.videoLoader.unload(textureUrl);
         }
         if (remove && isGif(textureUrl)) {
@@ -62307,8 +62307,8 @@ class AudioLoader {
         this.gain.connect(this.ctx.destination);
         this.analyser.fftSize = rc.fftSize;
         this.analyser.smoothingTimeConstant = rc.fftSmoothingTimeConstant;
-        this.spectrumArray = new Uint8ClampedArray(this.analyser.frequencyBinCount);
-        this.samplesArray = new Uint8ClampedArray(this.analyser.frequencyBinCount);
+        this.spectrumArray = new Uint8Array(this.analyser.frequencyBinCount);
+        this.samplesArray = new Uint8Array(this.analyser.frequencyBinCount);
         this.spectrum = new THREE.DataTexture(this.spectrumArray, this.analyser.frequencyBinCount, 1, THREE.LuminanceFormat, THREE.UnsignedByteType);
         this.samples = new THREE.DataTexture(this.samplesArray, this.analyser.frequencyBinCount, 1, THREE.LuminanceFormat, THREE.UnsignedByteType);
     }
@@ -62336,8 +62336,8 @@ class AudioLoader {
         }
     }
     update() {
-        this.analyser.getByteFrequencyData(new Uint8Array(this.spectrumArray));
-        this.analyser.getByteTimeDomainData(new Uint8Array(this.samplesArray));
+        this.analyser.getByteFrequencyData(this.spectrumArray);
+        this.analyser.getByteTimeDomainData(this.samplesArray);
         this.spectrum.needsUpdate = true;
         this.samples.needsUpdate = true;
     }
@@ -62346,8 +62346,8 @@ class AudioLoader {
     }
     setFftSize(fftSize) {
         this.analyser.fftSize = fftSize;
-        this.spectrumArray = new Uint8ClampedArray(this.analyser.frequencyBinCount);
-        this.samplesArray = new Uint8ClampedArray(this.analyser.frequencyBinCount);
+        this.spectrumArray = new Uint8Array(this.analyser.frequencyBinCount);
+        this.samplesArray = new Uint8Array(this.analyser.frequencyBinCount);
         this.spectrum.image.data = this.spectrumArray;
         this.spectrum.image.width = this.analyser.frequencyBinCount;
         this.samples.image.data = this.samplesArray;
