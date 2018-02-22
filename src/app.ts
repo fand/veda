@@ -20,191 +20,191 @@ type GlslLivecoderState = {
 };
 
 export default class GlslLivecoder {
-    _player: Playable;
-    _state: GlslLivecoderState;
-    _glslangValidatorPath: string;
-    _lastShader: Shader = INITIAL_SHADER;
-    _lastSoundShader: SoundShader = INITIAL_SOUND_SHADER;
-    _osc: OscLoader | null = null;
+    private player: Playable;
+    private state: GlslLivecoderState;
+    private glslangValidatorPath: string;
+    private lastShader: Shader = INITIAL_SHADER;
+    private lastSoundShader: SoundShader = INITIAL_SOUND_SHADER;
+    private osc: OscLoader | null = null;
 
-    _config: Config;
+    private config: Config;
 
     constructor(config: Config) {
         const rc = config.rc;
         const view = new View(atom.workspace.element);
-        this._player = new Player(view, rc, false, this._lastShader);
+        this.player = new Player(view, rc, false, this.lastShader);
 
-        this._config = config;
-        this._config.on('change', this._onChange);
-        this._config.on('changeSound', this._onChangeSound);
+        this.config = config;
+        this.config.on('change', this.onChange);
+        this.config.on('changeSound', this.onChangeSound);
 
-        this._glslangValidatorPath = rc.glslangValidatorPath;
+        this.glslangValidatorPath = rc.glslangValidatorPath;
 
-        this._state = {
+        this.state = {
             isPlaying: false,
         };
     }
 
     destroy(): void {
-        this._player.destroy();
-        if (this._osc) {
-            this._osc.destroy();
+        this.player.destroy();
+        if (this.osc) {
+            this.osc.destroy();
         }
     }
 
-    _onAnyChanges = ({ added }: RcDiff) => {
+    private onAnyChanges = ({ added }: RcDiff) => {
         if (added.glslangValidatorPath) {
-            this._glslangValidatorPath = added.glslangValidatorPath;
+            this.glslangValidatorPath = added.glslangValidatorPath;
         }
 
         if (added.server !== undefined) {
-            if (this._player) {
-                this._player.stop();
+            if (this.player) {
+                this.player.stop();
             }
 
-            const rc = this._config.createRc();
+            const rc = this.config.createRc();
 
             if (added.server) {
-                this._player = new PlayerServer(added.server, {
+                this.player = new PlayerServer(added.server, {
                     rc,
-                    isPlaying: this._state.isPlaying,
-                    projectPath: this._config.projectPath,
-                    lastShader: this._lastShader,
+                    isPlaying: this.state.isPlaying,
+                    projectPath: this.config.projectPath,
+                    lastShader: this.lastShader,
                 });
             } else {
                 const view = new View(atom.workspace.element);
-                this._player = new Player(view, rc, this._state.isPlaying, this._lastShader);
+                this.player = new Player(view, rc, this.state.isPlaying, this.lastShader);
             }
         }
 
         if (added.osc !== undefined) {
             const port = added.osc;
-            const osc = this._osc;
+            const osc = this.osc;
             if (osc && (!port || (osc.port !== parseInt(port.toString(), 10)))) {
                 osc.destroy();
-                this._osc = null;
+                this.osc = null;
             }
-            if (port && !this._osc) {
+            if (port && !this.osc) {
                 const oscLoader = new OscLoader(port);
-                this._osc = oscLoader;
+                this.osc = oscLoader;
                 oscLoader.on('message', this.onOsc);
-                oscLoader.on('reload', () => this._loadLastShader());
+                oscLoader.on('reload', () => this.loadLastShader());
             }
         }
     }
 
-    _onChange = (rcDiff: RcDiff) => {
-        this._onAnyChanges(rcDiff);
-        this._player.onChange(rcDiff);
-        this._loadLastShader();
+    private onChange = (rcDiff: RcDiff) => {
+        this.onAnyChanges(rcDiff);
+        this.player.onChange(rcDiff);
+        this.loadLastShader();
     }
 
-    _onChangeSound = (rcDiff: RcDiff) => {
-        this._onAnyChanges(rcDiff);
-        this._player.onChangeSound(rcDiff).then(() => {
-            this._loadLastSoundShader();
+    private onChangeSound = (rcDiff: RcDiff) => {
+        this.onAnyChanges(rcDiff);
+        this.player.onChangeSound(rcDiff).then(() => {
+            this.loadLastSoundShader();
         });
     }
 
     onOsc = (msg: { address: string, args: number[] }) => {
-        this._player.setOsc(msg.address, msg.args);
+        this.player.setOsc(msg.address, msg.args);
     }
 
     toggle(): void {
         return (
-            this._state.isPlaying ?
+            this.state.isPlaying ?
             this.stop() :
             this.play()
         );
     }
 
     play(): void {
-        this._state.isPlaying = true;
-        this._player.play();
-        this._config.play();
+        this.state.isPlaying = true;
+        this.player.play();
+        this.config.play();
     }
 
     stop(): void {
-        this._state.isPlaying = false;
-        this._player.stop();
-        this._config.stop();
+        this.state.isPlaying = false;
+        this.player.stop();
+        this.config.stop();
         this.stopWatching();
     }
 
     watchActiveShader(): void {
-        if (this._state.activeEditorDisposer) {
+        if (this.state.activeEditorDisposer) {
             return;
         }
 
         this.watchShader();
-        this._state.activeEditorDisposer = atom.workspace.onDidChangeActiveTextEditor(() => {
+        this.state.activeEditorDisposer = atom.workspace.onDidChangeActiveTextEditor(() => {
             this.watchShader();
         });
     }
 
     watchShader(): void {
-        if (this._state.editorDisposer) {
-            this._state.editorDisposer.dispose();
-            this._state.editorDisposer = null;
+        if (this.state.editorDisposer) {
+            this.state.editorDisposer.dispose();
+            this.state.editorDisposer = null;
         }
 
         const editor = atom.workspace.getActiveTextEditor();
-        this._state.editor = editor;
-        this._loadShaderOfEditor(editor);
+        this.state.editor = editor;
+        this.loadShaderOfEditor(editor);
 
         if (editor !== undefined) {
-            this._state.editorDisposer = editor.onDidStopChanging(() => {
-                this._loadShaderOfEditor(editor);
+            this.state.editorDisposer = editor.onDidStopChanging(() => {
+                this.loadShaderOfEditor(editor);
             });
         }
     }
 
     loadShader(): void {
         const editor = atom.workspace.getActiveTextEditor();
-        this._loadShaderOfEditor(editor);
+        this.loadShaderOfEditor(editor);
     }
 
     loadSoundShader(): Promise<void> {
         const editor = atom.workspace.getActiveTextEditor();
-        return this._loadShaderOfEditor(editor, true);
+        return this.loadShaderOfEditor(editor, true);
     }
 
     playSound(): void {
         this.loadSoundShader()
-        .then(() => this._player.playSound());
+        .then(() => this.player.playSound());
     }
 
     stopSound(): void {
-        this._player.stopSound();
+        this.player.stopSound();
     }
 
-    _loadLastShader(): void {
-        if (!this._lastShader) {
+    private loadLastShader(): void {
+        if (!this.lastShader) {
             return;
         }
-        this._player.loadShader(this._lastShader);
+        this.player.loadShader(this.lastShader);
     }
 
-    _loadLastSoundShader(): void {
-        if (!this._lastSoundShader) {
+    private loadLastSoundShader(): void {
+        if (!this.lastSoundShader) {
             return;
         }
-        this._player.loadSoundShader(this._lastSoundShader);
+        this.player.loadSoundShader(this.lastSoundShader);
     }
 
     stopWatching(): void {
-        this._state.editor = null;
-        if (this._state.activeEditorDisposer) {
-            this._state.activeEditorDisposer.dispose();
-            this._state.activeEditorDisposer = null;
+        this.state.editor = null;
+        if (this.state.activeEditorDisposer) {
+            this.state.activeEditorDisposer.dispose();
+            this.state.activeEditorDisposer = null;
         }
-        if (this._state.editorDisposer) {
-            this._state.editorDisposer.dispose();
-            this._state.editorDisposer = null;
+        if (this.state.editorDisposer) {
+            this.state.editorDisposer.dispose();
+            this.state.editorDisposer = null;
         }
     }
 
-    _createPasses(rcPasses: any, shader: string, postfix: string, dirname: string): Promise<any[]> {
+    private createPasses(rcPasses: any, shader: string, postfix: string, dirname: string): Promise<any[]> {
         if (rcPasses.length === 0) {
             rcPasses.push({});
         }
@@ -227,13 +227,13 @@ export default class GlslLivecoder {
                 }
             } else {
                 if (rcPass.vs) {
-                    pass.vs = await loadFile(this._glslangValidatorPath, path.resolve(dirname, rcPass.vs));
+                    pass.vs = await loadFile(this.glslangValidatorPath, path.resolve(dirname, rcPass.vs));
                     if (i === lastPass && (postfix === '.frag' || postfix === '.fs')) {
                         pass.fs = shader;
                     }
                 }
                 if (rcPass.fs) {
-                    pass.fs = await loadFile(this._glslangValidatorPath, path.resolve(dirname, rcPass.fs));
+                    pass.fs = await loadFile(this.glslangValidatorPath, path.resolve(dirname, rcPass.fs));
                     if (i === lastPass && (postfix === '.vert' || postfix === '.vs')) {
                         pass.vs = shader;
                     }
@@ -244,7 +244,7 @@ export default class GlslLivecoder {
         }));
     }
 
-    _loadShaderOfEditor(editor: TextEditor, isSound?: boolean): Promise<void> {
+    private loadShaderOfEditor(editor: TextEditor, isSound?: boolean): Promise<void> {
         if (editor === undefined) {
             // This case occurs when no files are open/active
             return Promise.resolve();
@@ -267,11 +267,11 @@ export default class GlslLivecoder {
             const headComment = (shader.match(/(?:\/\*)((?:.|\n|\r|\n\r)*?)(?:\*\/)/) || [])[1];
 
             if (isSound) {
-                this._config.setSoundSettingsByString(filepath, headComment);
-                rc = this._config.createSoundRc();
+                this.config.setSoundSettingsByString(filepath, headComment);
+                rc = this.config.createSoundRc();
             } else {
-                this._config.setFileSettingsByString(filepath, headComment);
-                rc = this._config.createRc();
+                this.config.setFileSettingsByString(filepath, headComment);
+                rc = this.config.createRc();
             }
 
             if (rc.glslify) {
@@ -280,18 +280,18 @@ export default class GlslLivecoder {
         })
         .then(() => {
             if (!isSound) {
-                return validator(this._glslangValidatorPath, shader, postfix);
+                return validator(this.glslangValidatorPath, shader, postfix);
             }
             return;
         })
-        .then(() => this._createPasses(rc.PASSES, shader, postfix, dirname))
+        .then(() => this.createPasses(rc.PASSES, shader, postfix, dirname))
         .then(passes => {
             if (isSound) {
-                this._player.loadSoundShader(shader);
-                this._lastSoundShader = shader;
+                this.player.loadSoundShader(shader);
+                this.lastSoundShader = shader;
             } else {
-                this._player.loadShader(passes);
-                this._lastShader = passes;
+                this.player.loadShader(passes);
+                this.lastShader = passes;
             }
         })
         .catch(e => {

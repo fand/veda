@@ -15,32 +15,32 @@ type PlayerState = {
 }
 
 export default class PlayerServer implements Playable {
-    _port: number;
-    _state: PlayerState;
-    _io: any;
-    _server: ChildProcess;
+    private port: number;
+    private state: PlayerState;
+    private io: any;
+    private server: ChildProcess;
 
     constructor(port: number, state: PlayerState) {
-        this._port = port;
-        this._state = state;
-        this._server = spawn('node', [path.resolve(__dirname, 'server.js'), port.toString(), this._state.projectPath], {
+        this.port = port;
+        this.state = state;
+        this.server = spawn('node', [path.resolve(__dirname, 'server.js'), port.toString(), this.state.projectPath], {
             cwd: path.resolve(__dirname, '..'),
         });
-        this._server.stdout.on('data', this.stdout);
-        this._server.stderr.on('data', this.stderr);
-        this._server.on('exit', this.exit);
-        this._io = io(`http://localhost:${port}`);
-        this._io.on('ready', () => {
-            const newState = cloneDeep(this._state);
-            newState.rc.IMPORTED = this._convertPaths(newState.rc.IMPORTED);
-            this._io.emit('create', newState);
+        this.server.stdout.on('data', this.stdout);
+        this.server.stderr.on('data', this.stderr);
+        this.server.on('exit', this.exit);
+        this.io = io(`http://localhost:${port}`);
+        this.io.on('ready', () => {
+            const newState = cloneDeep(this.state);
+            newState.rc.IMPORTED = this.convertPaths(newState.rc.IMPORTED);
+            this.io.emit('create', newState);
         });
     }
 
     destroy() {
-        this._io.emit('destroy');
+        this.io.emit('destroy');
         try {
-            this._server.kill();
+            this.server.kill();
         } catch (e) {
             console.error(e);
         }
@@ -50,46 +50,46 @@ export default class PlayerServer implements Playable {
         const rcDiff = cloneDeep(_rcDiff);
 
         // Convert paths to URLs
-        rcDiff.newConfig.IMPORTED = this._convertPaths(rcDiff.newConfig.IMPORTED);
-        rcDiff.added.IMPORTED = this._convertPaths(rcDiff.added.IMPORTED);
-        rcDiff.removed.IMPORTED = this._convertPaths(rcDiff.removed.IMPORTED);
+        rcDiff.newConfig.IMPORTED = this.convertPaths(rcDiff.newConfig.IMPORTED);
+        rcDiff.added.IMPORTED = this.convertPaths(rcDiff.added.IMPORTED);
+        rcDiff.removed.IMPORTED = this.convertPaths(rcDiff.removed.IMPORTED);
 
-        this._io.emit('onChange', rcDiff);
+        this.io.emit('onChange', rcDiff);
     }
 
     onChangeSound(_rcDiff: RcDiff): Promise<void> {
         const rcDiff = cloneDeep(_rcDiff);
 
         // Convert paths to URLs
-        rcDiff.newConfig.IMPORTED = this._convertPaths(rcDiff.newConfig.IMPORTED);
-        rcDiff.added.IMPORTED = this._convertPaths(rcDiff.added.IMPORTED);
-        rcDiff.removed.IMPORTED = this._convertPaths(rcDiff.removed.IMPORTED);
+        rcDiff.newConfig.IMPORTED = this.convertPaths(rcDiff.newConfig.IMPORTED);
+        rcDiff.added.IMPORTED = this.convertPaths(rcDiff.added.IMPORTED);
+        rcDiff.removed.IMPORTED = this.convertPaths(rcDiff.removed.IMPORTED);
 
-        this._io.emit('onChangeSound', rcDiff);
+        this.io.emit('onChangeSound', rcDiff);
 
         return Promise.resolve();
     }
 
-    _convertPaths(IMPORTED: ImportedHash) {
+    private convertPaths(IMPORTED: ImportedHash) {
         Object.keys(IMPORTED).forEach(key => {
             if (!IMPORTED[key].PATH.match(/^(?:https?:)?\/\//)) {
                 // Get relative path from projectPath
-                const relativePath = path.relative(this._state.projectPath, IMPORTED[key].PATH);
-                IMPORTED[key].PATH = `http://localhost:${this._port}/link/${relativePath}`;
+                const relativePath = path.relative(this.state.projectPath, IMPORTED[key].PATH);
+                IMPORTED[key].PATH = `http://localhost:${this.port}/link/${relativePath}`;
             }
         });
         return IMPORTED;
     }
 
     play() {
-        this._io.emit('play');
+        this.io.emit('play');
     }
 
     stop() {
-        this._io.emit('stop');
+        this.io.emit('stop');
 
         try {
-            this._server.kill();
+            this.server.kill();
         } catch (e) {
             console.error(e);
         }
@@ -98,24 +98,24 @@ export default class PlayerServer implements Playable {
     }
 
     loadShader(shader: Shader) {
-        this._io.emit('loadShader', shader);
-        this._state.lastShader = shader;
+        this.io.emit('loadShader', shader);
+        this.state.lastShader = shader;
     }
 
     loadSoundShader(shader: string) {
-        this._io.emit('loadSoundShader', shader);
+        this.io.emit('loadSoundShader', shader);
     }
 
     playSound() {
-        this._io.emit('playSound');
+        this.io.emit('playSound');
     }
 
     stopSound() {
-        this._io.emit('stopSound');
+        this.io.emit('stopSound');
     }
 
     setOsc(name: string, data: number[]) {
-        this._io.emit('setOsc', { name, data });
+        this.io.emit('setOsc', { name, data });
     }
 
     stdout = (output: Buffer) => {
@@ -128,6 +128,6 @@ export default class PlayerServer implements Playable {
 
     exit = (code: number) => {
         console.log('[VEDA] Server exited with code', code);
-        this._io.emit('stop');
+        this.io.emit('stop');
     }
 }

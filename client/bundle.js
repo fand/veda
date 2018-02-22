@@ -58453,60 +58453,60 @@ const player_1 = __webpack_require__(375);
 const view_1 = __webpack_require__(391);
 class PlayerClient {
     constructor() {
-        this._player = null;
-        this._wrapper = document.body;
-        this._timer = null;
+        this.player = null;
+        this.wrapper = document.body;
+        this.timer = null;
         this.poll = () => {
-            this._socket.emit('ready');
-            this._timer = setTimeout(this.poll, 1000);
+            this.socket.emit('ready');
+            this.timer = setTimeout(this.poll, 1000);
         };
-        this._socket = io({
+        this.socket = io({
             autoConnect: false,
         });
-        this._socket.on('create', ({ rc, isPlaying, lastShader }) => {
-            if (this._timer) {
-                clearTimeout(this._timer);
+        this.socket.on('create', ({ rc, isPlaying, lastShader }) => {
+            if (this.timer) {
+                clearTimeout(this.timer);
             }
-            if (!this._player) {
-                const view = new view_1.default(this._wrapper);
-                this._player = new player_1.default(view, rc, isPlaying, lastShader);
+            if (!this.player) {
+                const view = new view_1.default(this.wrapper);
+                this.player = new player_1.default(view, rc, isPlaying, lastShader);
             }
         });
-        this._socket.on('destroy', () => {
-            this._player && this._player.destroy();
+        this.socket.on('destroy', () => {
+            this.player && this.player.destroy();
         });
-        this._socket.on('onChange', (rcDiff) => {
-            this._player && this._player.onChange(rcDiff);
+        this.socket.on('onChange', (rcDiff) => {
+            this.player && this.player.onChange(rcDiff);
         });
-        this._socket.on('onChangeSound', (rcDiff) => {
-            this._player && this._player.onChangeSound(rcDiff);
+        this.socket.on('onChangeSound', (rcDiff) => {
+            this.player && this.player.onChangeSound(rcDiff);
         });
-        this._socket.on('play', () => this._player && this._player.play());
-        this._socket.on('stop', () => this._player && this._player.stop());
-        this._socket.on('loadShader', (shader) => {
+        this.socket.on('play', () => this.player && this.player.play());
+        this.socket.on('stop', () => this.player && this.player.stop());
+        this.socket.on('loadShader', (shader) => {
             console.log('[VEDA] Updated shader', shader);
-            this._player && this._player.loadShader(shader);
+            this.player && this.player.loadShader(shader);
         });
-        this._socket.on('loadSoundShader', (shader) => {
-            this._player && this._player.loadSoundShader(shader);
+        this.socket.on('loadSoundShader', (shader) => {
+            this.player && this.player.loadSoundShader(shader);
         });
-        this._socket.on('playSound', () => this._player && this._player.playSound());
-        this._socket.on('stopSound', () => this._player && this._player.stopSound());
-        this._socket.on('setOsc', (msg) => {
-            if (this._player) {
-                this._player.setOsc(msg.name, msg.data);
+        this.socket.on('playSound', () => this.player && this.player.playSound());
+        this.socket.on('stopSound', () => this.player && this.player.stopSound());
+        this.socket.on('setOsc', (msg) => {
+            if (this.player) {
+                this.player.setOsc(msg.name, msg.data);
             }
         });
-        this._socket.on('connect', () => {
+        this.socket.on('connect', () => {
             console.log('[VEDA] Connected to the server');
             this.poll();
         });
-        this._socket.on('disconnect', () => {
+        this.socket.on('disconnect', () => {
             console.log('[VEDA] Disconnected');
         });
     }
     connect() {
-        this._socket.open();
+        this.socket.open();
     }
 }
 exports.default = PlayerClient;
@@ -61664,9 +61664,9 @@ const vedajs_1 = __webpack_require__(376);
 const THREE = __webpack_require__(390);
 class Player {
     constructor(view, rc, isPlaying, shader) {
-        this._textures = {};
-        this._resize = () => {
-            this._veda.resize(window.innerWidth, window.innerHeight);
+        this.textures = {};
+        this.resize = () => {
+            this.veda.resize(window.innerWidth, window.innerHeight);
         };
         this.onChange = ({ newConfig, added, removed }) => {
             console.log('Update config', newConfig);
@@ -61676,43 +61676,43 @@ class Player {
             });
             Object.keys(removed.IMPORTED).forEach(key => {
                 const path = removed.IMPORTED[key].PATH;
-                this._veda.unloadTexture(key, path, !importedPaths[path]);
+                this.veda.unloadTexture(key, path, !importedPaths[path]);
             });
             Object.keys(added.IMPORTED || {}).forEach(key => {
-                this._veda.loadTexture(key, added.IMPORTED[key].PATH, added.IMPORTED[key].SPEED);
+                this.veda.loadTexture(key, added.IMPORTED[key].PATH, added.IMPORTED[key].SPEED);
             });
             if (added.vertexMode) {
-                this._veda.setVertexMode(added.vertexMode);
+                this.veda.setVertexMode(added.vertexMode);
             }
             if (added.vertexCount) {
-                this._veda.setVertexCount(added.vertexCount);
+                this.veda.setVertexCount(added.vertexCount);
             }
             if (added.pixelRatio) {
-                this._veda.setPixelRatio(added.pixelRatio);
+                this.veda.setPixelRatio(added.pixelRatio);
             }
             if (added.frameskip) {
-                this._veda.setFrameskip(added.frameskip);
+                this.veda.setFrameskip(added.frameskip);
             }
             if (added.fftSize !== undefined) {
-                this._veda.setFftSize(added.fftSize);
+                this.veda.setFftSize(added.fftSize);
             }
             if (added.fftSmoothingTimeConstant !== undefined) {
-                this._veda.setFftSmoothingTimeConstant(added.fftSmoothingTimeConstant);
+                this.veda.setFftSmoothingTimeConstant(added.fftSmoothingTimeConstant);
             }
             if (added.audio !== undefined) {
-                this._veda.toggleAudio(added.audio);
+                this.veda.toggleAudio(added.audio);
             }
             if (added.midi !== undefined) {
-                this._veda.toggleMidi(added.midi);
+                this.veda.toggleMidi(added.midi);
             }
             if (added.keyboard !== undefined) {
-                this._veda.toggleKeyboard(added.keyboard);
+                this.veda.toggleKeyboard(added.keyboard);
             }
             if (added.gamepad !== undefined) {
-                this._veda.toggleGamepad(added.gamepad);
+                this.veda.toggleGamepad(added.gamepad);
             }
             if (added.camera !== undefined) {
-                this._veda.toggleCamera(added.camera);
+                this.veda.toggleCamera(added.camera);
             }
         };
         this.onChangeSound = ({ newConfig, added, removed }) => __awaiter(this, void 0, void 0, function* () {
@@ -61723,36 +61723,36 @@ class Player {
             });
             Object.keys(removed.IMPORTED).forEach(key => {
                 const path = removed.IMPORTED[key].PATH;
-                this._veda.unloadTexture(key, path, !importedPaths[path]);
+                this.veda.unloadTexture(key, path, !importedPaths[path]);
             });
             yield Promise.all(Object.keys(added.IMPORTED || {}).map(key => {
-                return this._veda.loadTexture(key, added.IMPORTED[key].PATH, added.IMPORTED[key].SPEED);
+                return this.veda.loadTexture(key, added.IMPORTED[key].PATH, added.IMPORTED[key].SPEED);
             }));
             if (added.audio !== undefined) {
-                this._veda.toggleAudio(added.audio);
+                this.veda.toggleAudio(added.audio);
             }
             if (added.midi !== undefined) {
-                this._veda.toggleMidi(added.midi);
+                this.veda.toggleMidi(added.midi);
             }
             if (added.keyboard !== undefined) {
-                this._veda.toggleKeyboard(added.keyboard);
+                this.veda.toggleKeyboard(added.keyboard);
             }
             if (added.gamepad !== undefined) {
-                this._veda.toggleGamepad(added.gamepad);
+                this.veda.toggleGamepad(added.gamepad);
             }
             if (added.camera !== undefined) {
-                this._veda.toggleCamera(added.camera);
+                this.veda.toggleCamera(added.camera);
             }
             if (added.soundLength !== undefined) {
-                this._veda.setSoundLength(added.soundLength);
+                this.veda.setSoundLength(added.soundLength);
             }
         });
-        this._view = view;
-        this._veda = new vedajs_1.default(Object.assign({}, rc));
-        this._veda.setCanvas(this._view.getCanvas());
-        window.addEventListener('resize', this._resize);
+        this.view = view;
+        this.veda = new vedajs_1.default(Object.assign({}, rc));
+        this.veda.setCanvas(this.view.getCanvas());
+        window.addEventListener('resize', this.resize);
         Object.keys(rc.IMPORTED || {}).forEach(key => {
-            this._veda.loadTexture(key, rc.IMPORTED[key].PATH, rc.IMPORTED[key].SPEED);
+            this.veda.loadTexture(key, rc.IMPORTED[key].PATH, rc.IMPORTED[key].SPEED);
         });
         this.onChange({
             newConfig: rc,
@@ -61765,33 +61765,33 @@ class Player {
         }
     }
     destroy() {
-        this._veda.stop();
-        this._veda.stopSound();
-        window.addEventListener('resize', this._resize);
-        this._view.destroy();
+        this.veda.stop();
+        this.veda.stopSound();
+        window.addEventListener('resize', this.resize);
+        this.view.destroy();
     }
     play() {
-        this._view.show();
-        this._veda.play();
+        this.view.show();
+        this.veda.play();
     }
     stop() {
-        this._view.hide();
-        this._veda.stop();
+        this.view.hide();
+        this.veda.stop();
     }
     loadShader(shader) {
-        this._veda.loadShader(shader);
+        this.veda.loadShader(shader);
     }
     loadSoundShader(fs) {
-        this._veda.loadSoundShader(fs);
+        this.veda.loadSoundShader(fs);
     }
     playSound() {
-        this._veda.playSound();
+        this.veda.playSound();
     }
     stopSound() {
-        this._veda.stopSound();
+        this.veda.stopSound();
     }
     setOsc(name, data) {
-        const texture = this._textures[name];
+        const texture = this.textures[name];
         if (!texture || texture.image.data.length !== data.length) {
             if (texture) {
                 texture.dispose();
@@ -61799,8 +61799,8 @@ class Player {
             const array = new Float32Array(data);
             const newTexture = new THREE.DataTexture(array, data.length, 1, THREE.LuminanceFormat, THREE.FloatType);
             newTexture.needsUpdate = true;
-            this._textures[name] = newTexture;
-            this._veda.setUniform(name, 't', newTexture);
+            this.textures[name] = newTexture;
+            this.veda.setUniform(name, 't', newTexture);
         }
         else {
             data.forEach((d, i) => {
@@ -61808,9 +61808,6 @@ class Player {
             });
             texture.needsUpdate = true;
         }
-    }
-    Shader(shader) {
-        this._veda.loadShader(shader);
     }
 }
 exports.default = Player;
@@ -109107,18 +109104,18 @@ function CanvasRenderer() {
 Object.defineProperty(exports, "__esModule", { value: true });
 class View {
     constructor(wrapper) {
-        this._wrapper = wrapper;
-        this._element = document.createElement('div');
-        this._element.classList.add('veda');
-        this._canvas = document.createElement('canvas');
-        this._element.appendChild(this._canvas);
-        this._wrapper.appendChild(this._element);
+        this.wrapper = wrapper;
+        this.element = document.createElement('div');
+        this.element.classList.add('veda');
+        this.canvas = document.createElement('canvas');
+        this.element.appendChild(this.canvas);
+        this.wrapper.appendChild(this.element);
     }
     destroy() {
-        this._element.remove();
+        this.element.remove();
     }
     getCanvas() {
-        return this._canvas;
+        return this.canvas;
     }
     show() {
         document.body.classList.add('veda-enabled');

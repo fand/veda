@@ -5,24 +5,24 @@ import { EventEmitter } from 'events';
 
 export default class OscLoader extends EventEmitter {
     port: number;
-    _server: ChildProcess;
-    _addresses: { [address: string]: boolean } = {};
+    private server: ChildProcess;
+    private addresses: { [address: string]: boolean } = {};
 
     constructor(port: number) {
         super();
 
         this.port = port;
-        this._server = spawn('node', [path.resolve(__dirname, 'osc-server.js'), this.port.toString()], {
+        this.server = spawn('node', [path.resolve(__dirname, 'osc-server.js'), this.port.toString()], {
             cwd: path.resolve(__dirname, '..'),
         });
-        this._server.stdout.on('data', this.stdout);
-        this._server.stderr.on('data', this.stderr);
-        this._server.on('exit', this.exit);
+        this.server.stdout.on('data', this.stdout);
+        this.server.stderr.on('data', this.stderr);
+        this.server.on('exit', this.exit);
     }
 
     destroy() {
         try {
-            this._server.kill();
+            this.server.kill();
         } catch (e) {
             console.error(e);
         }
@@ -42,8 +42,8 @@ export default class OscLoader extends EventEmitter {
 
                 // If the address is never used before,
                 // VEDA have to reload the last shader to use the texture
-                if (!this._addresses[msg.address]) {
-                    this._addresses[msg.address] = true;
+                if (!this.addresses[msg.address]) {
+                    this.addresses[msg.address] = true;
                     this.emit('reload');
                 }
             } else {

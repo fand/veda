@@ -128,16 +128,15 @@ function parseImported(projectPath: string, importedHash?: ImportedHash): Import
 }
 
 export default class Config extends EventEmitter {
-    _globalRc: RcFragment = {};
-    _projectRc: RcFragment = {};
-    _fileRc: RcFragment = {};
-    _soundRc: RcFragment = {};
     rc: Rc;
     soundRc: Rc;
-    _lastImportedHash = {};
-
     projectPath: string;
-    _isWatching: boolean = false;
+
+    private globalRc: RcFragment = {};
+    private projectRc: RcFragment = {};
+    private fileRc: RcFragment = {};
+    private soundFileRc: RcFragment = {};
+    private isWatching: boolean = false;
 
     constructor(projectPath: string, rc: RcFragment) {
         super();
@@ -157,32 +156,32 @@ export default class Config extends EventEmitter {
     }
 
     play(): void {
-        this._isWatching = true;
+        this.isWatching = true;
         this.load();
     }
 
     stop(): void {
-        this._isWatching = false;
+        this.isWatching = false;
         this.rc = DEFAULT_RC;
         this.soundRc = DEFAULT_RC;
     }
 
-    _readConfigFile = (filename: string) => {
+    private readConfigFile = (filename: string) => {
         return p(fs.readFile)(path.resolve(this.projectPath, filename), 'utf8').then(data => ({ filename, data }));
     }
 
     load = (): Promise<void> | null => {
-        if (!this._isWatching) {
+        if (!this.isWatching) {
             return null;
         }
 
         // Load .liverc or .vedarc
-        return this._readConfigFile('.liverc')
+        return this.readConfigFile('.liverc')
         .then(d => {
             console.log('[VEDA] `.liverc` is deprecated. Use `.vedarc` instead.');
             return d;
         })
-        .catch(() => this._readConfigFile('.vedarc'))
+        .catch(() => this.readConfigFile('.vedarc'))
         .then(({ filename, data }) => {
             try {
                 const rc = JSON5.parse(data);
@@ -199,30 +198,30 @@ export default class Config extends EventEmitter {
 
     createRc(): Rc {
         const IMPORTED: ImportedHash = {
-            ...this._projectRc.IMPORTED,
-            ...this._fileRc.IMPORTED,
+            ...this.projectRc.IMPORTED,
+            ...this.fileRc.IMPORTED,
         };
 
         return {
             ...DEFAULT_RC,
-            ...this._globalRc,
-            ...this._projectRc,
-            ...this._fileRc,
+            ...this.globalRc,
+            ...this.projectRc,
+            ...this.fileRc,
             IMPORTED,
         };
     }
 
     createSoundRc(): Rc {
         const IMPORTED: ImportedHash = {
-            ...this._projectRc.IMPORTED,
-            ...this._soundRc.IMPORTED,
+            ...this.projectRc.IMPORTED,
+            ...this.soundFileRc.IMPORTED,
         };
 
         return {
             ...DEFAULT_RC,
-            ...this._globalRc,
-            ...this._projectRc,
-            ...this._soundRc,
+            ...this.globalRc,
+            ...this.projectRc,
+            ...this.soundFileRc,
             IMPORTED,
         };
     }
@@ -230,26 +229,26 @@ export default class Config extends EventEmitter {
     setGlobalSettings(rc: RcFragment) {
         // _globalRc must be extended everytime,
         // because setGlobalSettings can be called for properties one by one.
-        this._globalRc = { ...this._globalRc, ...rc };
+        this.globalRc = { ...this.globalRc, ...rc };
         this.onChange();
     }
 
     setProjectSettings(rc: RcFragment) {
-        this._projectRc = rc;
+        this.projectRc = rc;
         this.onChange();
     }
 
     setFileSettings(rc: RcFragment) {
-        this._fileRc = rc;
+        this.fileRc = rc;
         this.onChange();
     }
 
     setSoundSettings(rc: RcFragment) {
-        this._soundRc = rc;
+        this.soundFileRc = rc;
         this.onChangeSound();
     }
 
-    _parseComment(filepath: string, comment: string): RcFragment {
+    private parseComment(filepath: string, comment: string): RcFragment {
         let rc: RcFragment = {};
         try {
             rc = JSON5.parse(comment);
@@ -264,26 +263,26 @@ export default class Config extends EventEmitter {
     }
 
     setFileSettingsByString(filepath: string, comment: string) {
-        this.setFileSettings(this._parseComment(filepath, comment));
+        this.setFileSettings(this.parseComment(filepath, comment));
     }
 
     setSoundSettingsByString(filepath: string, comment: string) {
-        this.setSoundSettings(this._parseComment(filepath, comment));
+        this.setSoundSettings(this.parseComment(filepath, comment));
     }
 
     onChange = throttle(() => {
         const newRc = this.createRc();
-        this.emit('change', this._getDiff(this.rc, newRc));
+        this.emit('change', this.getDiff(this.rc, newRc));
         this.rc = newRc;
     }, 100)
 
     onChangeSound = throttle(() => {
         const newRc = this.createSoundRc();
-        this.emit('changeSound', this._getDiff(this.soundRc, newRc));
+        this.emit('changeSound', this.getDiff(this.soundRc, newRc));
         this.soundRc = newRc;
     }, 100)
 
-    _getDiff(oldObj: Rc, newObj: Rc) {
+    private getDiff(oldObj: Rc, newObj: Rc) {
         const diff: RcDiff = {
             newConfig: newObj,
             added: { IMPORTED: {} },
