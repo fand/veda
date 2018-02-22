@@ -2,9 +2,9 @@ import * as path from 'path';
 import glslify from 'glslify';
 import View from './view';
 import { validator, loadFile } from './validator';
-import { Shader, SoundShader } from './constants';
-import Config, { Rc, RcDiff } from './config';
-import { Playable } from './playable';
+import { IShader, ISoundShader } from './constants';
+import Config, { IRc, IRcDiff } from './config';
+import { IPlayable } from './playable';
 import Player from './player';
 import PlayerServer from './player-server';
 import { INITIAL_SHADER, INITIAL_SOUND_SHADER } from './constants';
@@ -12,19 +12,19 @@ import OscLoader from './osc-loader';
 
 declare var atom: any;
 type TextEditor = any;
-type GlslLivecoderState = {
+interface IGlslLivecoderState {
     isPlaying: boolean;
     activeEditorDisposer?: any;
     editorDisposer?: any;
     editor?: TextEditor;
-};
+}
 
 export default class GlslLivecoder {
-    private player: Playable;
-    private state: GlslLivecoderState;
+    private player: IPlayable;
+    private state: IGlslLivecoderState;
     private glslangValidatorPath: string;
-    private lastShader: Shader = INITIAL_SHADER;
-    private lastSoundShader: SoundShader = INITIAL_SOUND_SHADER;
+    private lastShader: IShader = INITIAL_SHADER;
+    private lastSoundShader: ISoundShader = INITIAL_SOUND_SHADER;
     private osc: OscLoader | null = null;
 
     private config: Config;
@@ -52,7 +52,7 @@ export default class GlslLivecoder {
         }
     }
 
-    private onAnyChanges = ({ added }: RcDiff) => {
+    private onAnyChanges = ({ added }: IRcDiff) => {
         if (added.glslangValidatorPath) {
             this.glslangValidatorPath = added.glslangValidatorPath;
         }
@@ -93,13 +93,13 @@ export default class GlslLivecoder {
         }
     }
 
-    private onChange = (rcDiff: RcDiff) => {
+    private onChange = (rcDiff: IRcDiff) => {
         this.onAnyChanges(rcDiff);
         this.player.onChange(rcDiff);
         this.loadLastShader();
     }
 
-    private onChangeSound = (rcDiff: RcDiff) => {
+    private onChangeSound = (rcDiff: IRcDiff) => {
         this.onAnyChanges(rcDiff);
         this.player.onChangeSound(rcDiff).then(() => {
             this.loadLastSoundShader();
@@ -261,7 +261,7 @@ export default class GlslLivecoder {
 
         let shader = editor.getText();
 
-        let rc: Rc;
+        let rc: IRc;
         return Promise.resolve()
         .then(() => {
             const headComment = (shader.match(/(?:\/\*)((?:.|\n|\r|\n\r)*?)(?:\*\/)/) || [])[1];

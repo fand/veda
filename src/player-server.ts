@@ -3,24 +3,24 @@ import { spawn } from 'child_process';
 import * as io from 'socket.io-client';
 import { cloneDeep } from 'lodash';
 import { ChildProcess } from 'child_process';
-import { Rc, RcDiff, ImportedHash } from './config';
-import { Playable } from './playable';
-import { Shader } from './constants';
+import { IRc, IRcDiff, IImportedHash } from './config';
+import { IPlayable } from './playable';
+import { IShader } from './constants';
 
-type PlayerState = {
-    rc: Rc;
+interface IPlayerState {
+    rc: IRc;
     isPlaying: boolean;
     projectPath: string;
-    lastShader: Shader;
+    lastShader: IShader;
 }
 
-export default class PlayerServer implements Playable {
+export default class PlayerServer implements IPlayable {
     private port: number;
-    private state: PlayerState;
+    private state: IPlayerState;
     private io: any;
     private server: ChildProcess;
 
-    constructor(port: number, state: PlayerState) {
+    constructor(port: number, state: IPlayerState) {
         this.port = port;
         this.state = state;
         this.server = spawn('node', [path.resolve(__dirname, 'server.js'), port.toString(), this.state.projectPath], {
@@ -46,7 +46,7 @@ export default class PlayerServer implements Playable {
         }
     }
 
-    onChange(_rcDiff: RcDiff): void {
+    onChange(_rcDiff: IRcDiff): void {
         const rcDiff = cloneDeep(_rcDiff);
 
         // Convert paths to URLs
@@ -57,7 +57,7 @@ export default class PlayerServer implements Playable {
         this.io.emit('onChange', rcDiff);
     }
 
-    onChangeSound(_rcDiff: RcDiff): Promise<void> {
+    onChangeSound(_rcDiff: IRcDiff): Promise<void> {
         const rcDiff = cloneDeep(_rcDiff);
 
         // Convert paths to URLs
@@ -70,7 +70,7 @@ export default class PlayerServer implements Playable {
         return Promise.resolve();
     }
 
-    private convertPaths(IMPORTED: ImportedHash) {
+    private convertPaths(IMPORTED: IImportedHash) {
         Object.keys(IMPORTED).forEach(key => {
             if (!IMPORTED[key].PATH.match(/^(?:https?:)?\/\//)) {
                 // Get relative path from projectPath
@@ -97,7 +97,7 @@ export default class PlayerServer implements Playable {
         atom.notifications.addSuccess('[VEDA] Server stopped');
     }
 
-    loadShader(shader: Shader) {
+    loadShader(shader: IShader) {
         this.io.emit('loadShader', shader);
         this.state.lastShader = shader;
     }

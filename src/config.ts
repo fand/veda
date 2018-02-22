@@ -6,21 +6,26 @@ import * as p from 'pify';
 import { throttle } from 'lodash';
 
 // type Sound = 'LOOP';
-type Imported = {
+interface IImported {
     PATH: string;
     SPEED?: number;
-};
-export type ImportedHash = { [key: string]: Imported; };
-export type RcPass = {
+}
+
+export interface IImportedHash {
+    [key: string]: IImported;
+}
+
+export interface IRcPass {
     TARGET?: string;
     vs?: string;
     fs?: string;
     FLOAT?: boolean;
-};
-export type Rc = {
+}
+
+export interface IRc {
     glslangValidatorPath: string;
-    IMPORTED: ImportedHash;
-    PASSES: RcPass[];
+    IMPORTED: IImportedHash;
+    PASSES: IRcPass[];
     pixelRatio: number;
     frameskip: number;
     vertexMode: string;
@@ -38,7 +43,8 @@ export type Rc = {
     // sound: Sound | null;
     soundLength: number;
 }
-type RcFragmentWithoutImported = {
+
+interface IRcFragmentWithoutImported {
     glslangValidatorPath?: string;
     pixelRatio?: number;
     frameskip?: number;
@@ -56,20 +62,22 @@ type RcFragmentWithoutImported = {
     osc?: number | null;
     // sound?: Sound | null;
     soundLength?: number;
-};
-type RcFragment = RcFragmentWithoutImported & {
-    IMPORTED?: ImportedHash;
-    PASSES?: RcPass[];
-}
-type RcDiffFragment = RcFragmentWithoutImported & {
-    IMPORTED: ImportedHash;
-    PASSES?: RcPass[];
 }
 
-export type RcDiff = {
-    newConfig: Rc;
-    added: RcDiffFragment;
-    removed: RcDiffFragment;
+interface IRcFragment extends IRcFragmentWithoutImported {
+    IMPORTED?: IImportedHash;
+    PASSES?: IRcPass[];
+}
+
+interface IRcDiffFragment extends IRcFragmentWithoutImported {
+    IMPORTED: IImportedHash;
+    PASSES?: IRcPass[];
+}
+
+export interface IRcDiff {
+    newConfig: IRc;
+    added: IRcDiffFragment;
+    removed: IRcDiffFragment;
 }
 
 const DEFAULT_RC = {
@@ -101,11 +109,11 @@ function resolvePath(val: string, projectPath: string): string {
     return path.resolve(projectPath, val);
 }
 
-function parseImported(projectPath: string, importedHash?: ImportedHash): ImportedHash | null {
+function parseImported(projectPath: string, importedHash?: IImportedHash): IImportedHash | null {
     if (!importedHash) {
         return null;
     }
-    const newImportedHash: ImportedHash = {};
+    const newImportedHash: IImportedHash = {};
 
     Object.keys(importedHash).forEach(key => {
         const imported = (importedHash as any)[key];
@@ -128,17 +136,17 @@ function parseImported(projectPath: string, importedHash?: ImportedHash): Import
 }
 
 export default class Config extends EventEmitter {
-    rc: Rc;
-    soundRc: Rc;
+    rc: IRc;
+    soundRc: IRc;
     projectPath: string;
 
-    private globalRc: RcFragment = {};
-    private projectRc: RcFragment = {};
-    private fileRc: RcFragment = {};
-    private soundFileRc: RcFragment = {};
+    private globalRc: IRcFragment = {};
+    private projectRc: IRcFragment = {};
+    private fileRc: IRcFragment = {};
+    private soundFileRc: IRcFragment = {};
     private isWatching: boolean = false;
 
-    constructor(projectPath: string, rc: RcFragment) {
+    constructor(projectPath: string, rc: IRcFragment) {
         super();
 
         this.rc = DEFAULT_RC;
@@ -196,8 +204,8 @@ export default class Config extends EventEmitter {
         });
     }
 
-    createRc(): Rc {
-        const IMPORTED: ImportedHash = {
+    createRc(): IRc {
+        const IMPORTED: IImportedHash = {
             ...this.projectRc.IMPORTED,
             ...this.fileRc.IMPORTED,
         };
@@ -211,8 +219,8 @@ export default class Config extends EventEmitter {
         };
     }
 
-    createSoundRc(): Rc {
-        const IMPORTED: ImportedHash = {
+    createSoundRc(): IRc {
+        const IMPORTED: IImportedHash = {
             ...this.projectRc.IMPORTED,
             ...this.soundFileRc.IMPORTED,
         };
@@ -226,30 +234,30 @@ export default class Config extends EventEmitter {
         };
     }
 
-    setGlobalSettings(rc: RcFragment) {
+    setGlobalSettings(rc: IRcFragment) {
         // _globalRc must be extended everytime,
         // because setGlobalSettings can be called for properties one by one.
         this.globalRc = { ...this.globalRc, ...rc };
         this.onChange();
     }
 
-    setProjectSettings(rc: RcFragment) {
+    setProjectSettings(rc: IRcFragment) {
         this.projectRc = rc;
         this.onChange();
     }
 
-    setFileSettings(rc: RcFragment) {
+    setFileSettings(rc: IRcFragment) {
         this.fileRc = rc;
         this.onChange();
     }
 
-    setSoundSettings(rc: RcFragment) {
+    setSoundSettings(rc: IRcFragment) {
         this.soundFileRc = rc;
         this.onChangeSound();
     }
 
-    private parseComment(filepath: string, comment: string): RcFragment {
-        let rc: RcFragment = {};
+    private parseComment(filepath: string, comment: string): IRcFragment {
+        let rc: IRcFragment = {};
         try {
             rc = JSON5.parse(comment);
         } catch (e) {}
@@ -274,16 +282,16 @@ export default class Config extends EventEmitter {
         const newRc = this.createRc();
         this.emit('change', this.getDiff(this.rc, newRc));
         this.rc = newRc;
-    }, 100)
+    }, 100);
 
     onChangeSound = throttle(() => {
         const newRc = this.createSoundRc();
         this.emit('changeSound', this.getDiff(this.soundRc, newRc));
         this.soundRc = newRc;
-    }, 100)
+    }, 100);
 
-    private getDiff(oldObj: Rc, newObj: Rc) {
-        const diff: RcDiff = {
+    private getDiff(oldObj: IRc, newObj: IRc) {
+        const diff: IRcDiff = {
             newConfig: newObj,
             added: { IMPORTED: {} },
             removed: { IMPORTED: {} },

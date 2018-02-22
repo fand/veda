@@ -21,7 +21,7 @@ export const INITIAL_SHADER = [{
     fs: INITIAL_FRAGMENT_SHADER,
 }];
 
-type Pass = {
+interface IPass {
     TARGET?: string;
     vs?: string;
     fs?: string;
@@ -30,7 +30,7 @@ type Pass = {
     HEIGHT?: string;
 }
 
-export type Shader = Pass[];
-export type SoundShader = string;
+export type IShader = IPass[];
+export type ISoundShader = string;
 
-export type VedaStatus = any;
+export type IVedaStatus = any;

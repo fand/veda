@@ -1,13 +1,13 @@
-import { Shader } from './constants';
-import { RcDiff } from './config';
+import { IShader } from './constants';
+import { IRcDiff } from './config';
 
-export interface Playable {
+export interface IPlayable {
     destroy: () => void;
-    onChange: (rcDiff: RcDiff) => void;
-    onChangeSound: (rcDiff: RcDiff) => Promise<void>;
+    onChange: (rcDiff: IRcDiff) => void;
+    onChangeSound: (rcDiff: IRcDiff) => Promise<void>;
     play: () => void;
     stop: () => void;
-    loadShader: (shader: Shader) => void;
+    loadShader: (shader: IShader) => void;
     playSound: () => void;
     stopSound: () => void;
     loadSoundShader: (fs: string) => void;

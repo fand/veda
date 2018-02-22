@@ -33,7 +33,10 @@ export default class Wrapper {
         atom.config.observe('veda.vertexMode', x => this.config.setGlobalSettings({ vertexMode: x }));
         atom.config.observe('veda.vertexCount', x => this.config.setGlobalSettings({ vertexCount: x }));
         atom.config.observe('veda.fftSize', x => this.config.setGlobalSettings({ fftSize: x }));
-        atom.config.observe('veda.fftSmoothingTimeConstant', x => this.config.setGlobalSettings({ fftSmoothingTimeConstant: x }));
+        atom.config.observe(
+            'veda.fftSmoothingTimeConstant',
+            x => this.config.setGlobalSettings({ fftSmoothingTimeConstant: x }),
+        );
 
         // Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
         this.subscriptions = new CompositeDisposable();
@@ -67,7 +70,7 @@ export default class Wrapper {
         }
         this.messages.clear();
         this.messages.add(new PlainMessageView({
-            message: message,
+            message,
             className: 'text-error',
         }));
     }
@@ -84,21 +87,21 @@ export default class Wrapper {
 
         // copied from https://github.com/AtomLinter/linter-glsl/blob/master/lib/linter-glsl.js
         if (fs.existsSync(path) && fs.statSync(path).isFile()) {
-        try {
-            fs.accessSync(path, (fs as any).X_OK);
-            result = path;
-        } catch (error) {
-            console.log(error);
+            try {
+                fs.accessSync(path, (fs as any).X_OK);
+                result = path;
+            } catch (error) {
+                console.log(error);
+            }
+        } else {
+            try {
+                result = which.sync(path);
+            } catch (error) {
+                console.log(error);
+            }
         }
-    } else {
-        try {
-            result = which.sync(path);
-        } catch (error) {
-            console.log(error);
-        }
-    }
 
-    return result;
+        return result;
     }
 
     setGlslangValidatorPath(glslangValidatorPath: string) {
@@ -119,7 +122,9 @@ export default class Wrapper {
             throw new Error('[VEDA] No projects found in this window');
         }
         if (projectPaths.length > 1) {
-            atom.notifications.addWarning('[VEDA] There are more than 1 project in this window. <br>veda only recognizes the 1st project.');
+            atom.notifications.addWarning(
+                '[VEDA] There are more than 1 project in this window. <br>veda only recognizes the 1st project.',
+            );
         }
         return projectPaths[0];
     }

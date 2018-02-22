@@ -1,16 +1,16 @@
 import Veda from 'vedajs';
 import View from './view';
-import { Rc, RcDiff } from './config';
-import { Playable } from './playable';
-import { Shader } from './constants';
+import { IRc, IRcDiff } from './config';
+import { IPlayable } from './playable';
+import { IShader } from './constants';
 import * as THREE from 'three';
 
-export default class Player implements Playable {
+export default class Player implements IPlayable {
     private view: View;
     private veda: Veda;
     private textures: { [name: string]: THREE.DataTexture } = {};
 
-    constructor(view: View, rc: Rc, isPlaying: boolean, shader: Shader) {
+    constructor(view: View, rc: IRc, isPlaying: boolean, shader: IShader) {
         this.view = view;
         this.veda = new Veda({ ...rc } as any);
         this.veda.setCanvas(this.view.getCanvas());
@@ -44,7 +44,7 @@ export default class Player implements Playable {
         this.veda.resize(window.innerWidth, window.innerHeight);
     }
 
-    onChange = ({ newConfig, added, removed }: RcDiff) => {
+    onChange = ({ newConfig, added, removed }: IRcDiff) => {
         console.log('Update config', newConfig);
         // Get paths for videos still in use
         const importedPaths: { [path: string]: boolean } = {};
@@ -94,7 +94,7 @@ export default class Player implements Playable {
         }
     }
 
-    onChangeSound = async ({ newConfig, added, removed }: RcDiff) => {
+    onChangeSound = async ({ newConfig, added, removed }: IRcDiff) => {
         console.log('Update config', newConfig);
         // Get paths for videos still in use
         const importedPaths: { [path: string]: boolean } = {};
@@ -139,7 +139,7 @@ export default class Player implements Playable {
         this.veda.stop();
     }
 
-    loadShader(shader: Shader): void {
+    loadShader(shader: IShader): void {
         this.veda.loadShader(shader);
     }
 

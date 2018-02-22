@@ -1,4 +1,4 @@
-import { VedaStatus } from './constants';
+import { IVedaStatus } from './constants';
 import Wrapper from './wrapper';
 
 let wrapper: Wrapper | null = null;
@@ -8,7 +8,9 @@ module.exports = {
     config: {
         glslangValidatorPath: {
             title: 'glslangValidator path',
-            description: 'VEDA uses glslangValidator. Install it from https://github.com/KhronosGroup/glslang or homebrew.',
+            description: `
+                VEDA uses glslangValidator. Install it from https://github.com/KhronosGroup/glslang or homebrew.
+            `.trim(),
             type: 'string',
             default: 'glslangValidator',
             order: 1,
@@ -75,12 +77,12 @@ module.exports = {
         },
     },
 
-    activate(state: VedaStatus) {
+    activate(state: IVedaStatus) {
         require('atom-package-deps').install('veda')
         .then(() => this._activate(state));
     },
 
-    _activate(state: VedaStatus) {
+    _activate(state: IVedaStatus) {
         wrapper = new Wrapper(state);
     },
 
