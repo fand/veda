@@ -1,8 +1,8 @@
-## 2.7.0
+## 2.6.0
 
 * Moved from Flowtype to TypeScript
 
-## 2.6.0
+## 2.5.2
 
 * Support `WIDTH` `HEIGHT` in `PASSES`
 
