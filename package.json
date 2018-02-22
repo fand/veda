@@ -78,7 +78,14 @@
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.{ts}": ["tslint --fix", "git add"]
+    "*.{ts}": [
+      "tslint --fix",
+      "git add"
+    ],
+    "*.{md}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "ava": {
     "require": [

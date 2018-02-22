@@ -1,14 +1,14 @@
 <div align="center">
-  <img alt="logo" src="https://user-images.githubusercontent.com/1403842/28923702-d8155d46-7899-11e7-817b-1193d138e5b8.png" width="192"/>  
+  <img alt="logo" src="https://user-images.githubusercontent.com/1403842/28923702-d8155d46-7899-11e7-817b-1193d138e5b8.png" width="192"/>
 </div>
 
 <div align="center">
   <h1>VEDA</h1>
   <i>VJ / Live Coding on Atom with GLSL.</i>
   <br>
-  <br>  
   <br>
-  <img alt="screenshot" src="https://user-images.githubusercontent.com/1403842/28673275-1d42b062-731d-11e7-92b0-bde5ca1f1cae.gif" style="width: 100% !important;"/>  
+  <br>
+  <img alt="screenshot" src="https://user-images.githubusercontent.com/1403842/28673275-1d42b062-731d-11e7-92b0-bde5ca1f1cae.gif" style="width: 100% !important;"/>
   <br>
   <br>
 </div>
@@ -18,20 +18,19 @@
 ![TravisCI](https://img.shields.io/travis/fand/veda.svg)
 ![apm version](https://img.shields.io/apm/v/veda.svg)
 ![license MIT](https://img.shields.io/apm/l/veda.svg)
-![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 [![Greenkeeper badge](https://badges.greenkeeper.io/fand/veda.svg)](https://greenkeeper.io/)
+
 </div>
 <br>
 <br>
 
-
 ##### TOC
 
-- [Features](#features)
-- [Install](#install)
-- [Usage](#usage)
-- [Examples](#examples)
-
+* [Features](#features)
+* [Install](#install)
+* [Usage](#usage)
+* [Examples](#examples)
 
 ## What's this?
 
@@ -42,25 +41,23 @@ Moreover, It supports Audio inputs , MIDI inputs, loading videos and images, etc
 
 `VEDA` has following features.
 
-- Fragment shaders runtime like [GLSL Sandbox](http://glslsandbox.com/)
-- Vertex shader runtime like [vertexshaderart.com](https://www.vertexshaderart.com/)
-- Loading images / videos
-- Additional `uniform` variables useful for live coding
-  - Audio input
-  - MIDI input
-  - OSC input
-  - Webcam input
-  - Keyboard input
-  - Gamepad input
-- Auto completion (thx to [autocomplete-glsl](https://atom.io/packages/autocomplete-glsl/))
-- Linting (thx to [linter-glsl](https://atom.io/packages/linter-glsl/))
-
+* Fragment shaders runtime like [GLSL Sandbox](http://glslsandbox.com/)
+* Vertex shader runtime like [vertexshaderart.com](https://www.vertexshaderart.com/)
+* Loading images / videos
+* Additional `uniform` variables useful for live coding
+  * Audio input
+  * MIDI input
+  * OSC input
+  * Webcam input
+  * Keyboard input
+  * Gamepad input
+* Auto completion (thx to [autocomplete-glsl](https://atom.io/packages/autocomplete-glsl/))
+* Linting (thx to [linter-glsl](https://atom.io/packages/linter-glsl/))
 
 ## Tutorial
 
-- [English](https://medium.com/@amagitakayosi/vj-live-coding-on-atom-glsl-livecoder-329eec5462df)
-- [日本語](http://blog.gmork.in/entry/2017/08/04/173000)
-
+* [English](https://medium.com/@amagitakayosi/vj-live-coding-on-atom-glsl-livecoder-329eec5462df)
+* [日本語](http://blog.gmork.in/entry/2017/08/04/173000)
 
 ## Install
 
@@ -77,7 +74,6 @@ If you are uning macOS, `glslangValidator` can be installed by homebrew.
 brew install glslang
 ```
 
-
 #### Windows or Linux
 
 If you are uning Windows or Linux, the best way to install `glslangValidator` is to install Vulkan SDK.<br>
@@ -89,7 +85,6 @@ After that, add installed `glslangValidator` to your `PATH` environment variable
 In Windows, `glslangValidator` will be installed in `C:\VulkanSDK\( version )\Bin`.
 
 The path of `glslangValidator` can also be specified in the settings of `VEDA`.
-
 
 ### Install `VEDA`
 
@@ -104,23 +99,22 @@ Failed to require the main module of 'veda' because it requires an incompatible 
 Run `apm rebuild` in the package directory to resolve.
 ```
 
-
 ## Features
 
 ### Commands
 
 `VEDA` installs following commands to Atom.
 
-- `toggle`
-  - Start / Stop VEDA.
-- `load-shader` (key: `ctrl-enter`)
-  - Load the shader on current editor.  
-- `watch-shader` (key: `ctrl-shift-enter`)
-  - Watch current tab and load the shader automatically.
-- `watch-active-editor` (key: `ctrl-alt-enter`)
-  - Watch active tab and run `watch-shader` automatically.
-- `stop-watching` (key: `ctrl-.`)
-  - Stop `watch-shader` and `watch-active-editor`.
+* `toggle`
+  * Start / Stop VEDA.
+* `load-shader` (key: `ctrl-enter`)
+  * Load the shader on current editor.
+* `watch-shader` (key: `ctrl-shift-enter`)
+  * Watch current tab and load the shader automatically.
+* `watch-active-editor` (key: `ctrl-alt-enter`)
+  * Watch active tab and run `watch-shader` automatically.
+* `stop-watching` (key: `ctrl-.`)
+  * Stop `watch-shader` and `watch-active-editor`.
 
 A typical workflow can be like this:
 
@@ -128,47 +122,44 @@ A typical workflow can be like this:
 2. Edit your GLSL code.
 3. Hit `ctrl-enter` to run `veda:load-shader`.
 
-
 ### Preset `uniform` variables
 
-- `float time`:
-  - The elapsed time since `VEDA` has started.
-- `vec2 resolution`
-  - The resolution of the screen.
-- `vec2 mouse`
-  - Current position of mouse.
-  - `vec2(0)` to `vec2(1)`
-- `sampler2D backbuffer`
-  - Rendered result of last frame.
-  - RGBA format
-- `sampler2D samples`
-  - Samples of the audio input.
-- `sampler2D spectrum`
-  - FFT result of the audio input.
-- `float volume`
-  - The volume of the audio input.
-- `sampler2D midi`
-  - Last MIDI event for each channel of MIDI devices.
-  - `x`: 3rd byte of the event
-- `sampler2D note`
-  - States of note numbers of MIDI devices.
-  - `x`: the volume of the note
-
+* `float time`:
+  * The elapsed time since `VEDA` has started.
+* `vec2 resolution`
+  * The resolution of the screen.
+* `vec2 mouse`
+  * Current position of mouse.
+  * `vec2(0)` to `vec2(1)`
+* `sampler2D backbuffer`
+  * Rendered result of last frame.
+  * RGBA format
+* `sampler2D samples`
+  * Samples of the audio input.
+* `sampler2D spectrum`
+  * FFT result of the audio input.
+* `float volume`
+  * The volume of the audio input.
+* `sampler2D midi`
+  * Last MIDI event for each channel of MIDI devices.
+  * `x`: 3rd byte of the event
+* `sampler2D note`
+  * States of note numbers of MIDI devices.
+  * `x`: the volume of the note
 
 ### Settings
 
 The settings of `VEDA` can be configured in 3 ways: global settings, project settings, and file settings.
 
-- Global settings are loaded from Settings page of Atom.
-- Project settings are loaded from `.vedarc`.
-- File settings are loaded from the comments of the shader.
+* Global settings are loaded from Settings page of Atom.
+* Project settings are loaded from `.vedarc`.
+* File settings are loaded from the comments of the shader.
 
 The order of priority is as follows:
 
 `File Settings > Project Settings > Global Settings`
 
 When File Settings and Global Settings has same properties, File Settings are used.
-
 
 #### Global Settings
 
@@ -177,39 +168,37 @@ You can change settings in `Settings` page of Atom.
 
 If there are no project `.vedarc` or valid comments, VEDA will use the global settings as default.
 
-
 #### Project Settings: `.vedarc`
 
 Project settings is loaded from `.vedarc` on your project root.
 
-- `.vedarc` must be located in your project's root directory.
-- `.vedarc` is parsed as [JSON5 format](https://github.com/json5/json5).
-  - You can write comments in `.vedarc`.
-- `.vedarc` is loaded on startup and reloaded automatically when you edit it.
+* `.vedarc` must be located in your project's root directory.
+* `.vedarc` is parsed as [JSON5 format](https://github.com/json5/json5).
+  * You can write comments in `.vedarc`.
+* `.vedarc` is loaded on startup and reloaded automatically when you edit it.
 
 For example, when you write `.vedarc` like this:
 
 ```javascript
 {
-	"IMPORTED": {
-		"image1": {
-			"PATH": "./1.jpg",
-		},
-	},
-    "vertexMode": "LINES",
-    "pixelRatio": 2,
-    "audio": true,
-    "midi": true,
+  "IMPORTED": {
+    "image1": {
+      "PATH": "./1.jpg",
+    },
+  },
+  "vertexMode": "LINES",
+  "pixelRatio": 2,
+  "audio": true,
+  "midi": true,
 }
 ```
 
 Then `VEDA` interpret like this:
 
-- Load `./1.jpg` as a texture `image1`
-- Draw lines on vertex shaders
-- Enable audio input
-- Enable MIDI input
-
+* Load `./1.jpg` as a texture `image1`
+* Draw lines on vertex shaders
+* Enable audio input
+* Enable MIDI input
 
 #### File Settings
 
@@ -225,7 +214,6 @@ void main() {
 ```
 
 The comment must be written in the same format as `.vedarc`.
-
 
 ## Examples
 
@@ -251,7 +239,6 @@ Then save it and hit `ctrl-enter` to run it.
 VEDA will show the result on the background.
 
 See [examples](./examples/shader1.frag) for actual usage.
-
 
 ### Vertex Shaders
 
@@ -289,17 +276,15 @@ VEDA will show the result on the background.
 
 See [examples](./examples/vertex.vert) for actual usage.
 
-
 ### Optional Inputs
 
 To use these features, you have to enable them by adding following lines to `.vedarc` or header comments.
 
-- Audio inputs: `"audio": true`
-- MIDI inputs: `"midi": true`
-- Webcam inputs: `"camera": true`
-- Keyboard inputs: `"keyboard": true`
-- Gamepad inputs: `"gamepad": true`
-
+* Audio inputs: `"audio": true`
+* MIDI inputs: `"midi": true`
+* Webcam inputs: `"camera": true`
+* Keyboard inputs: `"keyboard": true`
+* Gamepad inputs: `"gamepad": true`
 
 ### Audio inputs
 
@@ -315,7 +300,6 @@ This is useful to draw the volume of specific frequency band, such as spectrum v
 `float volume` is the average of all the frequency bands in `spectrum`.
 See [examples](./examples/audio.frag) for actual usage.
 
-
 ### MIDI Events
 
 `sampler2D midi` stores MIDI events obtained by [Web MIDI API](https://www.w3.org/TR/webmidi/).
@@ -324,8 +308,8 @@ Each pixel stores the last event of the corresponding MIDI Events.
 
 For example, `texture2D(midi, vec2(144. / 256., 0)).x` yields the note number of last `note on` event of MIDI Channel 1.
 
-- `144.` (0x90): `note on` event of MIDI Channel 1
-- `.x` (2nd byte): Note number
+* `144.` (0x90): `note on` event of MIDI Channel 1
+* `.x` (2nd byte): Note number
 
 See [examples](./examples/midi.frag) for actual usage.
 
@@ -337,20 +321,18 @@ For example, `texture2D(note, vec2(60. / 128., 0)).x` yields the volume of note 
 
 See [examples](./examples/note.frag) for actual usage.
 
-
 ### OSC Inputs
 
 VEDA accepts OSC messages on the port written in `osc` property of the settings.
 When you write `"osc": 4000` to `.vedarc` or the header comment, messages will be stored and passed as textures:
 
-- Texture name will be automatically generated from addresses.
-  - `/foo`: `sampler2D osc_foo`
-  - `/foo/bar`: `sampler2D osc_foo_bar`
-- Arguments are translated to float. Strings are ignored.
-  - `/foo 0.1 hello 100` yields a texture that contains `[0.1 0 100]`
+* Texture name will be automatically generated from addresses.
+  * `/foo`: `sampler2D osc_foo`
+  * `/foo/bar`: `sampler2D osc_foo_bar`
+* Arguments are translated to float. Strings are ignored.
+  * `/foo 0.1 hello 100` yields a texture that contains `[0.1 0 100]`
 
 See [examples](./examples/osc.frag) for actual usage.
-
 
 ### Webcam Inputs
 
@@ -358,7 +340,6 @@ See [examples](./examples/osc.frag) for actual usage.
 `texture2D(camera, uv)` returns vec3 color.
 
 See [examples](./examples/camera.frag) for actual usage.
-
 
 ### Keyboard Inputs
 
@@ -371,7 +352,6 @@ Hitting `ESC` key resets the states of all key inputs.
 
 See [examples](./examples/key.frag) for actual usage.
 
-
 ### Gamepad Inputs
 
 `sampler2D gamepad` stores the status of gamepads connected to the PC.
@@ -381,7 +361,6 @@ The status of buttons and axes are stored in `y = 0.0` and `y = 1.0`.
 For example, `texture2D(gamepad, vec2(3. / 128., 0.))` returns 1.0 when the 3rd button is pressed.
 
 See [examples](./examples/gamepad.frag) for actual usage.
-
 
 ### Loading images / videos
 
@@ -432,16 +411,14 @@ The structure of `IMPORTED` properties is based on [Interactive Shader Format](h
 
 See these examples for actual usage.
 
-- [.vedarc](./examples/.vedarc)
-- [image.frag](./examples/image.frag)
-- [video.frag](./examples/video.frag)
-
+* [.vedarc](./examples/.vedarc)
+* [image.frag](./examples/image.frag)
+* [video.frag](./examples/video.frag)
 
 ### Multipass Rendering
 
 VEDA supports multipass rendering.
 You can define passes in `PASSES` property in `.vedarc` or header comments.
-
 
 ```glsl
 /*
@@ -477,9 +454,8 @@ You can specify numbers for pixels or write expressions using `$WIDTH` and `$HEI
 
 See these examples for actual usage.
 
-- [multipass.frag](./examples/multipass.frag)
-- [multipass.vert](./examples/multipass.vert)
-
+* [multipass.frag](./examples/multipass.frag)
+* [multipass.vert](./examples/multipass.vert)
 
 ### Combining VS and FS
 
@@ -498,9 +474,8 @@ For example, when you write header comments like below in fragment shader, VEDA 
 
 See these examples for actual usage.
 
-- [combination.frag](./examples/combination.frag) and [combination.vert](./examples/combination.vert)
-- [particles.frag](./examples/particles.frag) and [particles.vert](./examples/particles.vert)
-
+* [combination.frag](./examples/combination.frag) and [combination.vert](./examples/combination.vert)
+* [particles.frag](./examples/particles.frag) and [particles.vert](./examples/particles.vert)
 
 ### Compute shader
 
@@ -547,7 +522,6 @@ void main(){
 
 See an [example](./examples/gpgpu/post.frag) for actual usage.
 
-
 ### glslify
 
 VEDA supports [glslify](https://github.com/stackgl/glslify).
@@ -556,7 +530,6 @@ If `"glslify": true` is in the settings, VEDA bundles the code with glslify befo
 Note that it will cause lint errors because linter-glsl doesn't support glslify.
 
 See [examples](./examples/glslify.frag) for actual usage.
-
 
 ### Server Mode
 
@@ -578,15 +551,14 @@ Warning: Currently we can't use videos/images outside the project directory in s
 
 See an [example](./examples/server.frag) for actual usage.
 
-
 ### Sound shader (experimental)
 
 VEDA supports sound shaders like [Shadertoy](https://www.shadertoy.com/results?filter=soundoutput).
 
 There are 2 command for sound shaders:
 
-- `Veda: Load Sound Shader` (`alt-enter`): Play current shader as a sound shader.
-- `Veda: Stop Sound Shader` (`alt-.`): Stop sound shaders.
+* `Veda: Load Sound Shader` (`alt-enter`): Play current shader as a sound shader.
+* `Veda: Stop Sound Shader` (`alt-.`): Stop sound shaders.
 
 In sound shader you have to define `vec2 mainSound(float time)` function instead of `void main()`.
 `mainSound` takes current time stamp (`time`) and return the sample for stereo channels (`vec2`).
@@ -605,14 +577,13 @@ vec2 mainSound(in float time) {
 
 See an [example](./examples/sound.frag) for actual usage.
 
-
 ## Author
 
 Takayosi Amagi
-- Twitter: [@amagitakayosi](https://twitter.com/amagitakayosi/)
-- GitHub: [fand](https://github.com/fand/)
-- Blog: [マルシテイア](http://amagitakayosi.hatenablog.com/)
 
+* Twitter: [@amagitakayosi](https://twitter.com/amagitakayosi/)
+* GitHub: [fand](https://github.com/fand/)
+* Blog: [マルシテイア](http://amagitakayosi.hatenablog.com/)
 
 ## License
 
