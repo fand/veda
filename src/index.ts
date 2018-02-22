@@ -1,7 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const wrapper_1 = require("./wrapper");
-let wrapper = null;
+import { IVedaStatus } from './constants';
+import Wrapper from './wrapper';
+
+let wrapper: Wrapper | null = null;
+
 module.exports = {
     config: {
         glslangValidatorPath: {
@@ -15,7 +16,8 @@ module.exports = {
         },
         pixelRatio: {
             title: 'Pixel Ratio',
-            description: 'The ratio of pixel per rendering call. Increasing pixel ratio will reduce CPU/GPU load.',
+            description:
+                'The ratio of pixel per rendering call. Increasing pixel ratio will reduce CPU/GPU load.',
             type: 'number',
             default: 2,
             minimum: 0.5,
@@ -24,7 +26,8 @@ module.exports = {
         },
         frameskip: {
             title: 'Frameskip',
-            description: 'Increasing frameskip will reduce CPU/GPU load. Default is 2 (= 30 fps).',
+            description:
+                'Increasing frameskip will reduce CPU/GPU load. Default is 2 (= 30 fps).',
             type: 'integer',
             default: 2,
             minimum: 1,
@@ -58,7 +61,8 @@ module.exports = {
         },
         fftSize: {
             title: 'FFT size',
-            description: 'Represents the size of the FFT to be used to determine the frequency domain.',
+            description:
+                'Represents the size of the FFT to be used to determine the frequency domain.',
             type: 'integer',
             default: 2048,
             enum: [32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768],
@@ -66,7 +70,8 @@ module.exports = {
         },
         fftSmoothingTimeConstant: {
             title: 'FFT smoothingTimeConstant',
-            description: 'Represents the averaging constant with the last analysis frame.',
+            description:
+                'Represents the averaging constant with the last analysis frame.',
             type: 'number',
             default: 0.8,
             minimum: 0,
@@ -74,16 +79,18 @@ module.exports = {
             order: 7,
         },
     },
-    activate(state) {
+
+    activate(state: IVedaStatus) {
         require('atom-package-deps')
             .install('veda')
             .then(() => this._activate(state));
     },
-    _activate(state) {
-        wrapper = new wrapper_1.default(state);
+
+    _activate(state: IVedaStatus) {
+        wrapper = new Wrapper(state);
     },
+
     deactivate() {
         wrapper && wrapper.destroy();
     },
 };
-//# sourceMappingURL=index.js.map

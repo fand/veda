@@ -1,26 +1,33 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-class View {
-    constructor(wrapper) {
+export default class View {
+    private wrapper: HTMLElement;
+    private element: HTMLElement;
+    private canvas: HTMLCanvasElement;
+
+    constructor(wrapper: HTMLElement) {
         this.wrapper = wrapper;
+
         this.element = document.createElement('div');
         this.element.classList.add('veda');
+
         this.canvas = document.createElement('canvas');
+
         this.element.appendChild(this.canvas);
         this.wrapper.appendChild(this.element);
     }
-    destroy() {
+
+    destroy(): void {
         this.element.remove();
     }
-    getCanvas() {
+
+    getCanvas(): HTMLCanvasElement {
         return this.canvas;
     }
-    show() {
+
+    show(): void {
         document.body.classList.add('veda-enabled');
     }
-    hide() {
+
+    hide(): void {
         document.body.classList.remove('veda-enabled');
     }
 }
-exports.default = View;
-//# sourceMappingURL=view.js.map
