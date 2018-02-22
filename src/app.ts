@@ -1,6 +1,5 @@
 import { TextEditor } from 'atom';
 import * as path from 'path';
-import glslify from 'glslify';
 import View from './view';
 import { validator, loadFile } from './validator';
 import { IShader, ISoundShader } from './constants';
@@ -10,6 +9,8 @@ import Player from './player';
 import PlayerServer from './player-server';
 import { INITIAL_SHADER, INITIAL_SOUND_SHADER } from './constants';
 import OscLoader from './osc-loader';
+
+const glslify = require('glslify');
 
 interface IGlslLivecoderState {
     isPlaying: boolean;

@@ -8,10 +8,7 @@ declare module 'atom-message-panel' {
         close(): void;
     }
     export class PlainMessageView {
-        constructor(opts: {
-            message: string,
-            className: string,
-        });
+        constructor(opts: { message: string; className: string });
     }
 }
 
