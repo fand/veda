@@ -1,3 +1,4 @@
+import { TextEditor } from 'atom';
 import * as path from 'path';
 import glslify from 'glslify';
 import View from './view';
@@ -10,8 +11,6 @@ import PlayerServer from './player-server';
 import { INITIAL_SHADER, INITIAL_SOUND_SHADER } from './constants';
 import OscLoader from './osc-loader';
 
-declare var atom: any;
-type TextEditor = any;
 interface IGlslLivecoderState {
     isPlaying: boolean;
     activeEditorDisposer?: any;
@@ -31,7 +30,7 @@ export default class GlslLivecoder {
 
     constructor(config: Config) {
         const rc = config.rc;
-        const view = new View(atom.workspace.element);
+        const view = new View((atom.workspace as any).element);
         this.player = new Player(view, rc, false, this.lastShader);
 
         this.config = config;
@@ -72,7 +71,7 @@ export default class GlslLivecoder {
                     lastShader: this.lastShader,
                 });
             } else {
-                const view = new View(atom.workspace.element);
+                const view = new View((atom.workspace as any).element);
                 this.player = new Player(
                     view,
                     rc,
@@ -195,7 +194,7 @@ export default class GlslLivecoder {
     }
 
     stopWatching(): void {
-        this.state.editor = null;
+        this.state.editor = undefined;
         if (this.state.activeEditorDisposer) {
             this.state.activeEditorDisposer.dispose();
             this.state.activeEditorDisposer = null;
@@ -266,7 +265,7 @@ export default class GlslLivecoder {
     }
 
     private loadShaderOfEditor(
-        editor: TextEditor,
+        editor?: TextEditor,
         isSound?: boolean,
     ): Promise<void> {
         if (editor === undefined) {
@@ -274,6 +273,10 @@ export default class GlslLivecoder {
             return Promise.resolve();
         }
         const filepath = editor.getPath();
+        if (filepath === undefined) {
+            return Promise.resolve();
+        }
+
         const dirname = path.dirname(filepath);
 
         const m = (filepath || '').match(/(\.(?:glsl|frag|vert|fs|vs))$/);
