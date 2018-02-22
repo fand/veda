@@ -17,7 +17,11 @@ export default class Player implements IPlayable {
         window.addEventListener('resize', this.resize);
 
         Object.keys(rc.IMPORTED || {}).forEach(key => {
-            this.veda.loadTexture(key, rc.IMPORTED[key].PATH, rc.IMPORTED[key].SPEED);
+            this.veda.loadTexture(
+                key,
+                rc.IMPORTED[key].PATH,
+                rc.IMPORTED[key].SPEED,
+            );
         });
 
         this.onChange({
@@ -42,7 +46,7 @@ export default class Player implements IPlayable {
 
     private resize = () => {
         this.veda.resize(window.innerWidth, window.innerHeight);
-    }
+    };
 
     onChange = ({ newConfig, added, removed }: IRcDiff) => {
         console.log('Update config', newConfig);
@@ -57,7 +61,11 @@ export default class Player implements IPlayable {
             this.veda.unloadTexture(key, path, !importedPaths[path]);
         });
         Object.keys(added.IMPORTED || {}).forEach(key => {
-            this.veda.loadTexture(key, added.IMPORTED[key].PATH, added.IMPORTED[key].SPEED);
+            this.veda.loadTexture(
+                key,
+                added.IMPORTED[key].PATH,
+                added.IMPORTED[key].SPEED,
+            );
         });
         if (added.vertexMode) {
             this.veda.setVertexMode(added.vertexMode);
@@ -75,7 +83,9 @@ export default class Player implements IPlayable {
             this.veda.setFftSize(added.fftSize);
         }
         if (added.fftSmoothingTimeConstant !== undefined) {
-            this.veda.setFftSmoothingTimeConstant(added.fftSmoothingTimeConstant);
+            this.veda.setFftSmoothingTimeConstant(
+                added.fftSmoothingTimeConstant,
+            );
         }
         if (added.audio !== undefined) {
             this.veda.toggleAudio(added.audio);
@@ -92,7 +102,7 @@ export default class Player implements IPlayable {
         if (added.camera !== undefined) {
             this.veda.toggleCamera(added.camera);
         }
-    }
+    };
 
     onChangeSound = async ({ newConfig, added, removed }: IRcDiff) => {
         console.log('Update config', newConfig);
@@ -106,9 +116,15 @@ export default class Player implements IPlayable {
             const path = removed.IMPORTED[key].PATH;
             this.veda.unloadTexture(key, path, !importedPaths[path]);
         });
-        await Promise.all(Object.keys(added.IMPORTED || {}).map(key => {
-            return this.veda.loadTexture(key, added.IMPORTED[key].PATH, added.IMPORTED[key].SPEED);
-        }));
+        await Promise.all(
+            Object.keys(added.IMPORTED || {}).map(key => {
+                return this.veda.loadTexture(
+                    key,
+                    added.IMPORTED[key].PATH,
+                    added.IMPORTED[key].SPEED,
+                );
+            }),
+        );
         if (added.audio !== undefined) {
             this.veda.toggleAudio(added.audio);
         }
@@ -127,7 +143,7 @@ export default class Player implements IPlayable {
         if (added.soundLength !== undefined) {
             this.veda.setSoundLength(added.soundLength);
         }
-    }
+    };
 
     play(): void {
         this.view.show();
@@ -162,7 +178,13 @@ export default class Player implements IPlayable {
                 texture.dispose();
             }
             const array = new Float32Array(data);
-            const newTexture = new THREE.DataTexture(array, data.length, 1, THREE.LuminanceFormat, THREE.FloatType);
+            const newTexture = new THREE.DataTexture(
+                array,
+                data.length,
+                1,
+                THREE.LuminanceFormat,
+                THREE.FloatType,
+            );
             newTexture.needsUpdate = true;
             this.textures[name] = newTexture;
             this.veda.setUniform(name, 't', newTexture);

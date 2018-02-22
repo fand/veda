@@ -3,7 +3,11 @@ import * as execa from 'execa';
 import * as tmp from 'tmp';
 import * as p from 'pify';
 
-export function validator(glslangValidatorPath: string, shader: string, postfix: string): Promise<void> {
+export function validator(
+    glslangValidatorPath: string,
+    shader: string,
+    postfix: string,
+): Promise<void> {
     let tmpfile: string = '';
     return p(tmp.file)({ keep: true, postfix, discardDescriptor: true })
         .then(path => {

@@ -109,7 +109,10 @@ function resolvePath(val: string, projectPath: string): string {
     return path.resolve(projectPath, val);
 }
 
-function parseImported(projectPath: string, importedHash?: IImportedHash): IImportedHash | null {
+function parseImported(
+    projectPath: string,
+    importedHash?: IImportedHash,
+): IImportedHash | null {
     if (!importedHash) {
         return null;
     }
@@ -175,8 +178,11 @@ export default class Config extends EventEmitter {
     }
 
     private readConfigFile = (filename: string) => {
-        return p(fs.readFile)(path.resolve(this.projectPath, filename), 'utf8').then(data => ({ filename, data }));
-    }
+        return p(fs.readFile)(
+            path.resolve(this.projectPath, filename),
+            'utf8',
+        ).then(data => ({ filename, data }));
+    };
 
     load = (): Promise<void> | null => {
         if (!this.isWatching) {
@@ -185,24 +191,26 @@ export default class Config extends EventEmitter {
 
         // Load .liverc or .vedarc
         return this.readConfigFile('.liverc')
-        .then(d => {
-            console.log('[VEDA] `.liverc` is deprecated. Use `.vedarc` instead.');
-            return d;
-        })
-        .catch(() => this.readConfigFile('.vedarc'))
-        .then(({ filename, data }) => {
-            try {
-                const rc = JSON5.parse(data);
-                rc.IMPORTED = parseImported(this.projectPath, rc.IMPORTED);
-                this.setProjectSettings(rc);
-            } catch (e) {
-                console.log('[VEDA] Failed to parse rc file:', filename);
-            }
-        })
-        .catch(() => {
-            console.log('[VEDA] config file not found');
-        });
-    }
+            .then(d => {
+                console.log(
+                    '[VEDA] `.liverc` is deprecated. Use `.vedarc` instead.',
+                );
+                return d;
+            })
+            .catch(() => this.readConfigFile('.vedarc'))
+            .then(({ filename, data }) => {
+                try {
+                    const rc = JSON5.parse(data);
+                    rc.IMPORTED = parseImported(this.projectPath, rc.IMPORTED);
+                    this.setProjectSettings(rc);
+                } catch (e) {
+                    console.log('[VEDA] Failed to parse rc file:', filename);
+                }
+            })
+            .catch(() => {
+                console.log('[VEDA] config file not found');
+            });
+    };
 
     createRc(): IRc {
         const IMPORTED: IImportedHash = {
@@ -304,14 +312,18 @@ export default class Config extends EventEmitter {
         Object.keys(newIMPORTED).forEach(key => {
             const newImport = newIMPORTED[key] || {};
             const oldImport = oldIMPORTED[key] || {};
-            if (oldImport.PATH && (
-                newImport.PATH !== oldImport.PATH || newImport.SPEED !== oldImport.SPEED
-            )) {
+            if (
+                oldImport.PATH &&
+                (newImport.PATH !== oldImport.PATH ||
+                    newImport.SPEED !== oldImport.SPEED)
+            ) {
                 diff.removed.IMPORTED[key] = oldImport;
             }
-            if (newImport.PATH && (
-                newImport.PATH !== oldImport.PATH || newImport.SPEED !== oldImport.SPEED
-            )) {
+            if (
+                newImport.PATH &&
+                (newImport.PATH !== oldImport.PATH ||
+                    newImport.SPEED !== oldImport.SPEED)
+            ) {
                 diff.added.IMPORTED[key] = newImport;
             }
         });
@@ -335,8 +347,11 @@ export default class Config extends EventEmitter {
         if (newObj.fftSize !== oldObj.fftSize) {
             diff.added.fftSize = newObj.fftSize;
         }
-        if (newObj.fftSmoothingTimeConstant !== oldObj.fftSmoothingTimeConstant) {
-            diff.added.fftSmoothingTimeConstant = newObj.fftSmoothingTimeConstant;
+        if (
+            newObj.fftSmoothingTimeConstant !== oldObj.fftSmoothingTimeConstant
+        ) {
+            diff.added.fftSmoothingTimeConstant =
+                newObj.fftSmoothingTimeConstant;
         }
 
         if (newObj.audio !== oldObj.audio) {

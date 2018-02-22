@@ -22,35 +22,50 @@ export default class Wrapper {
             vertexCount: atom.config.get('veda.vertexCount'),
             glslangValidatorPath: atom.config.get('veda.glslangValidatorPath'),
             fftSize: atom.config.get('veda.fftSize'),
-            fftSmoothingTimeConstant: atom.config.get('veda.fftSmoothingTimeConstant'),
+            fftSmoothingTimeConstant: atom.config.get(
+                'veda.fftSmoothingTimeConstant',
+            ),
         });
 
         this.app = new App(this.config);
 
-        atom.config.observe('veda.glslangValidatorPath', x => this.setGlslangValidatorPath(x));
-        atom.config.observe('veda.pixelRatio', x => this.config.setGlobalSettings({ pixelRatio: x }));
-        atom.config.observe('veda.frameskip', x => this.config.setGlobalSettings({ frameskip: x }));
-        atom.config.observe('veda.vertexMode', x => this.config.setGlobalSettings({ vertexMode: x }));
-        atom.config.observe('veda.vertexCount', x => this.config.setGlobalSettings({ vertexCount: x }));
-        atom.config.observe('veda.fftSize', x => this.config.setGlobalSettings({ fftSize: x }));
-        atom.config.observe(
-            'veda.fftSmoothingTimeConstant',
-            x => this.config.setGlobalSettings({ fftSmoothingTimeConstant: x }),
+        atom.config.observe('veda.glslangValidatorPath', x =>
+            this.setGlslangValidatorPath(x),
+        );
+        atom.config.observe('veda.pixelRatio', x =>
+            this.config.setGlobalSettings({ pixelRatio: x }),
+        );
+        atom.config.observe('veda.frameskip', x =>
+            this.config.setGlobalSettings({ frameskip: x }),
+        );
+        atom.config.observe('veda.vertexMode', x =>
+            this.config.setGlobalSettings({ vertexMode: x }),
+        );
+        atom.config.observe('veda.vertexCount', x =>
+            this.config.setGlobalSettings({ vertexCount: x }),
+        );
+        atom.config.observe('veda.fftSize', x =>
+            this.config.setGlobalSettings({ fftSize: x }),
+        );
+        atom.config.observe('veda.fftSmoothingTimeConstant', x =>
+            this.config.setGlobalSettings({ fftSmoothingTimeConstant: x }),
         );
 
         // Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
         this.subscriptions = new CompositeDisposable();
 
         // Register command that toggles this view
-        this.subscriptions.add(atom.commands.add('atom-workspace', {
-            'veda:toggle': () => this.app.toggle(),
-            'veda:load-shader': () => this.app.loadShader(),
-            'veda:watch-shader': () => this.app.watchShader(),
-            'veda:watch-active-shader': () => this.app.watchActiveShader(),
-            'veda:stop-watching': () => this.app.stopWatching(),
-            'veda:load-sound-shader': () => this.app.playSound(),
-            'veda:stop-sound-shader': () => this.app.stopSound(),
-        }));
+        this.subscriptions.add(
+            atom.commands.add('atom-workspace', {
+                'veda:toggle': () => this.app.toggle(),
+                'veda:load-shader': () => this.app.loadShader(),
+                'veda:watch-shader': () => this.app.watchShader(),
+                'veda:watch-active-shader': () => this.app.watchActiveShader(),
+                'veda:stop-watching': () => this.app.stopWatching(),
+                'veda:load-sound-shader': () => this.app.playSound(),
+                'veda:stop-sound-shader': () => this.app.stopSound(),
+            }),
+        );
 
         this.app.play();
     }
@@ -69,10 +84,12 @@ export default class Wrapper {
             this.messages.toggle();
         }
         this.messages.clear();
-        this.messages.add(new PlainMessageView({
-            message,
-            className: 'text-error',
-        }));
+        this.messages.add(
+            new PlainMessageView({
+                message,
+                className: 'text-error',
+            }),
+        );
     }
 
     hideError(): void {
@@ -111,14 +128,18 @@ export default class Wrapper {
             this.hideError();
             this.config.setGlobalSettings({ glslangValidatorPath: result });
         } else {
-            this.showError(`Unable to locate glslangValidator at '${glslangValidatorPath}'`);
+            this.showError(
+                `Unable to locate glslangValidator at '${glslangValidatorPath}'`,
+            );
         }
     }
 
     getProjectPath(atom: AtomEnvironment): string {
         const projectPaths = atom.project.getPaths();
         if (projectPaths.length === 0) {
-            atom.notifications.addError('[VEDA] No projects found in this window');
+            atom.notifications.addError(
+                '[VEDA] No projects found in this window',
+            );
             throw new Error('[VEDA] No projects found in this window');
         }
         if (projectPaths.length > 1) {

@@ -26,15 +26,18 @@ export default class PlayerClient {
             autoConnect: false,
         });
 
-        this.socket.on('create', ({ rc, isPlaying, lastShader }: ICreateOpts) => {
-            if (this.timer) {
-                clearTimeout(this.timer);
-            }
-            if (!this.player) {
-                const view = new View(this.wrapper);
-                this.player = new Player(view, rc, isPlaying, lastShader);
-            }
-        });
+        this.socket.on(
+            'create',
+            ({ rc, isPlaying, lastShader }: ICreateOpts) => {
+                if (this.timer) {
+                    clearTimeout(this.timer);
+                }
+                if (!this.player) {
+                    const view = new View(this.wrapper);
+                    this.player = new Player(view, rc, isPlaying, lastShader);
+                }
+            },
+        );
         this.socket.on('destroy', () => {
             this.player && this.player.destroy();
         });
@@ -53,8 +56,14 @@ export default class PlayerClient {
         this.socket.on('loadSoundShader', (shader: string) => {
             this.player && this.player.loadSoundShader(shader);
         });
-        this.socket.on('playSound', () => this.player && this.player.playSound());
-        this.socket.on('stopSound', () => this.player && this.player.stopSound());
+        this.socket.on(
+            'playSound',
+            () => this.player && this.player.playSound(),
+        );
+        this.socket.on(
+            'stopSound',
+            () => this.player && this.player.stopSound(),
+        );
         this.socket.on('setOsc', (msg: IOscChunk) => {
             if (this.player) {
                 this.player.setOsc(msg.name, msg.data);
@@ -76,5 +85,5 @@ export default class PlayerClient {
     poll = () => {
         this.socket.emit('ready');
         this.timer = setTimeout(this.poll, 1000);
-    }
+    };
 }

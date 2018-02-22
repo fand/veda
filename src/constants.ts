@@ -17,9 +17,11 @@ vec2 mainSound(in float time) {
 }
 `;
 
-export const INITIAL_SHADER = [{
-    fs: INITIAL_FRAGMENT_SHADER,
-}];
+export const INITIAL_SHADER = [
+    {
+        fs: INITIAL_FRAGMENT_SHADER,
+    },
+];
 
 interface IPass {
     TARGET?: string;

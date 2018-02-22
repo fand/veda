@@ -23,9 +23,17 @@ export default class PlayerServer implements IPlayable {
     constructor(port: number, state: IPlayerState) {
         this.port = port;
         this.state = state;
-        this.server = spawn('node', [path.resolve(__dirname, 'server.js'), port.toString(), this.state.projectPath], {
-            cwd: path.resolve(__dirname, '..'),
-        });
+        this.server = spawn(
+            'node',
+            [
+                path.resolve(__dirname, 'server.js'),
+                port.toString(),
+                this.state.projectPath,
+            ],
+            {
+                cwd: path.resolve(__dirname, '..'),
+            },
+        );
         this.server.stdout.on('data', this.stdout);
         this.server.stderr.on('data', this.stderr);
         this.server.on('exit', this.exit);
@@ -50,7 +58,9 @@ export default class PlayerServer implements IPlayable {
         const rcDiff = cloneDeep(_rcDiff);
 
         // Convert paths to URLs
-        rcDiff.newConfig.IMPORTED = this.convertPaths(rcDiff.newConfig.IMPORTED);
+        rcDiff.newConfig.IMPORTED = this.convertPaths(
+            rcDiff.newConfig.IMPORTED,
+        );
         rcDiff.added.IMPORTED = this.convertPaths(rcDiff.added.IMPORTED);
         rcDiff.removed.IMPORTED = this.convertPaths(rcDiff.removed.IMPORTED);
 
@@ -61,7 +71,9 @@ export default class PlayerServer implements IPlayable {
         const rcDiff = cloneDeep(_rcDiff);
 
         // Convert paths to URLs
-        rcDiff.newConfig.IMPORTED = this.convertPaths(rcDiff.newConfig.IMPORTED);
+        rcDiff.newConfig.IMPORTED = this.convertPaths(
+            rcDiff.newConfig.IMPORTED,
+        );
         rcDiff.added.IMPORTED = this.convertPaths(rcDiff.added.IMPORTED);
         rcDiff.removed.IMPORTED = this.convertPaths(rcDiff.removed.IMPORTED);
 
@@ -74,8 +86,13 @@ export default class PlayerServer implements IPlayable {
         Object.keys(IMPORTED).forEach(key => {
             if (!IMPORTED[key].PATH.match(/^(?:https?:)?\/\//)) {
                 // Get relative path from projectPath
-                const relativePath = path.relative(this.state.projectPath, IMPORTED[key].PATH);
-                IMPORTED[key].PATH = `http://localhost:${this.port}/link/${relativePath}`;
+                const relativePath = path.relative(
+                    this.state.projectPath,
+                    IMPORTED[key].PATH,
+                );
+                IMPORTED[key].PATH = `http://localhost:${
+                    this.port
+                }/link/${relativePath}`;
             }
         });
         return IMPORTED;
@@ -120,14 +137,14 @@ export default class PlayerServer implements IPlayable {
 
     stdout = (output: Buffer) => {
         atom.notifications.addSuccess(output.toString().trim());
-    }
+    };
 
     stderr = (output: Buffer) => {
         atom.notifications.addError(output.toString().trim());
-    }
+    };
 
     exit = (code: number) => {
         console.log('[VEDA] Server exited with code', code);
         this.io.emit('stop');
-    }
+    };
 }

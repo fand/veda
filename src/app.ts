@@ -73,14 +73,19 @@ export default class GlslLivecoder {
                 });
             } else {
                 const view = new View(atom.workspace.element);
-                this.player = new Player(view, rc, this.state.isPlaying, this.lastShader);
+                this.player = new Player(
+                    view,
+                    rc,
+                    this.state.isPlaying,
+                    this.lastShader,
+                );
             }
         }
 
         if (added.osc !== undefined) {
             const port = added.osc;
             const osc = this.osc;
-            if (osc && (!port || (osc.port !== parseInt(port.toString(), 10)))) {
+            if (osc && (!port || osc.port !== parseInt(port.toString(), 10))) {
                 osc.destroy();
                 this.osc = null;
             }
@@ -91,31 +96,27 @@ export default class GlslLivecoder {
                 oscLoader.on('reload', () => this.loadLastShader());
             }
         }
-    }
+    };
 
     private onChange = (rcDiff: IRcDiff) => {
         this.onAnyChanges(rcDiff);
         this.player.onChange(rcDiff);
         this.loadLastShader();
-    }
+    };
 
     private onChangeSound = (rcDiff: IRcDiff) => {
         this.onAnyChanges(rcDiff);
         this.player.onChangeSound(rcDiff).then(() => {
             this.loadLastSoundShader();
         });
-    }
+    };
 
-    onOsc = (msg: { address: string, args: number[] }) => {
+    onOsc = (msg: { address: string; args: number[] }) => {
         this.player.setOsc(msg.address, msg.args);
-    }
+    };
 
     toggle(): void {
-        return (
-            this.state.isPlaying ?
-            this.stop() :
-            this.play()
-        );
+        return this.state.isPlaying ? this.stop() : this.play();
     }
 
     play(): void {
@@ -137,9 +138,11 @@ export default class GlslLivecoder {
         }
 
         this.watchShader();
-        this.state.activeEditorDisposer = atom.workspace.onDidChangeActiveTextEditor(() => {
-            this.watchShader();
-        });
+        this.state.activeEditorDisposer = atom.workspace.onDidChangeActiveTextEditor(
+            () => {
+                this.watchShader();
+            },
+        );
     }
 
     watchShader(): void {
@@ -170,8 +173,7 @@ export default class GlslLivecoder {
     }
 
     playSound(): void {
-        this.loadSoundShader()
-        .then(() => this.player.playSound());
+        this.loadSoundShader().then(() => this.player.playSound());
     }
 
     stopSound(): void {
@@ -204,47 +206,69 @@ export default class GlslLivecoder {
         }
     }
 
-    private createPasses(rcPasses: any, shader: string, postfix: string, dirname: string): Promise<any[]> {
+    private createPasses(
+        rcPasses: any,
+        shader: string,
+        postfix: string,
+        dirname: string,
+    ): Promise<any[]> {
         if (rcPasses.length === 0) {
             rcPasses.push({});
         }
 
         const lastPass = rcPasses.length - 1;
 
-        return Promise.all(rcPasses.map(async (rcPass: any, i: number) => {
-            const pass: any = {
-                TARGET: rcPass.TARGET,
-                FLOAT: rcPass.FLOAT,
-                WIDTH: rcPass.WIDTH,
-                HEIGHT: rcPass.HEIGHT,
-            };
+        return Promise.all(
+            rcPasses.map(async (rcPass: any, i: number) => {
+                const pass: any = {
+                    TARGET: rcPass.TARGET,
+                    FLOAT: rcPass.FLOAT,
+                    WIDTH: rcPass.WIDTH,
+                    HEIGHT: rcPass.HEIGHT,
+                };
 
-            if (!rcPass.fs && !rcPass.vs) {
-                if (postfix === '.vert' || postfix === '.vs') {
-                    pass.vs = shader;
-                } else {
-                    pass.fs = shader;
-                }
-            } else {
-                if (rcPass.vs) {
-                    pass.vs = await loadFile(this.glslangValidatorPath, path.resolve(dirname, rcPass.vs));
-                    if (i === lastPass && (postfix === '.frag' || postfix === '.fs')) {
+                if (!rcPass.fs && !rcPass.vs) {
+                    if (postfix === '.vert' || postfix === '.vs') {
+                        pass.vs = shader;
+                    } else {
                         pass.fs = shader;
                     }
-                }
-                if (rcPass.fs) {
-                    pass.fs = await loadFile(this.glslangValidatorPath, path.resolve(dirname, rcPass.fs));
-                    if (i === lastPass && (postfix === '.vert' || postfix === '.vs')) {
-                        pass.vs = shader;
+                } else {
+                    if (rcPass.vs) {
+                        pass.vs = await loadFile(
+                            this.glslangValidatorPath,
+                            path.resolve(dirname, rcPass.vs),
+                        );
+                        if (
+                            i === lastPass &&
+                            (postfix === '.frag' || postfix === '.fs')
+                        ) {
+                            pass.fs = shader;
+                        }
+                    }
+                    if (rcPass.fs) {
+                        pass.fs = await loadFile(
+                            this.glslangValidatorPath,
+                            path.resolve(dirname, rcPass.fs),
+                        );
+                        if (
+                            i === lastPass &&
+                            (postfix === '.vert' || postfix === '.vs')
+                        ) {
+                            pass.vs = shader;
+                        }
                     }
                 }
-            }
 
-            return pass;
-        }));
+                return pass;
+            }),
+        );
     }
 
-    private loadShaderOfEditor(editor: TextEditor, isSound?: boolean): Promise<void> {
+    private loadShaderOfEditor(
+        editor: TextEditor,
+        isSound?: boolean,
+    ): Promise<void> {
         if (editor === undefined) {
             // This case occurs when no files are open/active
             return Promise.resolve();
@@ -254,7 +278,7 @@ export default class GlslLivecoder {
 
         const m = (filepath || '').match(/(\.(?:glsl|frag|vert|fs|vs))$/);
         if (!m) {
-            console.error('The filename for current doesn\'t seems to be GLSL.');
+            console.error("The filename for current doesn't seems to be GLSL.");
             return Promise.resolve();
         }
         const postfix = m[1];
@@ -263,39 +287,47 @@ export default class GlslLivecoder {
 
         let rc: IRc;
         return Promise.resolve()
-        .then(() => {
-            const headComment = (shader.match(/(?:\/\*)((?:.|\n|\r|\n\r)*?)(?:\*\/)/) || [])[1];
+            .then(() => {
+                const headComment = (shader.match(
+                    /(?:\/\*)((?:.|\n|\r|\n\r)*?)(?:\*\/)/,
+                ) || [])[1];
 
-            if (isSound) {
-                this.config.setSoundSettingsByString(filepath, headComment);
-                rc = this.config.createSoundRc();
-            } else {
-                this.config.setFileSettingsByString(filepath, headComment);
-                rc = this.config.createRc();
-            }
+                if (isSound) {
+                    this.config.setSoundSettingsByString(filepath, headComment);
+                    rc = this.config.createSoundRc();
+                } else {
+                    this.config.setFileSettingsByString(filepath, headComment);
+                    rc = this.config.createRc();
+                }
 
-            if (rc.glslify) {
-                shader = glslify(shader, { basedir: path.dirname(filepath) });
-            }
-        })
-        .then(() => {
-            if (!isSound) {
-                return validator(this.glslangValidatorPath, shader, postfix);
-            }
-            return;
-        })
-        .then(() => this.createPasses(rc.PASSES, shader, postfix, dirname))
-        .then(passes => {
-            if (isSound) {
-                this.player.loadSoundShader(shader);
-                this.lastSoundShader = shader;
-            } else {
-                this.player.loadShader(passes);
-                this.lastShader = passes;
-            }
-        })
-        .catch(e => {
-            console.error(e);
-        });
+                if (rc.glslify) {
+                    shader = glslify(shader, {
+                        basedir: path.dirname(filepath),
+                    });
+                }
+            })
+            .then(() => {
+                if (!isSound) {
+                    return validator(
+                        this.glslangValidatorPath,
+                        shader,
+                        postfix,
+                    );
+                }
+                return;
+            })
+            .then(() => this.createPasses(rc.PASSES, shader, postfix, dirname))
+            .then(passes => {
+                if (isSound) {
+                    this.player.loadSoundShader(shader);
+                    this.lastSoundShader = shader;
+                } else {
+                    this.player.loadShader(passes);
+                    this.lastShader = passes;
+                }
+            })
+            .catch(e => {
+                console.error(e);
+            });
     }
 }
