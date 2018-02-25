@@ -29,7 +29,7 @@
     "three": "^0.89.0",
     "tmp": "^0.0.33",
     "vedajs": "^0.7.1",
-    "webpack": "^3.6.0",
+    "webpack": "^4.0.0",
     "which": "^1.2.14"
   },
   "package-deps": [
