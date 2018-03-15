@@ -5938,6 +5938,10 @@ text-table@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
 
+three-obj-loader@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/three-obj-loader/-/three-obj-loader-1.1.3.tgz#4d540a256fcf2a59a6c6e0cd51a623efd76fd87d"
+
 three@^0.89.0:
   version "0.89.0"
   resolved "https://registry.yarnpkg.com/three/-/three-0.89.0.tgz#4442d819a6168871b8d2cb37ad12a24310c170f5"
@@ -6277,12 +6281,13 @@ vary@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
 
-vedajs@^0.7.1:
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/vedajs/-/vedajs-0.7.1.tgz#0ecf271ccc0134f8311f79df88d849f50ca9e75b"
+vedajs@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/vedajs/-/vedajs-0.8.0.tgz#64a15e6e37a5e270d59de532adf9a12877c5a30a"
   dependencies:
     is-video "^1.0.1"
     three "^0.90.0"
+    three-obj-loader "^1.1.3"
 
 verror@1.10.0:
   version "1.10.0"
