@@ -19,7 +19,7 @@ export default class PlayerClient {
     private socket: any;
     private player: Player | null = null;
     private wrapper: any = document.body;
-    private timer: NodeJS.Timer | null = null;
+    private timer: number | null = null;
 
     constructor() {
         this.socket = io({
@@ -84,6 +84,6 @@ export default class PlayerClient {
 
     poll = () => {
         this.socket.emit('ready');
-        this.timer = setTimeout(this.poll, 1000);
+        this.timer = window.setTimeout(this.poll, 1000);
     };
 }

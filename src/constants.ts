@@ -24,6 +24,7 @@ export const INITIAL_SHADER = [
 ];
 
 interface IPass {
+    OBJ?: string;
     TARGET?: string;
     vs?: string;
     fs?: string;

@@ -1,3 +1,7 @@
+## 2.7.0
+
+* Support `.obj` file
+
 ## 2.6.0
 
 * Moved from Flowtype to TypeScript

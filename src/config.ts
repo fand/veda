@@ -16,6 +16,7 @@ export interface IImportedHash {
 }
 
 export interface IRcPass {
+    OBJ?: string;
     TARGET?: string;
     vs?: string;
     fs?: string;
@@ -138,6 +139,21 @@ function parseImported(
     return newImportedHash;
 }
 
+function fixPath(projectPath: string, rc: IRcFragment): IRcFragment {
+    const PASSES = (rc.PASSES || []).map(pass => {
+        if (pass.OBJ) {
+            pass.OBJ = resolvePath(pass.OBJ, projectPath);
+        }
+        return pass;
+    });
+
+    return {
+        ...rc,
+        IMPORTED: parseImported(projectPath, rc.IMPORTED) || {},
+        PASSES,
+    };
+}
+
 export default class Config extends EventEmitter {
     rc: IRc;
     soundRc: IRc;
@@ -181,7 +197,7 @@ export default class Config extends EventEmitter {
         return p(fs.readFile)(
             path.resolve(this.projectPath, filename),
             'utf8',
-        ).then(data => ({ filename, data }));
+        ).then((data: IRcFragment) => ({ filename, data }));
     };
 
     load = (): Promise<void> | null => {
@@ -198,10 +214,9 @@ export default class Config extends EventEmitter {
                 return d;
             })
             .catch(() => this.readConfigFile('.vedarc'))
-            .then(({ filename, data }) => {
+            .then(({ filename, data }: any) => {
                 try {
-                    const rc = JSON5.parse(data);
-                    rc.IMPORTED = parseImported(this.projectPath, rc.IMPORTED);
+                    const rc = fixPath(this.projectPath, JSON5.parse(data));
                     this.setProjectSettings(rc);
                 } catch (e) {
                     console.log('[VEDA] Failed to parse rc file:', filename);
@@ -270,10 +285,7 @@ export default class Config extends EventEmitter {
             rc = JSON5.parse(comment);
         } catch (e) {}
 
-        const IMPORTED = parseImported(path.dirname(filepath), rc.IMPORTED);
-        if (IMPORTED) {
-            rc.IMPORTED = IMPORTED;
-        }
+        rc = fixPath(path.dirname(filepath), rc);
 
         return rc;
     }

@@ -68,7 +68,7 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 var global = __webpack_require__(2);
-var core = __webpack_require__(22);
+var core = __webpack_require__(23);
 var hide = __webpack_require__(13);
 var redefine = __webpack_require__(14);
 var ctx = __webpack_require__(19);
@@ -190,7 +190,7 @@ module.exports = !__webpack_require__(3)(function () {
 
 var anObject = __webpack_require__(1);
 var IE8_DOM_DEFINE = __webpack_require__(102);
-var toPrimitive = __webpack_require__(23);
+var toPrimitive = __webpack_require__(24);
 var dP = Object.defineProperty;
 
 exports.f = __webpack_require__(6) ? Object.defineProperty : function defineProperty(O, P, Attributes) {
@@ -211,7 +211,7 @@ exports.f = __webpack_require__(6) ? Object.defineProperty : function defineProp
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.1.15 ToLength
-var toInteger = __webpack_require__(25);
+var toInteger = __webpack_require__(26);
 var min = Math.min;
 module.exports = function (it) {
   return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0; // pow(2, 53) - 1 == 9007199254740991
@@ -223,7 +223,7 @@ module.exports = function (it) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.1.13 ToObject(argument)
-var defined = __webpack_require__(24);
+var defined = __webpack_require__(25);
 module.exports = function (it) {
   return Object(defined(it));
 };
@@ -302,7 +302,7 @@ var TO_STRING = 'toString';
 var $toString = Function[TO_STRING];
 var TPL = ('' + $toString).split(TO_STRING);
 
-__webpack_require__(22).inspectSource = function (it) {
+__webpack_require__(23).inspectSource = function (it) {
   return $toString.call(it);
 };
 
@@ -333,7 +333,7 @@ __webpack_require__(22).inspectSource = function (it) {
 
 var $export = __webpack_require__(0);
 var fails = __webpack_require__(3);
-var defined = __webpack_require__(24);
+var defined = __webpack_require__(25);
 var quot = /"/g;
 // B.2.3.2.1 CreateHTML(string, tag, attribute, value)
 var createHTML = function (string, tag, attribute, value) {
@@ -358,7 +358,7 @@ module.exports = function (NAME, exec) {
 
 // to indexed object, toObject with fallback for non-array-like ES3 strings
 var IObject = __webpack_require__(51);
-var defined = __webpack_require__(24);
+var defined = __webpack_require__(25);
 module.exports = function (it) {
   return IObject(defined(it));
 };
@@ -371,7 +371,7 @@ module.exports = function (it) {
 var pIE = __webpack_require__(52);
 var createDesc = __webpack_require__(34);
 var toIObject = __webpack_require__(16);
-var toPrimitive = __webpack_require__(23);
+var toPrimitive = __webpack_require__(24);
 var has = __webpack_require__(12);
 var IE8_DOM_DEFINE = __webpack_require__(102);
 var gOPD = Object.getOwnPropertyDescriptor;
@@ -460,121 +460,6 @@ module.exports = function (method, arg) {
 
 /***/ }),
 /* 22 */
-/***/ (function(module, exports) {
-
-var core = module.exports = { version: '2.5.3' };
-if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
-
-
-/***/ }),
-/* 23 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 7.1.1 ToPrimitive(input [, PreferredType])
-var isObject = __webpack_require__(4);
-// instead of the ES6 spec version, we didn't implement @@toPrimitive case
-// and the second argument - flag - preferred type is a string
-module.exports = function (it, S) {
-  if (!isObject(it)) return it;
-  var fn, val;
-  if (S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
-  if (typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it))) return val;
-  if (!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
-  throw TypeError("Can't convert object to primitive value");
-};
-
-
-/***/ }),
-/* 24 */
-/***/ (function(module, exports) {
-
-// 7.2.1 RequireObjectCoercible(argument)
-module.exports = function (it) {
-  if (it == undefined) throw TypeError("Can't call method on  " + it);
-  return it;
-};
-
-
-/***/ }),
-/* 25 */
-/***/ (function(module, exports) {
-
-// 7.1.4 ToInteger
-var ceil = Math.ceil;
-var floor = Math.floor;
-module.exports = function (it) {
-  return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
-};
-
-
-/***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// most Object methods by ES6 should accept primitives
-var $export = __webpack_require__(0);
-var core = __webpack_require__(22);
-var fails = __webpack_require__(3);
-module.exports = function (KEY, exec) {
-  var fn = (core.Object || {})[KEY] || Object[KEY];
-  var exp = {};
-  exp[KEY] = exec(fn);
-  $export($export.S + $export.F * fails(function () { fn(1); }), 'Object', exp);
-};
-
-
-/***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// 0 -> Array#forEach
-// 1 -> Array#map
-// 2 -> Array#filter
-// 3 -> Array#some
-// 4 -> Array#every
-// 5 -> Array#find
-// 6 -> Array#findIndex
-var ctx = __webpack_require__(19);
-var IObject = __webpack_require__(51);
-var toObject = __webpack_require__(9);
-var toLength = __webpack_require__(8);
-var asc = __webpack_require__(89);
-module.exports = function (TYPE, $create) {
-  var IS_MAP = TYPE == 1;
-  var IS_FILTER = TYPE == 2;
-  var IS_SOME = TYPE == 3;
-  var IS_EVERY = TYPE == 4;
-  var IS_FIND_INDEX = TYPE == 6;
-  var NO_HOLES = TYPE == 5 || IS_FIND_INDEX;
-  var create = $create || asc;
-  return function ($this, callbackfn, that) {
-    var O = toObject($this);
-    var self = IObject(O);
-    var f = ctx(callbackfn, that, 3);
-    var length = toLength(self.length);
-    var index = 0;
-    var result = IS_MAP ? create($this, length) : IS_FILTER ? create($this, 0) : undefined;
-    var val, res;
-    for (;length > index; index++) if (NO_HOLES || index in self) {
-      val = self[index];
-      res = f(val, index, O);
-      if (TYPE) {
-        if (IS_MAP) result[index] = res;   // map
-        else if (res) switch (TYPE) {
-          case 3: return true;             // some
-          case 5: return val;              // find
-          case 6: return index;            // findIndex
-          case 2: result.push(val);        // filter
-        } else if (IS_EVERY) return false; // every
-      }
-    }
-    return IS_FIND_INDEX ? -1 : IS_SOME || IS_EVERY ? IS_EVERY : result;
-  };
-};
-
-
-/***/ }),
-/* 28 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46516,6 +46401,121 @@ function LensFlare() {
 
 
 /***/ }),
+/* 23 */
+/***/ (function(module, exports) {
+
+var core = module.exports = { version: '2.5.3' };
+if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
+
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 7.1.1 ToPrimitive(input [, PreferredType])
+var isObject = __webpack_require__(4);
+// instead of the ES6 spec version, we didn't implement @@toPrimitive case
+// and the second argument - flag - preferred type is a string
+module.exports = function (it, S) {
+  if (!isObject(it)) return it;
+  var fn, val;
+  if (S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
+  if (typeof (fn = it.valueOf) == 'function' && !isObject(val = fn.call(it))) return val;
+  if (!S && typeof (fn = it.toString) == 'function' && !isObject(val = fn.call(it))) return val;
+  throw TypeError("Can't convert object to primitive value");
+};
+
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports) {
+
+// 7.2.1 RequireObjectCoercible(argument)
+module.exports = function (it) {
+  if (it == undefined) throw TypeError("Can't call method on  " + it);
+  return it;
+};
+
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports) {
+
+// 7.1.4 ToInteger
+var ceil = Math.ceil;
+var floor = Math.floor;
+module.exports = function (it) {
+  return isNaN(it = +it) ? 0 : (it > 0 ? floor : ceil)(it);
+};
+
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// most Object methods by ES6 should accept primitives
+var $export = __webpack_require__(0);
+var core = __webpack_require__(23);
+var fails = __webpack_require__(3);
+module.exports = function (KEY, exec) {
+  var fn = (core.Object || {})[KEY] || Object[KEY];
+  var exp = {};
+  exp[KEY] = exec(fn);
+  $export($export.S + $export.F * fails(function () { fn(1); }), 'Object', exp);
+};
+
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// 0 -> Array#forEach
+// 1 -> Array#map
+// 2 -> Array#filter
+// 3 -> Array#some
+// 4 -> Array#every
+// 5 -> Array#find
+// 6 -> Array#findIndex
+var ctx = __webpack_require__(19);
+var IObject = __webpack_require__(51);
+var toObject = __webpack_require__(9);
+var toLength = __webpack_require__(8);
+var asc = __webpack_require__(89);
+module.exports = function (TYPE, $create) {
+  var IS_MAP = TYPE == 1;
+  var IS_FILTER = TYPE == 2;
+  var IS_SOME = TYPE == 3;
+  var IS_EVERY = TYPE == 4;
+  var IS_FIND_INDEX = TYPE == 6;
+  var NO_HOLES = TYPE == 5 || IS_FIND_INDEX;
+  var create = $create || asc;
+  return function ($this, callbackfn, that) {
+    var O = toObject($this);
+    var self = IObject(O);
+    var f = ctx(callbackfn, that, 3);
+    var length = toLength(self.length);
+    var index = 0;
+    var result = IS_MAP ? create($this, length) : IS_FILTER ? create($this, 0) : undefined;
+    var val, res;
+    for (;length > index; index++) if (NO_HOLES || index in self) {
+      val = self[index];
+      res = f(val, index, O);
+      if (TYPE) {
+        if (IS_MAP) result[index] = res;   // map
+        else if (res) switch (TYPE) {
+          case 3: return true;             // some
+          case 5: return val;              // find
+          case 6: return index;            // findIndex
+          case 2: result.push(val);        // filter
+        } else if (IS_EVERY) return false; // every
+      }
+    }
+    return IS_FIND_INDEX ? -1 : IS_SOME || IS_EVERY ? IS_EVERY : result;
+  };
+};
+
+
+/***/ }),
 /* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -46533,11 +46533,11 @@ if (__webpack_require__(6)) {
   var propertyDesc = __webpack_require__(34);
   var hide = __webpack_require__(13);
   var redefineAll = __webpack_require__(44);
-  var toInteger = __webpack_require__(25);
+  var toInteger = __webpack_require__(26);
   var toLength = __webpack_require__(8);
   var toIndex = __webpack_require__(128);
   var toAbsoluteIndex = __webpack_require__(38);
-  var toPrimitive = __webpack_require__(23);
+  var toPrimitive = __webpack_require__(24);
   var has = __webpack_require__(12);
   var classof = __webpack_require__(53);
   var isObject = __webpack_require__(4);
@@ -46549,7 +46549,7 @@ if (__webpack_require__(6)) {
   var getIterFn = __webpack_require__(88);
   var uid = __webpack_require__(35);
   var wks = __webpack_require__(5);
-  var createArrayMethod = __webpack_require__(27);
+  var createArrayMethod = __webpack_require__(28);
   var createArrayIncludes = __webpack_require__(55);
   var speciesConstructor = __webpack_require__(62);
   var ArrayIterators = __webpack_require__(91);
@@ -47372,7 +47372,7 @@ module.exports = Object.keys || function keys(O) {
 /* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var toInteger = __webpack_require__(25);
+var toInteger = __webpack_require__(26);
 var max = Math.max;
 var min = Math.min;
 module.exports = function (index, length) {
@@ -47532,7 +47532,7 @@ module.exports = function (it, tag, stat) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(0);
-var defined = __webpack_require__(24);
+var defined = __webpack_require__(25);
 var fails = __webpack_require__(3);
 var spaces = __webpack_require__(76);
 var space = '[' + spaces + ']';
@@ -48541,7 +48541,7 @@ module.exports = function () {
 var hide = __webpack_require__(13);
 var redefine = __webpack_require__(14);
 var fails = __webpack_require__(3);
-var defined = __webpack_require__(24);
+var defined = __webpack_require__(25);
 var wks = __webpack_require__(5);
 
 module.exports = function (KEY, length, exec) {
@@ -48851,7 +48851,7 @@ module.exports = function (it) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var global = __webpack_require__(2);
-var core = __webpack_require__(22);
+var core = __webpack_require__(23);
 var LIBRARY = __webpack_require__(36);
 var wksExt = __webpack_require__(103);
 var defineProperty = __webpack_require__(7).f;
@@ -48950,8 +48950,8 @@ module.exports = function (that, target, C) {
 
 "use strict";
 
-var toInteger = __webpack_require__(25);
-var defined = __webpack_require__(24);
+var toInteger = __webpack_require__(26);
+var defined = __webpack_require__(25);
 
 module.exports = function repeat(count) {
   var str = String(defined(this));
@@ -48994,8 +48994,8 @@ module.exports = (!$expm1
 /* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var toInteger = __webpack_require__(25);
-var defined = __webpack_require__(24);
+var toInteger = __webpack_require__(26);
+var defined = __webpack_require__(25);
 // true  -> String#at
 // false -> String#codePointAt
 module.exports = function (TO_STRING) {
@@ -49116,7 +49116,7 @@ module.exports = function (Constructor, NAME, next) {
 
 // helper for String#{startsWith, endsWith, includes}
 var isRegExp = __webpack_require__(58);
-var defined = __webpack_require__(24);
+var defined = __webpack_require__(25);
 
 module.exports = function (that, searchString, NAME) {
   if (isRegExp(searchString)) throw TypeError('String#' + NAME + " doesn't accept regex!");
@@ -49178,7 +49178,7 @@ module.exports = function (object, index, value) {
 var classof = __webpack_require__(53);
 var ITERATOR = __webpack_require__(5)('iterator');
 var Iterators = __webpack_require__(47);
-module.exports = __webpack_require__(22).getIteratorMethod = function (it) {
+module.exports = __webpack_require__(23).getIteratorMethod = function (it) {
   if (it != undefined) return it[ITERATOR]
     || it['@@iterator']
     || Iterators[classof(it)];
@@ -49463,7 +49463,7 @@ var hide = __webpack_require__(13);
 var redefineAll = __webpack_require__(44);
 var fails = __webpack_require__(3);
 var anInstance = __webpack_require__(42);
-var toInteger = __webpack_require__(25);
+var toInteger = __webpack_require__(26);
 var toLength = __webpack_require__(8);
 var toIndex = __webpack_require__(128);
 var gOPN = __webpack_require__(40).f;
@@ -51009,7 +51009,7 @@ module.exports = __webpack_require__(63)(SET, function (get) {
 
 "use strict";
 
-var each = __webpack_require__(27)(0);
+var each = __webpack_require__(28)(0);
 var redefine = __webpack_require__(14);
 var meta = __webpack_require__(32);
 var assign = __webpack_require__(107);
@@ -51081,7 +51081,7 @@ var anObject = __webpack_require__(1);
 var isObject = __webpack_require__(4);
 var anInstance = __webpack_require__(42);
 var forOf = __webpack_require__(43);
-var createArrayMethod = __webpack_require__(27);
+var createArrayMethod = __webpack_require__(28);
 var $has = __webpack_require__(12);
 var validate = __webpack_require__(48);
 var arrayFind = createArrayMethod(5);
@@ -51166,7 +51166,7 @@ module.exports = {
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://tc39.github.io/ecma262/#sec-toindex
-var toInteger = __webpack_require__(25);
+var toInteger = __webpack_require__(26);
 var toLength = __webpack_require__(8);
 module.exports = function (it) {
   if (it === undefined) return 0;
@@ -51246,7 +51246,7 @@ module.exports = flattenIntoArray;
 // https://github.com/tc39/proposal-string-pad-start-end
 var toLength = __webpack_require__(8);
 var repeat = __webpack_require__(78);
-var defined = __webpack_require__(24);
+var defined = __webpack_require__(25);
 
 module.exports = function (that, maxLength, fillString, left) {
   var S = String(defined(that));
@@ -53370,7 +53370,7 @@ __webpack_require__(343);
 __webpack_require__(344);
 __webpack_require__(345);
 __webpack_require__(346);
-module.exports = __webpack_require__(22);
+module.exports = __webpack_require__(23);
 
 
 /***/ }),
@@ -53398,7 +53398,7 @@ var isArray = __webpack_require__(57);
 var anObject = __webpack_require__(1);
 var isObject = __webpack_require__(4);
 var toIObject = __webpack_require__(16);
-var toPrimitive = __webpack_require__(23);
+var toPrimitive = __webpack_require__(24);
 var createDesc = __webpack_require__(34);
 var _create = __webpack_require__(39);
 var gOPNExt = __webpack_require__(106);
@@ -53670,7 +53670,7 @@ $export($export.S + $export.F * !__webpack_require__(6), 'Object', { definePrope
 var toIObject = __webpack_require__(16);
 var $getOwnPropertyDescriptor = __webpack_require__(17).f;
 
-__webpack_require__(26)('getOwnPropertyDescriptor', function () {
+__webpack_require__(27)('getOwnPropertyDescriptor', function () {
   return function getOwnPropertyDescriptor(it, key) {
     return $getOwnPropertyDescriptor(toIObject(it), key);
   };
@@ -53685,7 +53685,7 @@ __webpack_require__(26)('getOwnPropertyDescriptor', function () {
 var toObject = __webpack_require__(9);
 var $getPrototypeOf = __webpack_require__(18);
 
-__webpack_require__(26)('getPrototypeOf', function () {
+__webpack_require__(27)('getPrototypeOf', function () {
   return function getPrototypeOf(it) {
     return $getPrototypeOf(toObject(it));
   };
@@ -53700,7 +53700,7 @@ __webpack_require__(26)('getPrototypeOf', function () {
 var toObject = __webpack_require__(9);
 var $keys = __webpack_require__(37);
 
-__webpack_require__(26)('keys', function () {
+__webpack_require__(27)('keys', function () {
   return function keys(it) {
     return $keys(toObject(it));
   };
@@ -53712,7 +53712,7 @@ __webpack_require__(26)('keys', function () {
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.7 Object.getOwnPropertyNames(O)
-__webpack_require__(26)('getOwnPropertyNames', function () {
+__webpack_require__(27)('getOwnPropertyNames', function () {
   return __webpack_require__(106).f;
 });
 
@@ -53725,7 +53725,7 @@ __webpack_require__(26)('getOwnPropertyNames', function () {
 var isObject = __webpack_require__(4);
 var meta = __webpack_require__(32).onFreeze;
 
-__webpack_require__(26)('freeze', function ($freeze) {
+__webpack_require__(27)('freeze', function ($freeze) {
   return function freeze(it) {
     return $freeze && isObject(it) ? $freeze(meta(it)) : it;
   };
@@ -53740,7 +53740,7 @@ __webpack_require__(26)('freeze', function ($freeze) {
 var isObject = __webpack_require__(4);
 var meta = __webpack_require__(32).onFreeze;
 
-__webpack_require__(26)('seal', function ($seal) {
+__webpack_require__(27)('seal', function ($seal) {
   return function seal(it) {
     return $seal && isObject(it) ? $seal(meta(it)) : it;
   };
@@ -53755,7 +53755,7 @@ __webpack_require__(26)('seal', function ($seal) {
 var isObject = __webpack_require__(4);
 var meta = __webpack_require__(32).onFreeze;
 
-__webpack_require__(26)('preventExtensions', function ($preventExtensions) {
+__webpack_require__(27)('preventExtensions', function ($preventExtensions) {
   return function preventExtensions(it) {
     return $preventExtensions && isObject(it) ? $preventExtensions(meta(it)) : it;
   };
@@ -53769,7 +53769,7 @@ __webpack_require__(26)('preventExtensions', function ($preventExtensions) {
 // 19.1.2.12 Object.isFrozen(O)
 var isObject = __webpack_require__(4);
 
-__webpack_require__(26)('isFrozen', function ($isFrozen) {
+__webpack_require__(27)('isFrozen', function ($isFrozen) {
   return function isFrozen(it) {
     return isObject(it) ? $isFrozen ? $isFrozen(it) : false : true;
   };
@@ -53783,7 +53783,7 @@ __webpack_require__(26)('isFrozen', function ($isFrozen) {
 // 19.1.2.13 Object.isSealed(O)
 var isObject = __webpack_require__(4);
 
-__webpack_require__(26)('isSealed', function ($isSealed) {
+__webpack_require__(27)('isSealed', function ($isSealed) {
   return function isSealed(it) {
     return isObject(it) ? $isSealed ? $isSealed(it) : false : true;
   };
@@ -53797,7 +53797,7 @@ __webpack_require__(26)('isSealed', function ($isSealed) {
 // 19.1.2.11 Object.isExtensible(O)
 var isObject = __webpack_require__(4);
 
-__webpack_require__(26)('isExtensible', function ($isExtensible) {
+__webpack_require__(27)('isExtensible', function ($isExtensible) {
   return function isExtensible(it) {
     return isObject(it) ? $isExtensible ? $isExtensible(it) : true : false;
   };
@@ -53942,7 +53942,7 @@ var global = __webpack_require__(2);
 var has = __webpack_require__(12);
 var cof = __webpack_require__(20);
 var inheritIfRequired = __webpack_require__(77);
-var toPrimitive = __webpack_require__(23);
+var toPrimitive = __webpack_require__(24);
 var fails = __webpack_require__(3);
 var gOPN = __webpack_require__(40).f;
 var gOPD = __webpack_require__(17).f;
@@ -54015,7 +54015,7 @@ if (!$Number(' 0o1') || !$Number('0b1') || $Number('+0x1')) {
 "use strict";
 
 var $export = __webpack_require__(0);
-var toInteger = __webpack_require__(25);
+var toInteger = __webpack_require__(26);
 var aNumberValue = __webpack_require__(112);
 var repeat = __webpack_require__(78);
 var $toFixed = 1.0.toFixed;
@@ -54926,7 +54926,7 @@ $export($export.S, 'Date', { now: function () { return new Date().getTime(); } }
 
 var $export = __webpack_require__(0);
 var toObject = __webpack_require__(9);
-var toPrimitive = __webpack_require__(23);
+var toPrimitive = __webpack_require__(24);
 
 $export($export.P + $export.F * __webpack_require__(3)(function () {
   return new Date(NaN).toJSON() !== null
@@ -55023,7 +55023,7 @@ if (!(TO_PRIMITIVE in proto)) __webpack_require__(13)(proto, TO_PRIMITIVE, __web
 "use strict";
 
 var anObject = __webpack_require__(1);
-var toPrimitive = __webpack_require__(23);
+var toPrimitive = __webpack_require__(24);
 var NUMBER = 'number';
 
 module.exports = function (hint) {
@@ -55203,7 +55203,7 @@ $export($export.P + $export.F * (fails(function () {
 "use strict";
 
 var $export = __webpack_require__(0);
-var $forEach = __webpack_require__(27)(0);
+var $forEach = __webpack_require__(28)(0);
 var STRICT = __webpack_require__(21)([].forEach, true);
 
 $export($export.P + $export.F * !STRICT, 'Array', {
@@ -55243,7 +55243,7 @@ module.exports = function (original) {
 "use strict";
 
 var $export = __webpack_require__(0);
-var $map = __webpack_require__(27)(1);
+var $map = __webpack_require__(28)(1);
 
 $export($export.P + $export.F * !__webpack_require__(21)([].map, true), 'Array', {
   // 22.1.3.15 / 15.4.4.19 Array.prototype.map(callbackfn [, thisArg])
@@ -55260,7 +55260,7 @@ $export($export.P + $export.F * !__webpack_require__(21)([].map, true), 'Array',
 "use strict";
 
 var $export = __webpack_require__(0);
-var $filter = __webpack_require__(27)(2);
+var $filter = __webpack_require__(28)(2);
 
 $export($export.P + $export.F * !__webpack_require__(21)([].filter, true), 'Array', {
   // 22.1.3.7 / 15.4.4.20 Array.prototype.filter(callbackfn [, thisArg])
@@ -55277,7 +55277,7 @@ $export($export.P + $export.F * !__webpack_require__(21)([].filter, true), 'Arra
 "use strict";
 
 var $export = __webpack_require__(0);
-var $some = __webpack_require__(27)(3);
+var $some = __webpack_require__(28)(3);
 
 $export($export.P + $export.F * !__webpack_require__(21)([].some, true), 'Array', {
   // 22.1.3.23 / 15.4.4.17 Array.prototype.some(callbackfn [, thisArg])
@@ -55294,7 +55294,7 @@ $export($export.P + $export.F * !__webpack_require__(21)([].some, true), 'Array'
 "use strict";
 
 var $export = __webpack_require__(0);
-var $every = __webpack_require__(27)(4);
+var $every = __webpack_require__(28)(4);
 
 $export($export.P + $export.F * !__webpack_require__(21)([].every, true), 'Array', {
   // 22.1.3.5 / 15.4.4.16 Array.prototype.every(callbackfn [, thisArg])
@@ -55368,7 +55368,7 @@ $export($export.P + $export.F * (NEGATIVE_ZERO || !__webpack_require__(21)($nati
 
 var $export = __webpack_require__(0);
 var toIObject = __webpack_require__(16);
-var toInteger = __webpack_require__(25);
+var toInteger = __webpack_require__(26);
 var toLength = __webpack_require__(8);
 var $native = [].lastIndexOf;
 var NEGATIVE_ZERO = !!$native && 1 / [1].lastIndexOf(1, -0) < 0;
@@ -55421,7 +55421,7 @@ __webpack_require__(33)('fill');
 
 // 22.1.3.8 Array.prototype.find(predicate, thisArg = undefined)
 var $export = __webpack_require__(0);
-var $find = __webpack_require__(27)(5);
+var $find = __webpack_require__(28)(5);
 var KEY = 'find';
 var forced = true;
 // Shouldn't skip holes
@@ -55442,7 +55442,7 @@ __webpack_require__(33)(KEY);
 
 // 22.1.3.9 Array.prototype.findIndex(predicate, thisArg = undefined)
 var $export = __webpack_require__(0);
-var $find = __webpack_require__(27)(6);
+var $find = __webpack_require__(28)(6);
 var KEY = 'findIndex';
 var forced = true;
 // Shouldn't skip holes
@@ -55886,7 +55886,7 @@ if (!USE_NATIVE) {
 $export($export.G + $export.W + $export.F * !USE_NATIVE, { Promise: $Promise });
 __webpack_require__(45)($Promise, PROMISE);
 __webpack_require__(41)(PROMISE);
-Wrapper = __webpack_require__(22)[PROMISE];
+Wrapper = __webpack_require__(23)[PROMISE];
 
 // statics
 $export($export.S + $export.F * !USE_NATIVE, PROMISE, {
@@ -56216,7 +56216,7 @@ $export($export.S + $export.F * (NEW_TARGET_BUG || ARGS_BUG), 'Reflect', {
 var dP = __webpack_require__(7);
 var $export = __webpack_require__(0);
 var anObject = __webpack_require__(1);
-var toPrimitive = __webpack_require__(23);
+var toPrimitive = __webpack_require__(24);
 
 // MS Edge has broken Reflect.defineProperty - throwing instead of returning false
 $export($export.S + $export.F * __webpack_require__(3)(function () {
@@ -56526,7 +56526,7 @@ var $export = __webpack_require__(0);
 var flattenIntoArray = __webpack_require__(130);
 var toObject = __webpack_require__(9);
 var toLength = __webpack_require__(8);
-var toInteger = __webpack_require__(25);
+var toInteger = __webpack_require__(26);
 var arraySpeciesCreate = __webpack_require__(89);
 
 $export($export.P, 'Array', {
@@ -56634,7 +56634,7 @@ __webpack_require__(46)('trimRight', function ($trim) {
 
 // https://tc39.github.io/String.prototype.matchAll/
 var $export = __webpack_require__(0);
-var defined = __webpack_require__(24);
+var defined = __webpack_require__(25);
 var toLength = __webpack_require__(8);
 var isRegExp = __webpack_require__(58);
 var getFlags = __webpack_require__(60);
@@ -56781,7 +56781,7 @@ __webpack_require__(6) && $export($export.P + __webpack_require__(65), 'Object',
 
 var $export = __webpack_require__(0);
 var toObject = __webpack_require__(9);
-var toPrimitive = __webpack_require__(23);
+var toPrimitive = __webpack_require__(24);
 var getPrototypeOf = __webpack_require__(18);
 var getOwnPropertyDescriptor = __webpack_require__(17).f;
 
@@ -56806,7 +56806,7 @@ __webpack_require__(6) && $export($export.P + __webpack_require__(65), 'Object',
 
 var $export = __webpack_require__(0);
 var toObject = __webpack_require__(9);
-var toPrimitive = __webpack_require__(23);
+var toPrimitive = __webpack_require__(24);
 var getPrototypeOf = __webpack_require__(18);
 var getOwnPropertyDescriptor = __webpack_require__(17).f;
 
@@ -57131,7 +57131,7 @@ $export($export.S, 'Math', { signbit: function signbit(x) {
 // https://github.com/tc39/proposal-promise-finally
 
 var $export = __webpack_require__(0);
-var core = __webpack_require__(22);
+var core = __webpack_require__(23);
 var global = __webpack_require__(2);
 var speciesConstructor = __webpack_require__(62);
 var promiseResolve = __webpack_require__(122);
@@ -57366,7 +57366,7 @@ $export($export.G, {
 // https://github.com/zenparsing/es-observable
 var $export = __webpack_require__(0);
 var global = __webpack_require__(2);
-var core = __webpack_require__(22);
+var core = __webpack_require__(23);
 var microtask = __webpack_require__(93)();
 var OBSERVABLE = __webpack_require__(5)('observable');
 var aFunction = __webpack_require__(11);
@@ -58413,7 +58413,7 @@ for (var collections = getKeys(DOMIterables), i = 0; i < collections.length; i++
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(349);
-module.exports = __webpack_require__(22).RegExp.escape;
+module.exports = __webpack_require__(23).RegExp.escape;
 
 
 /***/ }),
@@ -58450,7 +58450,7 @@ module.exports = function (regExp, replace) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const io = __webpack_require__(352);
 const player_1 = __webpack_require__(375);
-const view_1 = __webpack_require__(391);
+const view_1 = __webpack_require__(393);
 class PlayerClient {
     constructor() {
         this.player = null;
@@ -58458,7 +58458,7 @@ class PlayerClient {
         this.timer = null;
         this.poll = () => {
             this.socket.emit('ready');
-            this.timer = setTimeout(this.poll, 1000);
+            this.timer = window.setTimeout(this.poll, 1000);
         };
         this.socket = io({
             autoConnect: false,
@@ -61661,7 +61661,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const vedajs_1 = __webpack_require__(376);
-const THREE = __webpack_require__(390);
+const THREE = __webpack_require__(392);
 class Player {
     constructor(view, rc, isPlaying, shader) {
         this.textures = {};
@@ -61839,17 +61839,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const THREE = __webpack_require__(28);
+const THREE = __webpack_require__(22);
 const audio_loader_1 = __webpack_require__(378);
 const camera_loader_1 = __webpack_require__(379);
 const gamepad_loader_1 = __webpack_require__(380);
 const gif_loader_1 = __webpack_require__(381);
 const key_loader_1 = __webpack_require__(382);
 const midi_loader_1 = __webpack_require__(383);
-const sound_loader_1 = __webpack_require__(384);
-const sound_renderer_1 = __webpack_require__(385);
-const video_loader_1 = __webpack_require__(386);
-const isVideo = __webpack_require__(387);
+const obj_loader_1 = __webpack_require__(384);
+const sound_loader_1 = __webpack_require__(386);
+const sound_renderer_1 = __webpack_require__(387);
+const video_loader_1 = __webpack_require__(388);
+const isVideo = __webpack_require__(389);
 const constants_1 = __webpack_require__(101);
 const isGif = (file) => file.match(/\.gif$/i);
 const isSound = (file) => file.match(/\.(mp3|wav)$/i);
@@ -61876,8 +61877,10 @@ class Veda {
             if (root) {
                 const left = rect.top + root.scrollLeft;
                 const top = rect.top + root.scrollTop;
-                this.uniforms.mouse.value.x = (e.pageX - left) / this.canvas.offsetWidth;
-                this.uniforms.mouse.value.y = 1 - (e.pageY - top) / this.canvas.offsetHeight;
+                this.uniforms.mouse.value.x =
+                    (e.pageX - left) / this.canvas.offsetWidth;
+                this.uniforms.mouse.value.y =
+                    1 - (e.pageY - top) / this.canvas.offsetHeight;
             }
         };
         this.mousedown = (e) => {
@@ -61890,7 +61893,10 @@ class Veda {
                 return;
             }
             this.renderer.setSize(width, height);
-            const [bufferWidth, bufferHeight] = [width / this.pixelRatio, height / this.pixelRatio];
+            const [bufferWidth, bufferHeight] = [
+                width / this.pixelRatio,
+                height / this.pixelRatio,
+            ];
             this.passes.forEach(p => {
                 if (p.target) {
                     p.target.targets.forEach(t => t.setSize(bufferWidth, bufferHeight));
@@ -61916,8 +61922,16 @@ class Veda {
         this.vertexMode = rc.vertexMode;
         this.passes = [];
         this.targets = [
-            new THREE.WebGLRenderTarget(0, 0, { minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter, format: THREE.RGBAFormat }),
-            new THREE.WebGLRenderTarget(0, 0, { minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter, format: THREE.RGBAFormat }),
+            new THREE.WebGLRenderTarget(0, 0, {
+                minFilter: THREE.LinearFilter,
+                magFilter: THREE.NearestFilter,
+                format: THREE.RGBAFormat,
+            }),
+            new THREE.WebGLRenderTarget(0, 0, {
+                minFilter: THREE.LinearFilter,
+                magFilter: THREE.NearestFilter,
+                format: THREE.RGBAFormat,
+            }),
         ];
         THREE.ImageUtils.crossOrigin = '*';
         this.audioLoader = new audio_loader_1.default(rc);
@@ -61928,6 +61942,7 @@ class Veda {
         this.videoLoader = new video_loader_1.default();
         this.gifLoader = new gif_loader_1.default();
         this.soundLoader = new sound_loader_1.default();
+        this.objLoader = new obj_loader_1.default();
         this.start = Date.now();
         this.uniforms = {
             FRAMEINDEX: { type: 'i', value: 0 },
@@ -61987,18 +62002,23 @@ class Veda {
         this.frame = 0;
         this.animate();
     }
-    createPlane(fs, vs) {
+    createPlane(fs, vs, obj) {
         let plane;
         if (vs) {
-            const geometry = new THREE.BufferGeometry();
-            const vertices = new Float32Array(this.uniforms.vertexCount.value * 3);
-            geometry.addAttribute('position', new THREE.BufferAttribute(vertices, 3));
-            const vertexIds = new Float32Array(this.uniforms.vertexCount.value);
+            const geometry = obj || new THREE.BufferGeometry();
+            if (!obj) {
+                const vertices = new Float32Array(this.uniforms.vertexCount.value * 3);
+                geometry.addAttribute('position', new THREE.BufferAttribute(vertices, 3));
+            }
+            const vertexCount = obj
+                ? obj.getAttribute('position').count
+                : this.uniforms.vertexCount.value;
+            const vertexIds = new Float32Array(vertexCount);
             vertexIds.forEach((_, i) => {
                 vertexIds[i] = i;
             });
             geometry.addAttribute('vertexId', new THREE.BufferAttribute(vertexIds, 1));
-            const material = new THREE.ShaderMaterial({
+            const material = new THREE.RawShaderMaterial({
                 vertexShader: vs,
                 fragmentShader: fs || constants_1.DEFAULT_FRAGMENT_SHADER,
                 blending: THREE.AdditiveBlending,
@@ -62038,7 +62058,7 @@ class Veda {
             }
         }
         else {
-            const geometry = new THREE.PlaneGeometry(2, 2);
+            const geometry = obj || new THREE.PlaneGeometry(2, 2);
             const material = new THREE.ShaderMaterial({
                 vertexShader: constants_1.DEFAULT_VERTEX_SHADER,
                 fragmentShader: fs,
@@ -62055,47 +62075,61 @@ class Veda {
         return plane;
     }
     createRenderPass(pass) {
-        if (!this.canvas) {
-            throw new Error('Call setCanvas() before loading shaders');
-        }
-        const scene = new THREE.Scene();
-        const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
-        camera.position.set(0, 0, 1);
-        camera.lookAt(scene.position);
-        const plane = this.createPlane(pass.fs, pass.vs);
-        scene.add(plane);
-        let target = null;
-        if (pass.TARGET) {
-            const targetName = pass.TARGET;
-            const textureType = pass.FLOAT ? THREE.FloatType : THREE.UnsignedByteType;
-            let getWidth = ($WIDTH, _) => $WIDTH;
-            let getHeight = (_, $HEIGHT) => $HEIGHT;
-            if (pass.WIDTH) {
-                try {
-                    getWidth = new Function('$WIDTH', '$HEIGHT', `return ${pass.WIDTH}`);
-                }
-                catch (e) { }
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!this.canvas) {
+                throw new Error('Call setCanvas() before loading shaders');
             }
-            if (pass.HEIGHT) {
-                try {
-                    getHeight = new Function('$WIDTH', '$HEIGHT', `return ${pass.HEIGHT}`);
-                }
-                catch (e) { }
+            const scene = new THREE.Scene();
+            const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
+            camera.position.set(0, 0, 1);
+            camera.lookAt(scene.position);
+            if (pass.OBJ) {
+                const mesh = yield this.objLoader.load(pass.OBJ);
+                const plane = this.createPlane(pass.fs, pass.vs, mesh);
+                scene.add(plane);
             }
-            const w = this.canvas.offsetWidth / this.pixelRatio;
-            const h = this.canvas.offsetHeight / this.pixelRatio;
-            target = {
-                name: targetName,
-                getWidth,
-                getHeight,
-                targets: [createTarget(w, h, textureType), createTarget(w, h, textureType)],
-            };
-            this.uniforms[targetName] = {
-                type: 't',
-                value: target.targets[0].texture,
-            };
-        }
-        return { scene, camera, target };
+            else {
+                const plane = this.createPlane(pass.fs, pass.vs);
+                scene.add(plane);
+            }
+            let target = null;
+            if (pass.TARGET) {
+                const targetName = pass.TARGET;
+                const textureType = pass.FLOAT
+                    ? THREE.FloatType
+                    : THREE.UnsignedByteType;
+                let getWidth = ($WIDTH, _) => $WIDTH;
+                let getHeight = (_, $HEIGHT) => $HEIGHT;
+                if (pass.WIDTH) {
+                    try {
+                        getWidth = new Function('$WIDTH', '$HEIGHT', `return ${pass.WIDTH}`);
+                    }
+                    catch (e) { }
+                }
+                if (pass.HEIGHT) {
+                    try {
+                        getHeight = new Function('$WIDTH', '$HEIGHT', `return ${pass.HEIGHT}`);
+                    }
+                    catch (e) { }
+                }
+                const w = this.canvas.offsetWidth / this.pixelRatio;
+                const h = this.canvas.offsetHeight / this.pixelRatio;
+                target = {
+                    name: targetName,
+                    getWidth,
+                    getHeight,
+                    targets: [
+                        createTarget(w, h, textureType),
+                        createTarget(w, h, textureType),
+                    ],
+                };
+                this.uniforms[targetName] = {
+                    type: 't',
+                    value: target.targets[0].texture,
+                };
+            }
+            return { scene, camera, target };
+        });
     }
     loadFragmentShader(fs) {
         this.loadShader([{ fs }]);
@@ -62104,27 +62138,29 @@ class Veda {
         this.loadShader([{ vs }]);
     }
     loadShader(shader) {
-        let passes;
-        if (shader instanceof Array) {
-            passes = shader;
-        }
-        else {
-            passes = [shader];
-        }
-        this.passes.forEach(pass => {
-            const target = pass.target;
-            if (target) {
-                target.targets[0].texture.dispose();
-                target.targets[1].texture.dispose();
+        return __awaiter(this, void 0, void 0, function* () {
+            let passes;
+            if (shader instanceof Array) {
+                passes = shader;
             }
-        });
-        this.passes = passes.map(pass => {
-            if (!pass.fs && !pass.vs) {
-                throw new TypeError('Veda.loadShader: Invalid argument. Shaders must have fs or vs property.');
+            else {
+                passes = [shader];
             }
-            return this.createRenderPass(pass);
+            this.passes.forEach(pass => {
+                const target = pass.target;
+                if (target) {
+                    target.targets[0].texture.dispose();
+                    target.targets[1].texture.dispose();
+                }
+            });
+            this.passes = yield Promise.all(passes.map(pass => {
+                if (!pass.fs && !pass.vs) {
+                    throw new TypeError('Veda.loadShader: Invalid argument. Shaders must have fs or vs property.');
+                }
+                return this.createRenderPass(pass);
+            }));
+            this.uniforms.FRAMEINDEX.value = 0;
         });
-        this.uniforms.FRAMEINDEX.value = 0;
     }
     loadTexture(name, textureUrl, speed = 1) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -62217,10 +62253,12 @@ class Veda {
             }
         });
         const lastPass = this.passes[this.passes.length - 1];
-        if (lastPass.target) {
-            renderer.render(lastPass.scene, lastPass.camera, undefined);
+        if (lastPass) {
+            if (lastPass.target) {
+                renderer.render(lastPass.scene, lastPass.camera, undefined);
+            }
+            renderer.render(lastPass.scene, lastPass.camera, this.targets[1], true);
         }
-        renderer.render(lastPass.scene, lastPass.camera, this.targets[1], true);
         this.uniforms.FRAMEINDEX.value++;
     }
     toggleAudio(flag) {
@@ -62283,7 +62321,7 @@ exports.default = Veda;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const THREE = __webpack_require__(28);
+const THREE = __webpack_require__(22);
 const get_ctx_1 = __webpack_require__(100);
 const DEFAULT_AUDIO_OPTIONS = {
     fftSize: 2048,
@@ -62328,7 +62366,9 @@ class AudioLoader {
             this.willPlay.then(() => {
                 this.isEnabled = false;
                 this.input && this.input.disconnect();
-                this.stream.getTracks().forEach((t) => t.stop());
+                this.stream
+                    .getTracks()
+                    .forEach((t) => t.stop());
             });
         }
     }
@@ -62339,7 +62379,8 @@ class AudioLoader {
         this.samples.needsUpdate = true;
     }
     getVolume() {
-        return this.spectrumArray.reduce((x, y) => x + y, 0) / this.spectrumArray.length;
+        return (this.spectrumArray.reduce((x, y) => x + y, 0) /
+            this.spectrumArray.length);
     }
     setFftSize(fftSize) {
         this.analyser.fftSize = fftSize;
@@ -62364,7 +62405,7 @@ exports.default = AudioLoader;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const THREE = __webpack_require__(28);
+const THREE = __webpack_require__(22);
 class CameraLoader {
     constructor() {
         this.willPlay = null;
@@ -62399,7 +62440,9 @@ class CameraLoader {
         this.texture.dispose();
         if (this.willPlay) {
             this.willPlay.then(() => {
-                this.stream.getTracks().forEach((t) => t.stop());
+                this.stream
+                    .getTracks()
+                    .forEach((t) => t.stop());
             });
         }
     }
@@ -62414,7 +62457,7 @@ exports.default = CameraLoader;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const THREE = __webpack_require__(28);
+const THREE = __webpack_require__(22);
 class GamepadLoader {
     constructor() {
         this.isEnabled = false;
@@ -62460,7 +62503,7 @@ exports.default = GamepadLoader;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const THREE = __webpack_require__(28);
+const THREE = __webpack_require__(22);
 class GifLoader {
     constructor() {
         this.cache = {};
@@ -62511,7 +62554,7 @@ exports.default = GifLoader;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const THREE = __webpack_require__(28);
+const THREE = __webpack_require__(22);
 class KeyLoader {
     constructor() {
         this.onKeyDown = (e) => {
@@ -62550,7 +62593,7 @@ exports.default = KeyLoader;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const THREE = __webpack_require__(28);
+const THREE = __webpack_require__(22);
 class MidiLoader {
     constructor() {
         this.isEnabled = false;
@@ -62566,7 +62609,7 @@ class MidiLoader {
             const offset = midi[0] + midi[1] * 256;
             this.midiArray[offset] = midi[2];
             this.midiTexture.needsUpdate = true;
-            if (0x90 <= midi[0] && midi[0] < 0xA0) {
+            if (0x90 <= midi[0] && midi[0] < 0xa0) {
                 this.noteArray[midi[1]] = midi[2] * 2;
                 this.noteTexture.needsUpdate = true;
             }
@@ -62583,10 +62626,11 @@ class MidiLoader {
     enable() {
         this.isEnabled = true;
         if (!navigator.requestMIDIAccess) {
-            console.error('[VEDA] This browser doesn\'t support Web MIDI API.');
+            console.error("[VEDA] This browser doesn't support Web MIDI API.");
             return;
         }
-        navigator.requestMIDIAccess({ sysex: false })
+        navigator
+            .requestMIDIAccess({ sysex: false })
             .then((access) => {
             this.onstatechange(access);
             access.onstatechange = () => this.onstatechange(access);
@@ -62607,7 +62651,718 @@ exports.default = MidiLoader;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const THREE = __webpack_require__(28);
+const THREE = __webpack_require__(22);
+__webpack_require__(385)(THREE);
+class ObjLoader {
+    constructor() {
+        this.cache = {};
+        this.loader = new THREE.OBJLoader();
+    }
+    load(url) {
+        const cache = this.cache[url];
+        if (cache) {
+            return Promise.resolve(cache.obj);
+        }
+        return new Promise((resolve, reject) => {
+            this.loader.load(url, (group) => {
+                let obj = group.children[0].geometry;
+                obj = this.fixObj(obj);
+                this.cache[url] = { url, obj };
+                resolve(obj);
+            }, undefined, reject);
+        });
+    }
+    fixObj(obj) {
+        obj.computeBoundingSphere();
+        const offset = obj.boundingSphere.center;
+        const scale = 1 / obj.boundingSphere.radius;
+        obj.scale(scale, scale, scale);
+        obj.translate(-offset.x, -offset.y, -offset.z);
+        return obj;
+    }
+}
+exports.default = ObjLoader;
+//# sourceMappingURL=obj-loader.js.map
+
+/***/ }),
+/* 385 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function defaultOnError(err) {
+  throw new Error(err);
+}
+
+module.exports = function (THREE) {
+
+  /**
+   * @author mrdoob / http://mrdoob.com/
+   */
+
+  THREE.OBJLoader = function (manager) {
+
+    this.manager = manager !== undefined ? manager : THREE.DefaultLoadingManager;
+
+    this.materials = null;
+
+    this.regexp = {
+      // v float float float
+      vertex_pattern: /^v\s+([\d|\.|\+|\-|e|E]+)\s+([\d|\.|\+|\-|e|E]+)\s+([\d|\.|\+|\-|e|E]+)/,
+      // vn float float float
+      normal_pattern: /^vn\s+([\d|\.|\+|\-|e|E]+)\s+([\d|\.|\+|\-|e|E]+)\s+([\d|\.|\+|\-|e|E]+)/,
+      // vt float float
+      uv_pattern: /^vt\s+([\d|\.|\+|\-|e|E]+)\s+([\d|\.|\+|\-|e|E]+)/,
+      // f vertex vertex vertex
+      face_vertex: /^f\s+(-?\d+)\s+(-?\d+)\s+(-?\d+)(?:\s+(-?\d+))?/,
+      // f vertex/uv vertex/uv vertex/uv
+      face_vertex_uv: /^f\s+(-?\d+)\/(-?\d+)\s+(-?\d+)\/(-?\d+)\s+(-?\d+)\/(-?\d+)(?:\s+(-?\d+)\/(-?\d+))?/,
+      // f vertex/uv/normal vertex/uv/normal vertex/uv/normal
+      face_vertex_uv_normal: /^f\s+(-?\d+)\/(-?\d+)\/(-?\d+)\s+(-?\d+)\/(-?\d+)\/(-?\d+)\s+(-?\d+)\/(-?\d+)\/(-?\d+)(?:\s+(-?\d+)\/(-?\d+)\/(-?\d+))?/,
+      // f vertex//normal vertex//normal vertex//normal
+      face_vertex_normal: /^f\s+(-?\d+)\/\/(-?\d+)\s+(-?\d+)\/\/(-?\d+)\s+(-?\d+)\/\/(-?\d+)(?:\s+(-?\d+)\/\/(-?\d+))?/,
+      // o object_name | g group_name
+      object_pattern: /^[og]\s*(.+)?/,
+      // s boolean
+      smoothing_pattern: /^s\s+(\d+|on|off)/,
+      // mtllib file_reference
+      material_library_pattern: /^mtllib /,
+      // usemtl material_name
+      material_use_pattern: /^usemtl /
+    };
+  };
+
+  THREE.OBJLoader.prototype = {
+
+    constructor: THREE.OBJLoader,
+
+    load: function load(url, onLoad, onProgress, onError) {
+
+      var scope = this;
+      this.onError = onError || defaultOnError;
+
+      var loader = new THREE.FileLoader(scope.manager);
+      loader.setPath(this.path);
+      loader.load(url, function (text) {
+
+        onLoad(scope.parse(text));
+      }, onProgress, onError);
+    },
+
+    setPath: function setPath(value) {
+
+      this.path = value;
+    },
+
+    setMaterials: function setMaterials(materials) {
+
+      this.materials = materials;
+    },
+
+    _createParserState: function _createParserState() {
+
+      var state = {
+        objects: [],
+        object: {},
+
+        vertices: [],
+        normals: [],
+        uvs: [],
+
+        materialLibraries: [],
+
+        startObject: function startObject(name, fromDeclaration) {
+
+          // If the current object (initial from reset) is not from a g/o declaration in the parsed
+          // file. We need to use it for the first parsed g/o to keep things in sync.
+          if (this.object && this.object.fromDeclaration === false) {
+
+            this.object.name = name;
+            this.object.fromDeclaration = fromDeclaration !== false;
+            return;
+          }
+
+          var previousMaterial = this.object && typeof this.object.currentMaterial === 'function' ? this.object.currentMaterial() : undefined;
+
+          if (this.object && typeof this.object._finalize === 'function') {
+
+            this.object._finalize(true);
+          }
+
+          this.object = {
+            name: name || '',
+            fromDeclaration: fromDeclaration !== false,
+
+            geometry: {
+              vertices: [],
+              normals: [],
+              uvs: []
+            },
+            materials: [],
+            smooth: true,
+
+            startMaterial: function startMaterial(name, libraries) {
+
+              var previous = this._finalize(false);
+
+              // New usemtl declaration overwrites an inherited material, except if faces were declared
+              // after the material, then it must be preserved for proper MultiMaterial continuation.
+              if (previous && (previous.inherited || previous.groupCount <= 0)) {
+
+                this.materials.splice(previous.index, 1);
+              }
+
+              var material = {
+                index: this.materials.length,
+                name: name || '',
+                mtllib: Array.isArray(libraries) && libraries.length > 0 ? libraries[libraries.length - 1] : '',
+                smooth: previous !== undefined ? previous.smooth : this.smooth,
+                groupStart: previous !== undefined ? previous.groupEnd : 0,
+                groupEnd: -1,
+                groupCount: -1,
+                inherited: false,
+
+                clone: function clone(index) {
+                  var cloned = {
+                    index: typeof index === 'number' ? index : this.index,
+                    name: this.name,
+                    mtllib: this.mtllib,
+                    smooth: this.smooth,
+                    groupStart: 0,
+                    groupEnd: -1,
+                    groupCount: -1,
+                    inherited: false
+                  };
+                  cloned.clone = this.clone.bind(cloned);
+                  return cloned;
+                }
+              };
+
+              this.materials.push(material);
+
+              return material;
+            },
+
+            currentMaterial: function currentMaterial() {
+
+              if (this.materials.length > 0) {
+                return this.materials[this.materials.length - 1];
+              }
+
+              return undefined;
+            },
+
+            _finalize: function _finalize(end) {
+
+              var lastMultiMaterial = this.currentMaterial();
+              if (lastMultiMaterial && lastMultiMaterial.groupEnd === -1) {
+
+                lastMultiMaterial.groupEnd = this.geometry.vertices.length / 3;
+                lastMultiMaterial.groupCount = lastMultiMaterial.groupEnd - lastMultiMaterial.groupStart;
+                lastMultiMaterial.inherited = false;
+              }
+
+              // Ignore objects tail materials if no face declarations followed them before a new o/g started.
+              if (end && this.materials.length > 1) {
+
+                for (var mi = this.materials.length - 1; mi >= 0; mi--) {
+                  if (this.materials[mi].groupCount <= 0) {
+                    this.materials.splice(mi, 1);
+                  }
+                }
+              }
+
+              // Guarantee at least one empty material, this makes the creation later more straight forward.
+              if (end && this.materials.length === 0) {
+
+                this.materials.push({
+                  name: '',
+                  smooth: this.smooth
+                });
+              }
+
+              return lastMultiMaterial;
+            }
+          };
+
+          // Inherit previous objects material.
+          // Spec tells us that a declared material must be set to all objects until a new material is declared.
+          // If a usemtl declaration is encountered while this new object is being parsed, it will
+          // overwrite the inherited material. Exception being that there was already face declarations
+          // to the inherited material, then it will be preserved for proper MultiMaterial continuation.
+
+          if (previousMaterial && previousMaterial.name && typeof previousMaterial.clone === "function") {
+
+            var declared = previousMaterial.clone(0);
+            declared.inherited = true;
+            this.object.materials.push(declared);
+          }
+
+          this.objects.push(this.object);
+        },
+
+        finalize: function finalize() {
+
+          if (this.object && typeof this.object._finalize === 'function') {
+
+            this.object._finalize(true);
+          }
+        },
+
+        parseVertexIndex: function parseVertexIndex(value, len) {
+
+          var index = parseInt(value, 10);
+          return (index >= 0 ? index - 1 : index + len / 3) * 3;
+        },
+
+        parseNormalIndex: function parseNormalIndex(value, len) {
+
+          var index = parseInt(value, 10);
+          return (index >= 0 ? index - 1 : index + len / 3) * 3;
+        },
+
+        parseUVIndex: function parseUVIndex(value, len) {
+
+          var index = parseInt(value, 10);
+          return (index >= 0 ? index - 1 : index + len / 2) * 2;
+        },
+
+        addVertex: function addVertex(a, b, c) {
+
+          var src = this.vertices;
+          var dst = this.object.geometry.vertices;
+
+          dst.push(src[a + 0]);
+          dst.push(src[a + 1]);
+          dst.push(src[a + 2]);
+          dst.push(src[b + 0]);
+          dst.push(src[b + 1]);
+          dst.push(src[b + 2]);
+          dst.push(src[c + 0]);
+          dst.push(src[c + 1]);
+          dst.push(src[c + 2]);
+        },
+
+        addVertexLine: function addVertexLine(a) {
+
+          var src = this.vertices;
+          var dst = this.object.geometry.vertices;
+
+          dst.push(src[a + 0]);
+          dst.push(src[a + 1]);
+          dst.push(src[a + 2]);
+        },
+
+        addNormal: function addNormal(a, b, c) {
+
+          var src = this.normals;
+          var dst = this.object.geometry.normals;
+
+          dst.push(src[a + 0]);
+          dst.push(src[a + 1]);
+          dst.push(src[a + 2]);
+          dst.push(src[b + 0]);
+          dst.push(src[b + 1]);
+          dst.push(src[b + 2]);
+          dst.push(src[c + 0]);
+          dst.push(src[c + 1]);
+          dst.push(src[c + 2]);
+        },
+
+        addUV: function addUV(a, b, c) {
+
+          var src = this.uvs;
+          var dst = this.object.geometry.uvs;
+
+          dst.push(src[a + 0]);
+          dst.push(src[a + 1]);
+          dst.push(src[b + 0]);
+          dst.push(src[b + 1]);
+          dst.push(src[c + 0]);
+          dst.push(src[c + 1]);
+        },
+
+        addUVLine: function addUVLine(a) {
+
+          var src = this.uvs;
+          var dst = this.object.geometry.uvs;
+
+          dst.push(src[a + 0]);
+          dst.push(src[a + 1]);
+        },
+
+        addFace: function addFace(a, b, c, d, ua, ub, uc, ud, na, nb, nc, nd) {
+
+          var vLen = this.vertices.length;
+
+          var ia = this.parseVertexIndex(a, vLen);
+          var ib = this.parseVertexIndex(b, vLen);
+          var ic = this.parseVertexIndex(c, vLen);
+          var id;
+
+          if (d === undefined) {
+
+            this.addVertex(ia, ib, ic);
+          } else {
+
+            id = this.parseVertexIndex(d, vLen);
+
+            this.addVertex(ia, ib, id);
+            this.addVertex(ib, ic, id);
+          }
+
+          if (ua !== undefined) {
+
+            var uvLen = this.uvs.length;
+
+            ia = this.parseUVIndex(ua, uvLen);
+            ib = this.parseUVIndex(ub, uvLen);
+            ic = this.parseUVIndex(uc, uvLen);
+
+            if (d === undefined) {
+
+              this.addUV(ia, ib, ic);
+            } else {
+
+              id = this.parseUVIndex(ud, uvLen);
+
+              this.addUV(ia, ib, id);
+              this.addUV(ib, ic, id);
+            }
+          }
+
+          if (na !== undefined) {
+
+            // Normals are many times the same. If so, skip function call and parseInt.
+            var nLen = this.normals.length;
+            ia = this.parseNormalIndex(na, nLen);
+
+            ib = na === nb ? ia : this.parseNormalIndex(nb, nLen);
+            ic = na === nc ? ia : this.parseNormalIndex(nc, nLen);
+
+            if (d === undefined) {
+
+              this.addNormal(ia, ib, ic);
+            } else {
+
+              id = this.parseNormalIndex(nd, nLen);
+
+              this.addNormal(ia, ib, id);
+              this.addNormal(ib, ic, id);
+            }
+          }
+        },
+
+        addLineGeometry: function addLineGeometry(vertices, uvs) {
+
+          this.object.geometry.type = 'Line';
+
+          var vLen = this.vertices.length;
+          var uvLen = this.uvs.length;
+
+          for (var vi = 0, l = vertices.length; vi < l; vi++) {
+
+            this.addVertexLine(this.parseVertexIndex(vertices[vi], vLen));
+          }
+
+          for (var uvi = 0, l = uvs.length; uvi < l; uvi++) {
+
+            this.addUVLine(this.parseUVIndex(uvs[uvi], uvLen));
+          }
+        }
+
+      };
+
+      state.startObject('', false);
+
+      return state;
+    },
+
+    parse: function parse(text, debug) {
+      if (typeof debug === 'undefined') {
+        debug = true;
+      }
+
+      if (debug) {
+        console.time('OBJLoader');
+      }
+
+      var state = this._createParserState();
+
+      if (text.indexOf('\r\n') !== -1) {
+
+        // This is faster than String.split with regex that splits on both
+        text = text.replace(/\r\n/g, '\n');
+      }
+
+      if (text.indexOf('\\\n') !== -1) {
+
+        // join lines separated by a line continuation character (\)
+        text = text.replace(/\\\n/g, '');
+      }
+
+      var lines = text.split('\n');
+      var line = '',
+          lineFirstChar = '',
+          lineSecondChar = '';
+      var lineLength = 0;
+      var result = [];
+
+      // Faster to just trim left side of the line. Use if available.
+      var trimLeft = typeof ''.trimLeft === 'function';
+
+      for (var i = 0, l = lines.length; i < l; i++) {
+
+        line = lines[i];
+
+        line = trimLeft ? line.trimLeft() : line.trim();
+
+        lineLength = line.length;
+
+        if (lineLength === 0) continue;
+
+        lineFirstChar = line.charAt(0);
+
+        // @todo invoke passed in handler if any
+        if (lineFirstChar === '#') continue;
+
+        if (lineFirstChar === 'v') {
+
+          lineSecondChar = line.charAt(1);
+
+          if (lineSecondChar === ' ' && (result = this.regexp.vertex_pattern.exec(line)) !== null) {
+
+            // 0                  1      2      3
+            // ["v 1.0 2.0 3.0", "1.0", "2.0", "3.0"]
+
+            state.vertices.push(parseFloat(result[1]), parseFloat(result[2]), parseFloat(result[3]));
+          } else if (lineSecondChar === 'n' && (result = this.regexp.normal_pattern.exec(line)) !== null) {
+
+            // 0                   1      2      3
+            // ["vn 1.0 2.0 3.0", "1.0", "2.0", "3.0"]
+
+            state.normals.push(parseFloat(result[1]), parseFloat(result[2]), parseFloat(result[3]));
+          } else if (lineSecondChar === 't' && (result = this.regexp.uv_pattern.exec(line)) !== null) {
+
+            // 0               1      2
+            // ["vt 0.1 0.2", "0.1", "0.2"]
+
+            state.uvs.push(parseFloat(result[1]), parseFloat(result[2]));
+          } else {
+
+            this.onError("Unexpected vertex/normal/uv line: '" + line + "'");
+          }
+        } else if (lineFirstChar === "f") {
+
+          if ((result = this.regexp.face_vertex_uv_normal.exec(line)) !== null) {
+
+            // f vertex/uv/normal vertex/uv/normal vertex/uv/normal
+            // 0                        1    2    3    4    5    6    7    8    9   10         11         12
+            // ["f 1/1/1 2/2/2 3/3/3", "1", "1", "1", "2", "2", "2", "3", "3", "3", undefined, undefined, undefined]
+
+            state.addFace(result[1], result[4], result[7], result[10], result[2], result[5], result[8], result[11], result[3], result[6], result[9], result[12]);
+          } else if ((result = this.regexp.face_vertex_uv.exec(line)) !== null) {
+
+            // f vertex/uv vertex/uv vertex/uv
+            // 0                  1    2    3    4    5    6   7          8
+            // ["f 1/1 2/2 3/3", "1", "1", "2", "2", "3", "3", undefined, undefined]
+
+            state.addFace(result[1], result[3], result[5], result[7], result[2], result[4], result[6], result[8]);
+          } else if ((result = this.regexp.face_vertex_normal.exec(line)) !== null) {
+
+            // f vertex//normal vertex//normal vertex//normal
+            // 0                     1    2    3    4    5    6   7          8
+            // ["f 1//1 2//2 3//3", "1", "1", "2", "2", "3", "3", undefined, undefined]
+
+            state.addFace(result[1], result[3], result[5], result[7], undefined, undefined, undefined, undefined, result[2], result[4], result[6], result[8]);
+          } else if ((result = this.regexp.face_vertex.exec(line)) !== null) {
+
+            // f vertex vertex vertex
+            // 0            1    2    3   4
+            // ["f 1 2 3", "1", "2", "3", undefined]
+
+            state.addFace(result[1], result[2], result[3], result[4]);
+          } else {
+
+            this.onError("Unexpected face line: '" + line + "'");
+          }
+        } else if (lineFirstChar === "l") {
+
+          var lineParts = line.substring(1).trim().split(" ");
+          var lineVertices = [],
+              lineUVs = [];
+
+          if (line.indexOf("/") === -1) {
+
+            lineVertices = lineParts;
+          } else {
+
+            for (var li = 0, llen = lineParts.length; li < llen; li++) {
+
+              var parts = lineParts[li].split("/");
+
+              if (parts[0] !== "") lineVertices.push(parts[0]);
+              if (parts[1] !== "") lineUVs.push(parts[1]);
+            }
+          }
+          state.addLineGeometry(lineVertices, lineUVs);
+        } else if ((result = this.regexp.object_pattern.exec(line)) !== null) {
+
+          // o object_name
+          // or
+          // g group_name
+
+          // WORKAROUND: https://bugs.chromium.org/p/v8/issues/detail?id=2869
+          // var name = result[ 0 ].substr( 1 ).trim();
+          var name = (" " + result[0].substr(1).trim()).substr(1);
+
+          state.startObject(name);
+        } else if (this.regexp.material_use_pattern.test(line)) {
+
+          // material
+
+          state.object.startMaterial(line.substring(7).trim(), state.materialLibraries);
+        } else if (this.regexp.material_library_pattern.test(line)) {
+
+          // mtl file
+
+          state.materialLibraries.push(line.substring(7).trim());
+        } else if ((result = this.regexp.smoothing_pattern.exec(line)) !== null) {
+
+          // smooth shading
+
+          // @todo Handle files that have varying smooth values for a set of faces inside one geometry,
+          // but does not define a usemtl for each face set.
+          // This should be detected and a dummy material created (later MultiMaterial and geometry groups).
+          // This requires some care to not create extra material on each smooth value for "normal" obj files.
+          // where explicit usemtl defines geometry groups.
+          // Example asset: examples/models/obj/cerberus/Cerberus.obj
+
+          var value = result[1].trim().toLowerCase();
+          state.object.smooth = value === '1' || value === 'on';
+
+          var material = state.object.currentMaterial();
+          if (material) {
+
+            material.smooth = state.object.smooth;
+          }
+        } else {
+
+          // Handle null terminated files without exception
+          if (line === '\0') continue;
+
+          this.onError("Unexpected line: '" + line + "'");
+        }
+      }
+
+      state.finalize();
+
+      var container = new THREE.Group();
+      container.materialLibraries = [].concat(state.materialLibraries);
+
+      for (var i = 0, l = state.objects.length; i < l; i++) {
+
+        var object = state.objects[i];
+        var geometry = object.geometry;
+        var materials = object.materials;
+        var isLine = geometry.type === 'Line';
+
+        // Skip o/g line declarations that did not follow with any faces
+        if (geometry.vertices.length === 0) continue;
+
+        var buffergeometry = new THREE.BufferGeometry();
+
+        buffergeometry.addAttribute('position', new THREE.BufferAttribute(new Float32Array(geometry.vertices), 3));
+
+        if (geometry.normals.length > 0) {
+
+          buffergeometry.addAttribute('normal', new THREE.BufferAttribute(new Float32Array(geometry.normals), 3));
+        } else {
+
+          buffergeometry.computeVertexNormals();
+        }
+
+        if (geometry.uvs.length > 0) {
+
+          buffergeometry.addAttribute('uv', new THREE.BufferAttribute(new Float32Array(geometry.uvs), 2));
+        }
+
+        // Create materials
+
+        var createdMaterials = [];
+
+        for (var mi = 0, miLen = materials.length; mi < miLen; mi++) {
+
+          var sourceMaterial = materials[mi];
+          var material = undefined;
+
+          if (this.materials !== null) {
+
+            material = this.materials.create(sourceMaterial.name);
+
+            // mtl etc. loaders probably can't create line materials correctly, copy properties to a line material.
+            if (isLine && material && !(material instanceof THREE.LineBasicMaterial)) {
+
+              var materialLine = new THREE.LineBasicMaterial();
+              materialLine.copy(material);
+              material = materialLine;
+            }
+          }
+
+          if (!material) {
+
+            material = !isLine ? new THREE.MeshPhongMaterial() : new THREE.LineBasicMaterial();
+            material.name = sourceMaterial.name;
+          }
+
+          material.shading = sourceMaterial.smooth ? THREE.SmoothShading : THREE.FlatShading;
+
+          createdMaterials.push(material);
+        }
+
+        // Create mesh
+
+        var mesh;
+
+        if (createdMaterials.length > 1) {
+
+          for (var mi = 0, miLen = materials.length; mi < miLen; mi++) {
+
+            var sourceMaterial = materials[mi];
+            buffergeometry.addGroup(sourceMaterial.groupStart, sourceMaterial.groupCount, mi);
+          }
+
+          var multiMaterial = new THREE.MultiMaterial(createdMaterials);
+          mesh = !isLine ? new THREE.Mesh(buffergeometry, multiMaterial) : new THREE.LineSegments(buffergeometry, multiMaterial);
+        } else {
+
+          mesh = !isLine ? new THREE.Mesh(buffergeometry, createdMaterials[0]) : new THREE.LineSegments(buffergeometry, createdMaterials[0]);
+        }
+
+        mesh.name = object.name;
+
+        container.add(mesh);
+      }
+
+      if (debug) {
+        console.timeEnd('OBJLoader');
+      }
+
+      return container;
+    }
+
+  };
+};
+
+/***/ }),
+/* 386 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const THREE = __webpack_require__(22);
 const constants_1 = __webpack_require__(101);
 const get_ctx_1 = __webpack_require__(100);
 class SoundLoader {
@@ -62635,8 +63390,9 @@ class SoundLoader {
             .then(res => ctx.decodeAudioData(res))
             .then(audioBuffer => {
             const c0 = audioBuffer.getChannelData(0);
-            const c1 = audioBuffer.numberOfChannels === 2 ?
-                audioBuffer.getChannelData(1) : c0;
+            const c1 = audioBuffer.numberOfChannels === 2
+                ? audioBuffer.getChannelData(1)
+                : c0;
             const array = new Uint8Array(constants_1.SAMPLE_WIDTH * constants_1.SAMPLE_HEIGHT * 4);
             for (let i = 0; i < c0.length; i++) {
                 const off = i * 4;
@@ -62664,13 +63420,13 @@ exports.default = SoundLoader;
 //# sourceMappingURL=sound-loader.js.map
 
 /***/ }),
-/* 385 */
+/* 387 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const THREE = __webpack_require__(28);
+const THREE = __webpack_require__(22);
 const constants_1 = __webpack_require__(101);
 const get_ctx_1 = __webpack_require__(100);
 const WIDTH = 32;
@@ -62731,8 +63487,12 @@ class SoundRenderer {
                 this.wctx.readPixels(0, 0, WIDTH, HEIGHT, this.wctx.RGBA, this.wctx.UNSIGNED_BYTE, pixels);
                 for (let i = 0; i < PIXELS; i++) {
                     const ii = (off + i) % allPixels;
-                    outputDataL[ii] = (pixels[i * 4 + 0] * 256 + pixels[i * 4 + 1]) / 65535 * 2 - 1;
-                    outputDataR[ii] = (pixels[i * 4 + 2] * 256 + pixels[i * 4 + 3]) / 65535 * 2 - 1;
+                    outputDataL[ii] =
+                        (pixels[i * 4 + 0] * 256 + pixels[i * 4 + 1]) / 65535 * 2 -
+                            1;
+                    outputDataR[ii] =
+                        (pixels[i * 4 + 2] * 256 + pixels[i * 4 + 3]) / 65535 * 2 -
+                            1;
                 }
                 j++;
                 if (j < numBlocks) {
@@ -62753,7 +63513,9 @@ class SoundRenderer {
         canvas.height = HEIGHT;
         this.renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
         this.wctx = this.renderer.getContext();
-        this.target = new THREE.WebGLRenderTarget(WIDTH, HEIGHT, { format: THREE.RGBAFormat });
+        this.target = new THREE.WebGLRenderTarget(WIDTH, HEIGHT, {
+            format: THREE.RGBAFormat,
+        });
         this.uniforms = uniforms;
         this.soundUniforms = {
             iBlockOffset: { type: 'f', value: 0.0 },
@@ -62812,13 +63574,13 @@ exports.default = SoundRenderer;
 //# sourceMappingURL=sound-renderer.js.map
 
 /***/ }),
-/* 386 */
+/* 388 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const THREE = __webpack_require__(28);
+const THREE = __webpack_require__(22);
 class VideoLoader {
     constructor() {
         this.cache = {};
@@ -62858,13 +63620,13 @@ exports.default = VideoLoader;
 //# sourceMappingURL=video-loader.js.map
 
 /***/ }),
-/* 387 */
+/* 389 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var path = __webpack_require__(388);
-var videoExtensions = __webpack_require__(389);
+var path = __webpack_require__(390);
+var videoExtensions = __webpack_require__(391);
 var exts = Object.create(null);
 
 videoExtensions.forEach(function (el) {
@@ -62877,7 +63639,7 @@ module.exports = function (filepath) {
 
 
 /***/ }),
-/* 388 */
+/* 390 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process) {// Copyright Joyent, Inc. and other Node contributors.
@@ -63108,13 +63870,13 @@ var substr = 'ab'.substr(-1) === 'b'
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(137)))
 
 /***/ }),
-/* 389 */
+/* 391 */
 /***/ (function(module, exports) {
 
 module.exports = ["3g2","3gp","aaf","asf","avchd","avi","drc","flv","m2v","m4p","m4v","mkv","mng","mov","mp2","mp4","mpe","mpeg","mpg","mpv","mxf","nsv","ogg","ogv","qt","rm","rmvb","roq","svi","vob","webm","wmv","yuv"]
 
 /***/ }),
-/* 390 */
+/* 392 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -109096,7 +109858,7 @@ function CanvasRenderer() {
 
 
 /***/ }),
-/* 391 */
+/* 393 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
