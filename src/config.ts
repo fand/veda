@@ -16,6 +16,7 @@ export interface IImportedHash {
 }
 
 export interface IRcPass {
+    OBJ?: string;
     TARGET?: string;
     vs?: string;
     fs?: string;

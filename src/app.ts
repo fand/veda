@@ -221,6 +221,7 @@ export default class GlslLivecoder {
         return Promise.all(
             rcPasses.map(async (rcPass: any, i: number) => {
                 const pass: any = {
+                    OBJ: rcPass.OBJ,
                     TARGET: rcPass.TARGET,
                     FLOAT: rcPass.FLOAT,
                     WIDTH: rcPass.WIDTH,
