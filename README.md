@@ -522,6 +522,41 @@ void main(){
 
 See an [example](./examples/gpgpu/post.frag) for actual usage.
 
+### Loading `.obj` file
+
+You can use `.obj` files as models by passing file path to `OBJ` property in `PASSES`:
+
+```glsl
+/*{
+  "PASSES": [{
+    "vs": "./foo.vert",
+    "OBJ": "./foo.obj",
+  }]
+}*/
+```
+
+When you load `.obj` files in fragment shader, your shader is applied on the model defined in `.obj` file.
+When you load `.obj` in vertex shader, you can use following attributes:
+
+* `attribute vec3 position`
+* `attribute vec3 normal`
+
+Then
+
+```glsl
+precision mediump float;
+attribute vec3 position;
+attribute vec3 normal;
+varying vec4 v_color;
+
+void main(){
+    gl_Position = vec4(position, 1);
+    v_color = vec4(dot(normal, vec3(1)); // Lighting
+}
+```
+
+See an [example](./examples/obj.vert) for actual usage.
+
 ### glslify
 
 VEDA supports [glslify](https://github.com/stackgl/glslify).
