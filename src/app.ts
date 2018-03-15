@@ -324,11 +324,11 @@ export default class GlslLivecoder {
             .then(() => this.createPasses(rc.PASSES, shader, postfix, dirname))
             .then(passes => {
                 if (isSound) {
-                    this.player.loadSoundShader(shader);
                     this.lastSoundShader = shader;
+                    return this.player.loadSoundShader(shader);
                 } else {
-                    this.player.loadShader(passes);
                     this.lastShader = passes;
+                    return this.player.loadShader(passes);
                 }
             })
             .catch(e => {
