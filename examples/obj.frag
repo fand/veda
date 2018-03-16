@@ -1,8 +1,6 @@
 /*{
-  "vertexMode": "POINTS",
-  // "vertexMode": "TRI_FAN",
-  // "vertexMode": "TRIANGLES",
-  "audio": true,
+  frameskip: 1,
+  vertexMode: "TRIANGLES",
   PASSES: [{
     OBJ: './deer.obj',
     vs: './obj.vert',
@@ -22,6 +20,6 @@ void main() {
     }
     else {
       vec4 deer = texture2D(deer, uv);
-      gl_FragColor = vec4(uv.x, 0, uv.y, 1.) * .5 + deer;
+      gl_FragColor = vec4(uv.x, 0, uv.y, 1.) * .5 / deer;
     }
 }
