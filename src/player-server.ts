@@ -135,6 +135,10 @@ export default class PlayerServer implements IPlayable {
         this.io.emit('setOsc', { name, data });
     }
 
+    toggleFullscreen() {
+        this.io.emit('toggleFullscreen');
+    }
+
     stdout = (output: Buffer) => {
         atom.notifications.addSuccess(output.toString().trim());
     };

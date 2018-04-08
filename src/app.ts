@@ -335,4 +335,8 @@ export default class GlslLivecoder {
                 console.error(e);
             });
     }
+
+    toggleFullscreen(): void {
+        this.player.toggleFullscreen();
+    }
 }

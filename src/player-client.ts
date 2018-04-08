@@ -69,6 +69,9 @@ export default class PlayerClient {
                 this.player.setOsc(msg.name, msg.data);
             }
         });
+        this.socket.on('toggleFullscreen', () => {
+            this.player && this.player.toggleFullscreen();
+        });
         this.socket.on('connect', () => {
             console.log('[VEDA] Connected to the server');
             this.poll();

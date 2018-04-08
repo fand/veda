@@ -2,6 +2,7 @@ export default class View {
     private wrapper: HTMLElement;
     private element: HTMLElement;
     private canvas: HTMLCanvasElement;
+    private isFullscreen = false;
 
     constructor(wrapper: HTMLElement) {
         this.wrapper = wrapper;
@@ -29,5 +30,14 @@ export default class View {
 
     hide(): void {
         document.body.classList.remove('veda-enabled');
+    }
+
+    toggleFullscreen(): void {
+        this.isFullscreen = !this.isFullscreen;
+        if (this.isFullscreen) {
+            document.body.classList.add('veda-fullscreen');
+        } else {
+            document.body.classList.remove('veda-fullscreen');
+        }
     }
 }

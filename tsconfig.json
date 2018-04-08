@@ -14,5 +14,5 @@
     "moduleResolution": "node",
   },
   "include": ["src", "typings"],
-  "exclude": ["examples"],
+  "exclude": ["examples"]
 }

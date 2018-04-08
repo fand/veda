@@ -64,6 +64,7 @@ export default class Wrapper {
                 'veda:stop-watching': () => this.app.stopWatching(),
                 'veda:load-sound-shader': () => this.app.playSound(),
                 'veda:stop-sound-shader': () => this.app.stopSound(),
+                'veda:toggle-fullscreen': () => this.app.toggleFullscreen(),
             }),
         );
 

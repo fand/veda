@@ -195,4 +195,8 @@ export default class Player implements IPlayable {
             texture.needsUpdate = true;
         }
     }
+
+    toggleFullscreen(): void {
+        this.view.toggleFullscreen();
+    }
 }

@@ -1,3 +1,7 @@
+## 2.8.0
+
+* Add `Veda: Toggle Fullscreen` command (`ctrl-escape`)
+
 ## 2.7.0
 
 * Support `.obj` file
