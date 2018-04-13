@@ -5,7 +5,6 @@ import * as JSON5 from 'json5';
 import * as p from 'pify';
 import { throttle } from 'lodash';
 
-// type Sound = 'LOOP';
 interface IImported {
     PATH: string;
     SPEED?: number;
@@ -41,7 +40,6 @@ export interface IRc {
     glslify: boolean;
     server: number | null;
     osc: number | null;
-    // sound: Sound | null;
     soundLength: number;
 }
 
@@ -61,7 +59,6 @@ interface IRcFragmentWithoutImported {
     glslify?: boolean;
     server?: number | null;
     osc?: number | null;
-    // sound?: Sound | null;
     soundLength?: number;
 }
 
@@ -99,7 +96,6 @@ const DEFAULT_RC = {
     glslify: false,
     server: null,
     osc: null,
-    // sound: 'LOOP',
     soundLength: 30,
 };
 
@@ -388,9 +384,6 @@ export default class Config extends EventEmitter {
         if (newObj.osc !== oldObj.osc) {
             diff.added.osc = newObj.osc;
         }
-        // if (newObj.sound !== oldObj.sound) {
-        //   diff.added.sound = newObj.sound;
-        // }
         if (newObj.soundLength !== oldObj.soundLength) {
             diff.added.soundLength = newObj.soundLength;
         }
