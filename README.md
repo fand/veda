@@ -115,6 +115,8 @@ Run `apm rebuild` in the package directory to resolve.
   * Watch active tab and run `watch-shader` automatically.
 * `stop-watching` (key: `ctrl-.`)
   * Stop `watch-shader` and `watch-active-editor`.
+* `toggle-fullscreen` (key: `ctrl-escape`)
+  * Show the output fullscreen in the window
 
 A typical workflow can be like this:
 
