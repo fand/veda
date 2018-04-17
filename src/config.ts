@@ -265,14 +265,20 @@ export default class Config extends EventEmitter {
         this.onChange();
     }
 
-    setFileSettings(rc: IRcFragment) {
+    setFileSettings(rc: IRcFragment): IRcDiff {
         this.fileRc = rc;
-        this.onChange();
+        const newRc = this.createRc();
+        const diff = this.getDiff(this.rc, newRc);
+        this.rc = newRc;
+        return diff;
     }
 
-    setSoundSettings(rc: IRcFragment) {
+    setSoundSettings(rc: IRcFragment): IRcDiff {
         this.soundFileRc = rc;
-        this.onChangeSound();
+        const newRc = this.createSoundRc();
+        const diff = this.getDiff(this.soundRc, newRc);
+        this.soundRc = newRc;
+        return diff;
     }
 
     private parseComment(filepath: string, comment: string): IRcFragment {
@@ -286,12 +292,12 @@ export default class Config extends EventEmitter {
         return rc;
     }
 
-    setFileSettingsByString(filepath: string, comment: string) {
-        this.setFileSettings(this.parseComment(filepath, comment));
+    setFileSettingsByString(filepath: string, comment: string): IRcDiff {
+        return this.setFileSettings(this.parseComment(filepath, comment));
     }
 
-    setSoundSettingsByString(filepath: string, comment: string) {
-        this.setSoundSettings(this.parseComment(filepath, comment));
+    setSoundSettingsByString(filepath: string, comment: string): IRcDiff {
+        return this.setSoundSettings(this.parseComment(filepath, comment));
     }
 
     onChange = throttle(() => {

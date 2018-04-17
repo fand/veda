@@ -298,13 +298,24 @@ export default class GlslLivecoder {
                 ) || [])[1];
 
                 if (isSound) {
-                    this.config.setSoundSettingsByString(filepath, headComment);
-                    rc = this.config.createSoundRc();
+                    const diff = this.config.setSoundSettingsByString(
+                        filepath,
+                        headComment,
+                    );
+                    rc = diff.newConfig;
+                    this.onAnyChanges(diff);
+                    return this.player.onChangeSound(diff);
                 } else {
-                    this.config.setFileSettingsByString(filepath, headComment);
-                    rc = this.config.createRc();
+                    const diff = this.config.setFileSettingsByString(
+                        filepath,
+                        headComment,
+                    );
+                    rc = diff.newConfig;
+                    this.onAnyChanges(diff);
+                    return this.player.onChange(diff);
                 }
-
+            })
+            .then(() => {
                 if (rc.glslify) {
                     shader = glslify(shader, {
                         basedir: path.dirname(filepath),
