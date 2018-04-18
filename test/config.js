@@ -104,3 +104,72 @@ test('setFileSettings returns diffs and newConfig', async t => {
         'removed only cares IMPORTED, which contains unused file paths',
     );
 });
+
+test('rc and soundRc is isolated', async t => {
+    const diff1 = c.setFileSettings({
+        IMPORTED: { foo: { PATH: './foo.mp4' } },
+        vertexCount: 123,
+    });
+    t.deepEqual(
+        diff1.newConfig,
+        {
+            ...DEFAULT_RC,
+            IMPORTED: { foo: { PATH: './foo.mp4' } },
+            vertexCount: 123,
+        },
+        'newConfig contains whole config object',
+    );
+    t.deepEqual(c.rc, diff1.newConfig, 'setFileSettings updates rc');
+    t.deepEqual(
+        c.soundRc,
+        DEFAULT_RC,
+        "setFileSettings doesn't updates soundRc",
+    );
+
+    c = new Config('', {});
+    const diff2 = c.setSoundSettings({
+        IMPORTED: { foo: { PATH: './foo.mp4' } },
+        vertexCount: 123,
+    });
+    t.deepEqual(
+        diff2.newConfig,
+        {
+            ...DEFAULT_RC,
+            IMPORTED: { foo: { PATH: './foo.mp4' } },
+            vertexCount: 123,
+        },
+        'newConfig contains whole config object',
+    );
+    t.deepEqual(c.soundRc, diff2.newConfig, 'setSoundSettings updates soundRc');
+    t.deepEqual(c.rc, DEFAULT_RC, "setSoundSettings doesn't updates rc");
+});
+
+test('setFileSettingsByString works the same as setFileSettings', async t => {
+    const c1 = new Config('', {});
+    c.setFileSettings({
+        IMPORTED: { foo: { PATH: './foo.mp4' } },
+        vertexCount: 123,
+    });
+    const c2 = new Config('', {});
+    c.setFileSettingsByString(
+        JSON.stringify({
+            IMPORTED: { foo: { PATH: './foo.mp4' } },
+            vertexCount: 123,
+        }),
+    );
+    t.deepEqual(c1.rc, c2.rc);
+});
+
+test('setSoundSettingsByString works the same as setSoundSettings', async t => {
+    const c1 = new Config('', {});
+    c.setSoundSettings({
+        soundLength: 1.23,
+    });
+    const c2 = new Config('', {});
+    c.setSoundSettingsByString(
+        JSON.stringify({
+            soundLength: 1.23,
+        }),
+    );
+    t.deepEqual(c1.rc, c2.rc);
+});
