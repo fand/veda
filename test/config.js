@@ -10,42 +10,30 @@ test.beforeEach(() => {
     c = new Config('', {});
 });
 
-test(t => {
+test('createRc returns DEFAULT_RC by default', t => {
     const newRc = c.createRc();
-    t.deepEqual(newRc, DEFAULT_RC, 'createRc returns DEFAULT_RC by default');
+    t.deepEqual(newRc, DEFAULT_RC);
 });
 
-test(t => {
+test('setFileSettings changes Config', t => {
     c.setFileSettings({ vertexCount: 123 });
     const newRc = c.createRc();
-    t.deepEqual(
-        newRc,
-        { ...DEFAULT_RC, vertexCount: 123 },
-        'setFileSettings changes Config',
-    );
+    t.deepEqual(newRc, { ...DEFAULT_RC, vertexCount: 123 });
 });
 
-test(t => {
+test('setProjectSettings changes Config', t => {
     c.setProjectSettings({ vertexCount: 123 });
     const newRc = c.createRc();
-    t.deepEqual(
-        newRc,
-        { ...DEFAULT_RC, vertexCount: 123 },
-        'setProjectSettings changes Config',
-    );
+    t.deepEqual(newRc, { ...DEFAULT_RC, vertexCount: 123 });
 });
 
-test(t => {
+test('setGlobalSettings changes Config', t => {
     c.setGlobalSettings({ vertexCount: 123 });
     const newRc = c.createRc();
-    t.deepEqual(
-        newRc,
-        { ...DEFAULT_RC, vertexCount: 123 },
-        'setGlobalSettings changes Config',
-    );
+    t.deepEqual(newRc, { ...DEFAULT_RC, vertexCount: 123 });
 });
 
-test(t => {
+test('setFileSettings > setProjectSettings > setGlobalSettings', t => {
     const c = new Config('', {});
     c.setFileSettings({ vertexCount: 123 });
     c.setProjectSettings({ vertexCount: 456, vertexMode: 'LINES' });
@@ -55,19 +43,15 @@ test(t => {
         audio: true,
     });
     const newRc = c.createRc();
-    t.deepEqual(
-        newRc,
-        {
-            ...DEFAULT_RC,
-            vertexCount: 123,
-            vertexMode: 'LINES',
-            audio: true,
-        },
-        'setFileSettings > setProjectSettings > setGlobalSettings',
-    );
+    t.deepEqual(newRc, {
+        ...DEFAULT_RC,
+        vertexCount: 123,
+        vertexMode: 'LINES',
+        audio: true,
+    });
 });
 
-test(async t => {
+test('setFileSettings returns diffs and newConfig', async t => {
     const diff1 = c.setFileSettings({
         IMPORTED: { foo: { PATH: './foo.mp4' } },
         vertexCount: 123,

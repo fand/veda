@@ -64,7 +64,7 @@
   },
   "scripts": {
     "ci": "run-p lint test build",
-    "test": "ava test",
+    "test": "ava test --verbose",
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
     "dev": "run-s watch",
     "build": "run-p build:ts build:client",
