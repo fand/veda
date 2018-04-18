@@ -36,7 +36,6 @@ export default class GlslLivecoder {
 
         this.config = config;
         this.config.on('change', this.onChange);
-        this.config.on('changeSound', this.onChangeSound);
 
         this.glslangValidatorPath = rc.glslangValidatorPath;
 
@@ -102,13 +101,7 @@ export default class GlslLivecoder {
         this.onAnyChanges(rcDiff);
         this.player.onChange(rcDiff);
         this.loadLastShader();
-    };
-
-    private onChangeSound = (rcDiff: IRcDiff) => {
-        this.onAnyChanges(rcDiff);
-        this.player.onChangeSound(rcDiff).then(() => {
-            this.loadLastSoundShader();
-        });
+        this.loadLastSoundShader();
     };
 
     onOsc = (msg: { address: string; args: number[] }) => {
@@ -297,23 +290,22 @@ export default class GlslLivecoder {
                     /(?:\/\*)((?:.|\n|\r|\n\r)*?)(?:\*\/)/,
                 ) || [])[1];
 
+                let diff;
                 if (isSound) {
-                    const diff = this.config.setSoundSettingsByString(
+                    diff = this.config.setSoundSettingsByString(
                         filepath,
                         headComment,
                     );
-                    rc = diff.newConfig;
-                    this.onAnyChanges(diff);
-                    return this.player.onChangeSound(diff);
                 } else {
-                    const diff = this.config.setFileSettingsByString(
+                    diff = this.config.setFileSettingsByString(
                         filepath,
                         headComment,
                     );
-                    rc = diff.newConfig;
-                    this.onAnyChanges(diff);
-                    return this.player.onChange(diff);
                 }
+
+                rc = diff.newConfig;
+                this.onAnyChanges(diff);
+                return this.player.onChange(diff);
             })
             .then(() => {
                 if (rc.glslify) {

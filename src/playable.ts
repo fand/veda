@@ -4,7 +4,6 @@ import { IRcDiff } from './config';
 export interface IPlayable {
     destroy: () => void;
     onChange: (rcDiff: IRcDiff) => void;
-    onChangeSound: (rcDiff: IRcDiff) => Promise<void>;
     play: () => void;
     stop: () => void;
     loadShader: (shader: IShader) => void;

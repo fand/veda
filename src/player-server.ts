@@ -67,21 +67,6 @@ export default class PlayerServer implements IPlayable {
         this.io.emit('onChange', rcDiff);
     }
 
-    onChangeSound(_rcDiff: IRcDiff): Promise<void> {
-        const rcDiff = cloneDeep(_rcDiff);
-
-        // Convert paths to URLs
-        rcDiff.newConfig.IMPORTED = this.convertPaths(
-            rcDiff.newConfig.IMPORTED,
-        );
-        rcDiff.added.IMPORTED = this.convertPaths(rcDiff.added.IMPORTED);
-        rcDiff.removed.IMPORTED = this.convertPaths(rcDiff.removed.IMPORTED);
-
-        this.io.emit('onChangeSound', rcDiff);
-
-        return Promise.resolve();
-    }
-
     private convertPaths(IMPORTED: IImportedHash) {
         Object.keys(IMPORTED).forEach(key => {
             if (!IMPORTED[key].PATH.match(/^(?:https?:)?\/\//)) {

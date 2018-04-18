@@ -44,9 +44,6 @@ export default class PlayerClient {
         this.socket.on('onChange', (rcDiff: IRcDiff) => {
             this.player && this.player.onChange(rcDiff);
         });
-        this.socket.on('onChangeSound', (rcDiff: IRcDiff) => {
-            this.player && this.player.onChangeSound(rcDiff);
-        });
         this.socket.on('play', () => this.player && this.player.play());
         this.socket.on('stop', () => this.player && this.player.stop());
         this.socket.on('loadShader', (shader: IShader) => {

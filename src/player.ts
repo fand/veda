@@ -102,44 +102,6 @@ export default class Player implements IPlayable {
         if (added.camera !== undefined) {
             this.veda.toggleCamera(added.camera);
         }
-    };
-
-    onChangeSound = async ({ newConfig, added, removed }: IRcDiff) => {
-        console.log('Update config', newConfig);
-        // Get paths for videos still in use
-        const importedPaths: { [path: string]: boolean } = {};
-        Object.values(newConfig.IMPORTED).forEach(imported => {
-            importedPaths[imported.PATH] = true;
-        });
-
-        Object.keys(removed.IMPORTED).forEach(key => {
-            const path = removed.IMPORTED[key].PATH;
-            this.veda.unloadTexture(key, path, !importedPaths[path]);
-        });
-        await Promise.all(
-            Object.keys(added.IMPORTED || {}).map(key => {
-                return this.veda.loadTexture(
-                    key,
-                    added.IMPORTED[key].PATH,
-                    added.IMPORTED[key].SPEED,
-                );
-            }),
-        );
-        if (added.audio !== undefined) {
-            this.veda.toggleAudio(added.audio);
-        }
-        if (added.midi !== undefined) {
-            this.veda.toggleMidi(added.midi);
-        }
-        if (added.keyboard !== undefined) {
-            this.veda.toggleKeyboard(added.keyboard);
-        }
-        if (added.gamepad !== undefined) {
-            this.veda.toggleGamepad(added.gamepad);
-        }
-        if (added.camera !== undefined) {
-            this.veda.toggleCamera(added.camera);
-        }
         if (added.soundLength !== undefined) {
             this.veda.setSoundLength(added.soundLength);
         }

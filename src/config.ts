@@ -306,12 +306,6 @@ export default class Config extends EventEmitter {
         this.rc = newRc;
     }, 100);
 
-    onChangeSound = throttle(() => {
-        const newRc = this.createSoundRc();
-        this.emit('changeSound', this.getDiff(this.soundRc, newRc));
-        this.soundRc = newRc;
-    }, 100);
-
     private getDiff(oldObj: IRc, newObj: IRc) {
         const diff: IRcDiff = {
             newConfig: newObj,
