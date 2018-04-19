@@ -121,6 +121,7 @@ export default class App {
     stop(): void {
         this.state.isPlaying = false;
         this.player.stop();
+        this.player.stopSound();
         this.config.stop();
         this.stopWatching();
     }
