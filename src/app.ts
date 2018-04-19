@@ -12,16 +12,16 @@ import OscLoader from './osc-loader';
 
 const glslify = require('glslify');
 
-interface IGlslLivecoderState {
+interface IAppState {
     isPlaying: boolean;
     activeEditorDisposer?: any;
     editorDisposer?: any;
     editor?: TextEditor;
 }
 
-export default class GlslLivecoder {
+export default class App {
     private player: IPlayable;
-    private state: IGlslLivecoderState;
+    private state: IAppState;
     private glslangValidatorPath: string;
     private lastShader: IShader = INITIAL_SHADER;
     private lastSoundShader: ISoundShader = INITIAL_SOUND_SHADER;
