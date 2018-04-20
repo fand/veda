@@ -2,7 +2,7 @@
   frameskip: 1,
   vertexMode: "TRIANGLES",
   PASSES: [{
-    OBJ: './deer.obj',
+    MODEL: { PATH: './deer.obj' },
     vs: './obj.vert',
     TARGET: 'deer',
   }, {}]

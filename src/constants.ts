@@ -23,8 +23,12 @@ export const INITIAL_SHADER = [
     },
 ];
 
+interface IPassModel {
+    PATH: string;
+}
+
 interface IPass {
-    OBJ?: string;
+    MODEL?: IPassModel;
     TARGET?: string;
     vs?: string;
     fs?: string;
