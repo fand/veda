@@ -16,6 +16,7 @@ export interface IImportedHash {
 
 export interface IRcPassModel {
     PATH: string;
+    MATERIAL?: string;
 }
 
 export interface IRcPass {
@@ -143,6 +144,9 @@ function fixPath(projectPath: string, rc: IRcFragment): IRcFragment {
     const PASSES = (rc.PASSES || []).map(pass => {
         if (pass.MODEL && pass.MODEL.PATH) {
             pass.MODEL.PATH = resolvePath(pass.MODEL.PATH, projectPath);
+        }
+        if (pass.MODEL && pass.MODEL.MATERIAL) {
+            pass.MODEL.MATERIAL = resolvePath(pass.MODEL.MATERIAL, projectPath);
         }
         return pass;
     });
