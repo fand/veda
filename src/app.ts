@@ -220,6 +220,7 @@ export default class App {
                     FLOAT: rcPass.FLOAT,
                     WIDTH: rcPass.WIDTH,
                     HEIGHT: rcPass.HEIGHT,
+                    BLEND: rcPass.BLEND,
                 };
 
                 if (!rcPass.fs && !rcPass.vs) {

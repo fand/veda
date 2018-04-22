@@ -19,12 +19,15 @@ export interface IRcPassModel {
     MATERIAL?: string;
 }
 
+export type BlendMode = 'NO' | 'NORMAL' | 'ADD' | 'SUB' | 'MUL';
+
 export interface IRcPass {
     MODEL?: IRcPassModel;
     TARGET?: string;
     vs?: string;
     fs?: string;
     FLOAT?: boolean;
+    BLEND?: BlendMode;
 }
 
 export interface IRc {
