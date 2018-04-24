@@ -526,13 +526,13 @@ See an [example](./examples/gpgpu/post.frag) for actual usage.
 
 ### Loading `.obj` file
 
-You can use `.obj` files as models by passing file path to `OBJ` property in `PASSES`:
+You can use `.obj` files as models by passing file path to `MODEL` property in `PASSES`:
 
 ```glsl
 /*{
   "PASSES": [{
     "vs": "./foo.vert",
-    "OBJ": "./foo.obj",
+    "MODEL": { "PATH": "./foo.obj" },
   }]
 }*/
 ```

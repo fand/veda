@@ -215,11 +215,12 @@ export default class App {
         return Promise.all(
             rcPasses.map(async (rcPass: any, i: number) => {
                 const pass: any = {
-                    OBJ: rcPass.OBJ,
+                    MODEL: rcPass.MODEL,
                     TARGET: rcPass.TARGET,
                     FLOAT: rcPass.FLOAT,
                     WIDTH: rcPass.WIDTH,
                     HEIGHT: rcPass.HEIGHT,
+                    BLEND: rcPass.BLEND,
                 };
 
                 if (!rcPass.fs && !rcPass.vs) {

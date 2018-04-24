@@ -18,6 +18,7 @@
       vs: "./scene.vert",
       fs: "./scene.frag",
       TARGET: "sceneTexture",
+      BLEND: "ADD",
     },
     {}
   ]

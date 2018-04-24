@@ -1,2 +1,3 @@
 client/bundle.js binary
 lib/* binary
+examples/models/**/* binary

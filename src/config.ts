@@ -14,12 +14,20 @@ export interface IImportedHash {
     [key: string]: IImported;
 }
 
+export interface IRcPassModel {
+    PATH: string;
+    MATERIAL?: string;
+}
+
+export type BlendMode = 'NO' | 'NORMAL' | 'ADD' | 'SUB' | 'MUL';
+
 export interface IRcPass {
-    OBJ?: string;
+    MODEL?: IRcPassModel;
     TARGET?: string;
     vs?: string;
     fs?: string;
     FLOAT?: boolean;
+    BLEND?: BlendMode;
 }
 
 export interface IRc {
@@ -137,8 +145,11 @@ function parseImported(
 
 function fixPath(projectPath: string, rc: IRcFragment): IRcFragment {
     const PASSES = (rc.PASSES || []).map(pass => {
-        if (pass.OBJ) {
-            pass.OBJ = resolvePath(pass.OBJ, projectPath);
+        if (pass.MODEL && pass.MODEL.PATH) {
+            pass.MODEL.PATH = resolvePath(pass.MODEL.PATH, projectPath);
+        }
+        if (pass.MODEL && pass.MODEL.MATERIAL) {
+            pass.MODEL.MATERIAL = resolvePath(pass.MODEL.MATERIAL, projectPath);
         }
         return pass;
     });
