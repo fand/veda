@@ -9,6 +9,7 @@
     vs: './obj-mtl.vert',
     fs: './obj-mtl.frag',
     TARGET: 'pass1',
+    BLEND: 'NORMAL',
   }, {
   }],
   IMPORTED: {
@@ -43,52 +44,25 @@ void main() {
   vec2 uv = gl_FragCoord.xy / resolution.xy;
 
   if (PASSINDEX == 0) {
-    if (vObjectId == 0.) {
-      gl_FragColor = texture2D(material0, vUv);
-    }
-    if (vObjectId == 1.) {
-      gl_FragColor = texture2D(material1, vUv);
-    }
-    if (vObjectId == 2.) {
-      gl_FragColor = texture2D(material2, vUv);
-    }
-    if (vObjectId == 3.) {
-      gl_FragColor = texture2D(material3, vUv);
-    }
-    if (vObjectId == 4.) {
-      gl_FragColor = texture2D(material4, vUv);
-    }
-    if (vObjectId == 5.) {
-      gl_FragColor = texture2D(material5, vUv);
-    }
-    if (vObjectId == 6.) {
-      gl_FragColor = texture2D(material6, vUv);
-    }
-    if (vObjectId == 7.) {
-      gl_FragColor = texture2D(material7, vUv);
-    }
-    if (vObjectId == 8.) {
-      gl_FragColor = texture2D(material8, vUv);
-    }
-    if (vObjectId == 9.) {
-      gl_FragColor = texture2D(material9, vUv);
-    }
-    if (vObjectId == 10.) {
-      gl_FragColor = texture2D(material10, vUv);
-    }
-    if (vObjectId == 11.) {
-      gl_FragColor = texture2D(material11, vUv);
-    }
-
-    // gl_FragColor = texture2D(material, vUv);
-    // gl_FragColor = v_color;
-    gl_FragColor += texture2D(vm, fract(vUv * 2. + time * .3)) * 0.5;
-    // gl_FragColor = vec4(vUv, 1, 1);
+    gl_FragColor = (
+      (vObjectId == 0.) ? texture2D(material0, vUv) :
+      (vObjectId == 1.) ? texture2D(material1, vUv) :
+      (vObjectId == 2.) ? texture2D(material2, vUv) :
+      (vObjectId == 3.) ? texture2D(material3, vUv) :
+      (vObjectId == 4.) ? texture2D(material4, vUv) :
+      (vObjectId == 5.) ? texture2D(material5, vUv) :
+      (vObjectId == 6.) ? texture2D(material6, vUv) :
+      (vObjectId == 7.) ? texture2D(material7, vUv) :
+      (vObjectId == 8.) ? texture2D(material8, vUv) :
+      (vObjectId == 9.) ? texture2D(material9, vUv) :
+      (vObjectId == 10.) ? texture2D(material10, vUv) :
+      texture2D(material11, vUv)
+    );
+    // gl_FragColor += texture2D(vm, fract(vUv * 2. + time * .3)) * (sin(time) * 0.5 + 0.5);
   }
   if (PASSINDEX == 1) {
     gl_FragColor = texture2D(pass1, uv);
     if (gl_FragColor.a < .5) {
-      // gl_FragColor = vec4(0, .7, .7, 1);
       gl_FragColor = texture2D(vm, abs(uv - .5)) * 2. - 1.;
       gl_FragColor *= 0.2;
       gl_FragColor.g = texture2D(backbuffer, uv + 0.003).r;

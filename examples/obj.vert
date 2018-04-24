@@ -3,19 +3,25 @@
     vertexMode: "TRIANGLES",
     PASSES: [{
       MODEL: { PATH: './deer.obj' },
+      BLEND: 'ADD',
     }]
 }*/
 precision mediump float;
 attribute vec3 position;
 attribute vec3 normal;
+attribute vec2 uv;
+
 attribute float vertexId;
 uniform float vertexCount;
+
 uniform float time;
 uniform vec2 resolution;
 uniform vec2 mouse;
 uniform sampler2D spectrum;
+uniform mat3 uvTransform;
 uniform float volume;
 varying vec4 v_color;
+varying vec2 vUv;
 
 vec2 rot(in vec2 p, in float t) {
   float s = sin(t);

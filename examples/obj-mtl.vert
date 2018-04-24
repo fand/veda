@@ -3,7 +3,6 @@
   vertexMode: "TRIANGLES",
   PASSES: [{
     MODEL: {
-      // PATH: './deer.obj',
       PATH: './models/obj/male02/male02.obj',
       MATERIAL: './models/obj/male02/male02.mtl',
     },
