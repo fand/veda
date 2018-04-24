@@ -120,9 +120,9 @@ Run `apm rebuild` in the package directory to resolve.
 
 A typical workflow can be like this:
 
-1. Enable `VEDA` by running `veda:toggle` from the Command Palette of Atom.
-2. Edit your GLSL code.
-3. Hit `ctrl-enter` to run `veda:load-shader`.
+1.  Enable `VEDA` by running `veda:toggle` from the Command Palette of Atom.
+2.  Edit your GLSL code.
+3.  Hit `ctrl-enter` to run `veda:load-shader`.
 
 ### Preset `uniform` variables
 
@@ -524,9 +524,9 @@ void main(){
 
 See an [example](./examples/gpgpu/post.frag) for actual usage.
 
-### Loading `.obj` file
+### Loading 3D models
 
-You can use `.obj` files as models by passing file path to `MODEL` property in `PASSES`:
+You can load 3D models by passing file path to `MODEL` property in `PASSES`:
 
 ```glsl
 /*{
@@ -557,7 +557,26 @@ void main(){
 }
 ```
 
-See an [example](./examples/obj.vert) for actual usage.
+If you use `.obj` files, you can also load `.mtl` files for materials:
+
+```glsl
+/*{
+    PASSES: [{
+        MODEL: {
+            PATH: `foo.obj`,
+            MATERIAL: `foo.mtl`,
+        }
+    }]
+}*/
+```
+
+Materials are loaded as textures like `uniform sampler2D material0`, `uniform sampler2D material1`, etc.
+
+See examples for more detail.
+
+* `.obj` file ([frag](./examples/obj.frag), [vert](./examples/obj.vert))
+* `.obj` with `.mtl` ([frag](./examples/obj-mtl.vert), [vert](./examples/obj-mtl.vert))
+* `.json` file ([frag](./examples/json.frag), [vert](./examples/json.vert))
 
 ### glslify
 

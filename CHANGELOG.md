@@ -1,3 +1,10 @@
+## 2.9.0
+
+* Rename `OBJ` to `MODEL`
+* Suport `.json` file
+* Suport `.mtl` file
+* Add `MODEL.BLEND` to specify color blend mode
+
 ## 2.8.0
 
 * Add `Veda: Toggle Fullscreen` command (`ctrl-escape`)
