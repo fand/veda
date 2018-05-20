@@ -1,13 +1,17 @@
 #!/usr/bin/env node
 
-interface IMessage {
+interface IOscArgs {
+  value: string;
+}
+
+interface IOsc {
     oscType: 'bundle' | 'message';
-    elements: IMessage[];
-    args: { value: string }[];
+    elements: IOsc[];
+    args: IOscArgs[];
 }
 
 // Parse message recursively and print messages
-function printMessage (msg: IMessage) {
+function printMessage (msg: IOsc) {
     if (msg.oscType === 'bundle') {
         msg.elements.forEach(printMessage);
     }
