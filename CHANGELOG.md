@@ -1,3 +1,7 @@
+## 2.9.1
+
+* Accept OSC bundle messages
+
 ## 2.9.0
 
 * Rename `OBJ` to `MODEL`
