@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 interface IOscArgs {
-  value: string;
+    value: string;
 }
 
 interface IOsc {
@@ -11,11 +11,10 @@ interface IOsc {
 }
 
 // Parse message recursively and print messages
-function printMessage (msg: IOsc) {
+function printMessage(msg: IOsc) {
     if (msg.oscType === 'bundle') {
         msg.elements.forEach(printMessage);
-    }
-    else {
+    } else {
         msg.args = msg.args.map((a: any) => a.value);
         console.log(JSON.stringify(msg));
     }
