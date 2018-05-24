@@ -1,4 +1,5 @@
 import { TextEditor } from 'atom';
+import * as fs from 'fs';
 import * as path from 'path';
 import View from './view';
 import { validator, loadFile } from './validator';
@@ -20,6 +21,7 @@ interface IAppState {
 }
 
 export default class App {
+    private view: View;
     private player: IPlayable;
     private state: IAppState;
     private glslangValidatorPath: string;
@@ -31,8 +33,8 @@ export default class App {
 
     constructor(config: Config) {
         const rc = config.rc;
-        const view = new View((atom.workspace as any).element);
-        this.player = new Player(view, rc, false, this.lastShader);
+        this.view = new View((atom.workspace as any).element);
+        this.player = new Player(this.view, rc, false, this.lastShader);
 
         this.config = config;
         this.config.on('change', this.onChange);
@@ -343,5 +345,18 @@ export default class App {
 
     toggleFullscreen(): void {
         this.player.toggleFullscreen();
+    }
+
+    takeScreenshot(): void {
+        // Ignore if VEDA is in server mode
+        if (this.config.rc.server) {
+            return;
+        }
+
+        // Get the filepath
+        const dst = path.resolve(this.config.projectPath, `${new Date().toISOString()}.png`);
+
+        // Write to file
+        fs.writeFileSync(dst, this.view.getCanvasAsBase64(), 'base64');
     }
 }

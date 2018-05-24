@@ -40,4 +40,8 @@ export default class View {
             document.body.classList.remove('veda-fullscreen');
         }
     }
+
+    getCanvasAsBase64(): string {
+        return this.canvas.toDataURL().split(',')[1];
+    }
 }
