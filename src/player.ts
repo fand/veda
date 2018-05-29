@@ -161,4 +161,16 @@ export default class Player implements IPlayable {
     toggleFullscreen(): void {
         this.view.toggleFullscreen();
     }
+
+    private capture = (): void => {
+
+    }
+
+    startCapture(): void {
+        this.veda.on('afterRender', this.capture);
+    }
+
+    stopCapture(): void {
+        this.veda.off('afterRender', this.capture);
+    }
 }

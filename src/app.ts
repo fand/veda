@@ -1,5 +1,5 @@
 import { TextEditor } from 'atom';
-import * as fs from 'fs';
+// import * as fs from 'fs';
 import * as path from 'path';
 import View from './view';
 import { validator, loadFile } from './validator';
@@ -11,6 +11,7 @@ import PlayerServer from './player-server';
 import { INITIAL_SHADER, INITIAL_SOUND_SHADER } from './constants';
 import OscLoader from './osc-loader';
 
+// const CCapture = require('ccapture.js');
 const glslify = require('glslify');
 
 interface IAppState {
@@ -353,10 +354,59 @@ export default class App {
             return;
         }
 
-        // Get the filepath
-        const dst = path.resolve(this.config.projectPath, `${new Date().toISOString()}.png`);
+        // // Get the filepath
+        // const dst = path.resolve(
+        //     this.config.projectPath,
+        //     `${new Date().toISOString()}.png`
+        // );
+        //
+        // // Write to file
+        // fs.writeFileSync(dst, this.view.getCanvasAsBase64(), 'base64');
 
-        // Write to file
-        fs.writeFileSync(dst, this.view.getCanvasAsBase64(), 'base64');
+        const start = Date.now() / 1000;
+        const timeLimit = 3;
+
+        const canvas = this.view.getCanvas();
+        const cap = new (window as any).CCapture({
+            format: 'webm',
+            framerate: 30,
+            timeLimit: 3,
+            workerPath: path.resolve(__dirname, './vendor'),
+        });
+        cap.start();
+
+        const frame = () => {
+          const now = Date.now() / 1000;
+          if (now - start <= timeLimit) {
+            requestAnimationFrame(frame);
+            this.player.play();
+            cap.capture(canvas);
+            this.player.stop();
+
+          }
+          else {
+            try {
+              cap.stop();
+              cap.save();
+            } catch (e) {
+              console.error(e);
+            }
+            this.player.play();
+          }
+        }
+        frame();
+
+        // this.player.play();
+        // cap.capture(canvas);
+        // this.player.stop();
+        //
+        // setTimeout(() => {
+        //     try {
+        //       cap.stop();
+        //       cap.save();
+        //     } catch (e) {
+        //       console.error(e);
+        //     }
+        // }, 3000);
     }
 }

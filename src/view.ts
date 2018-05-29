@@ -14,6 +14,17 @@ export default class View {
 
         this.element.appendChild(this.canvas);
         this.wrapper.appendChild(this.element);
+
+        const scripts = [
+            __dirname + '/vendor/ccapture.min.js',
+            __dirname + '/vendor/webm-writer-0.2.0.js',
+            __dirname + '/vendor/gif.js',
+        ];
+        scripts.forEach(src => {
+            const script = document.createElement('script');
+            script.src = src;
+            this.wrapper.appendChild(script);
+        });
     }
 
     destroy(): void {
