@@ -1,8 +1,6 @@
 /*{ "glslify": true }*/
-precision mediump float;
-uniform float time;
-uniform vec2 resolution;
 
+#pragma glslify: import('./common.glsl')
 #pragma glslify: rotate2D = require(./rotate2d.frag)
 
 void main() {
