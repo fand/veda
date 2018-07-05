@@ -11,6 +11,7 @@ import { INITIAL_SHADER, INITIAL_SOUND_SHADER } from './constants';
 import OscLoader from './osc-loader';
 
 const glslify = require('glslify');
+const glslifyImport = require('glslify-import');
 
 interface IAppState {
     isPlaying: boolean;
@@ -313,6 +314,7 @@ export default class App {
                 if (rc.glslify) {
                     shader = glslify(shader, {
                         basedir: path.dirname(filepath),
+                        transform: [glslifyImport],
                     });
                 }
             })
