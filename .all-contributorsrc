@@ -19,6 +19,16 @@
         "code",
         "review"
       ]
+    },
+    {
+      "login": "CezaryKopias",
+      "name": "Cezary Kopias",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/3462746?v=4",
+      "profile": "http://cezary.kopias.pl",
+      "contributions": [
+        "bug",
+        "example"
+      ]
     }
   ]
 }
