@@ -1,0 +1,80 @@
+{
+  "projectName": "veda",
+  "projectOwner": "fand",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "contributors": [
+    {
+      "login": "KoltesDigital",
+      "name": "Jonathan Giroux (Koltes)",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/756562?v=4",
+      "profile": "http://koltes.digital",
+      "contributions": [
+        "bug",
+        "code",
+        "review"
+      ]
+    },
+    {
+      "login": "CezaryKopias",
+      "name": "Cezary Kopias",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/3462746?v=4",
+      "profile": "http://cezary.kopias.pl",
+      "contributions": [
+        "bug",
+        "example"
+      ]
+    },
+    {
+      "login": "tanitta",
+      "name": "tanitta",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1937287?v=4",
+      "profile": "http://tanitta.net/",
+      "contributions": [
+        "code",
+        "ideas"
+      ]
+    },
+    {
+      "login": "asonas",
+      "name": "Yuya Fujiwara",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/630181?v=4",
+      "profile": "http://ason.as",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "sp4ghet",
+      "name": "Rikuo Hasegawa",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/8775460?v=4",
+      "profile": "https://sp4ghet.com",
+      "contributions": [
+        "bug",
+        "code",
+        "example"
+      ]
+    },
+    {
+      "login": "fand",
+      "name": "Takayosi Amagi",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/1403842?v=4",
+      "profile": "https://gmork.in/",
+      "contributions": [
+        "question",
+        "blog",
+        "bug",
+        "code",
+        "design",
+        "doc",
+        "eventOrganizing",
+        "example"
+      ]
+    }
+  ]
+}
