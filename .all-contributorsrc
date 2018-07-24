@@ -59,6 +59,22 @@
         "code",
         "example"
       ]
+    },
+    {
+      "login": "fand",
+      "name": "Takayosi Amagi",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/1403842?v=4",
+      "profile": "https://gmork.in/",
+      "contributions": [
+        "question",
+        "blog",
+        "bug",
+        "code",
+        "design",
+        "doc",
+        "eventOrganizing",
+        "example"
+      ]
     }
   ]
 }
