@@ -1,4 +1,5 @@
 <div align="center">
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
   <img alt="logo" src="https://user-images.githubusercontent.com/1403842/28923702-d8155d46-7899-11e7-817b-1193d138e5b8.png" width="192"/>
 </div>
 
@@ -644,3 +645,15 @@ Takayosi Amagi
 ## License
 
 MIT
+
+## Contributors
+
+Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore -->
+| [<img src="https://avatars0.githubusercontent.com/u/756562?v=4" width="100px;"/><br /><sub><b>Jonathan Giroux (Koltes)</b></sub>](http://koltes.digital)<br />[🐛](https://github.com/fand/veda/issues?q=author%3AKoltesDigital "Bug reports") [💻](https://github.com/fand/veda/commits?author=KoltesDigital "Code") [👀](#review-KoltesDigital "Reviewed Pull Requests") |
+| :---: |
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!
