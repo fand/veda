@@ -651,8 +651,8 @@ Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore -->
-| [<img src="https://avatars0.githubusercontent.com/u/756562?v=4" width="100px;"/><br /><sub><b>Jonathan Giroux (Koltes)</b></sub>](http://koltes.digital)<br />[🐛](https://github.com/fand/veda/issues?q=author%3AKoltesDigital "Bug reports") [💻](https://github.com/fand/veda/commits?author=KoltesDigital "Code") [👀](#review-KoltesDigital "Reviewed Pull Requests") | [<img src="https://avatars3.githubusercontent.com/u/3462746?v=4" width="100px;"/><br /><sub><b>Cezary Kopias</b></sub>](http://cezary.kopias.pl)<br />[🐛](https://github.com/fand/veda/issues?q=author%3ACezaryKopias "Bug reports") [💡](#example-CezaryKopias "Examples") |
-| :---: | :---: |
+| [<img src="https://avatars0.githubusercontent.com/u/756562?v=4" width="100px;"/><br /><sub><b>Jonathan Giroux (Koltes)</b></sub>](http://koltes.digital)<br />[🐛](https://github.com/fand/veda/issues?q=author%3AKoltesDigital "Bug reports") [💻](https://github.com/fand/veda/commits?author=KoltesDigital "Code") [👀](#review-KoltesDigital "Reviewed Pull Requests") | [<img src="https://avatars3.githubusercontent.com/u/3462746?v=4" width="100px;"/><br /><sub><b>Cezary Kopias</b></sub>](http://cezary.kopias.pl)<br />[🐛](https://github.com/fand/veda/issues?q=author%3ACezaryKopias "Bug reports") [💡](#example-CezaryKopias "Examples") | [<img src="https://avatars1.githubusercontent.com/u/1937287?v=4" width="100px;"/><br /><sub><b>tanitta</b></sub>](http://tanitta.net/)<br />[💻](https://github.com/fand/veda/commits?author=tanitta "Code") [🤔](#ideas-tanitta "Ideas, Planning, & Feedback") |
+| :---: | :---: | :---: |
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind welcome!

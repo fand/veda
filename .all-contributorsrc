@@ -29,6 +29,16 @@
         "bug",
         "example"
       ]
+    },
+    {
+      "login": "tanitta",
+      "name": "tanitta",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1937287?v=4",
+      "profile": "http://tanitta.net/",
+      "contributions": [
+        "code",
+        "ideas"
+      ]
     }
   ]
 }
