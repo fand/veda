@@ -633,6 +633,13 @@ vec2 mainSound(in float time) {
 
 See an [example](./examples/sound.frag) for actual usage.
 
+## Contributing
+
+Any kind of issues or PRs are welcome!!😸
+
+Before sending PRs, make sure you installed npm packages with `yarn`, not `npm`.
+If not, we can't merge the PRs because this might cause errors and unnecessary diffs.
+
 ## Contributors
 
 Thanks goes to these wonderful people ([emoji key](https://github.com/kentcdodds/all-contributors#emoji-key)):
