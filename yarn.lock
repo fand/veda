@@ -3283,6 +3283,14 @@ glslify-deps@^1.2.5:
     map-limit "0.0.1"
     resolve "^1.0.0"
 
+glslify-import@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/glslify-import/-/glslify-import-3.1.0.tgz#3dc745a667bb80e14aaba2f4c9294463f96ab18c"
+  dependencies:
+    glsl-resolve "0.0.1"
+    glsl-token-string "^1.0.1"
+    glsl-tokenizer "^2.0.2"
+
 glslify@^6.1.1:
   version "6.1.1"
   resolved "https://registry.yarnpkg.com/glslify/-/glslify-6.1.1.tgz#f5ee3e79f314bbdb8ededb7a27830db3f2df7e40"
