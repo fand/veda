@@ -1,3 +1,7 @@
+## 2.10.0
+
+* Support [glslify-import](https://github.com/glslify/glslify-import) #93
+
 ## 2.9.1
 
 * Accept OSC bundle messages
