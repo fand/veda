@@ -77,7 +77,7 @@ export default class PlayerServer implements IPlayable {
                 );
                 IMPORTED[key].PATH = `http://localhost:${
                     this.port
-                }/link/${relativePath}`;
+                }/${relativePath}`;
             }
         });
         return IMPORTED;
