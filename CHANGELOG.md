@@ -1,4 +1,4 @@
-## 2.10.1
+## 2.10.2
 
 - Fixed bugs of file path conversion in server mode #94
 
