@@ -6,6 +6,7 @@ import { ChildProcess } from 'child_process';
 import { IRc, IRcDiff, IImportedHash } from './config';
 import { IPlayable } from './playable';
 import { IShader } from './constants';
+import { convertPathForServer } from './utils';
 
 interface IPlayerState {
     rc: IRc;
@@ -69,16 +70,11 @@ export default class PlayerServer implements IPlayable {
 
     private convertPaths(IMPORTED: IImportedHash) {
         Object.keys(IMPORTED).forEach(key => {
-            if (!IMPORTED[key].PATH.match(/^(?:https?:)?\/\//)) {
-                // Get relative path from projectPath
-                const relativePath = path.relative(
-                    this.state.projectPath,
-                    IMPORTED[key].PATH,
-                );
-                IMPORTED[key].PATH = `http://localhost:${
-                    this.port
-                }/link/${relativePath}`;
-            }
+            IMPORTED[key].PATH = convertPathForServer(
+                this.state.projectPath,
+                this.port,
+                IMPORTED[key].PATH,
+            );
         });
         return IMPORTED;
     }
