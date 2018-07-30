@@ -70,7 +70,11 @@ export default class PlayerServer implements IPlayable {
 
     private convertPaths(IMPORTED: IImportedHash) {
         Object.keys(IMPORTED).forEach(key => {
-            IMPORTED[key].PATH = convertPathForServer(this.state.projectPath, this.port, IMPORTED[key].PATH);
+            IMPORTED[key].PATH = convertPathForServer(
+                this.state.projectPath,
+                this.port,
+                IMPORTED[key].PATH,
+            );
         });
         return IMPORTED;
     }
