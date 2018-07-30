@@ -18,5 +18,5 @@ export function convertPathForServer(
     // Get relative path from projectPath
     const relativePath = path.relative(projectPath, target);
 
-    return `http://localhost:${port}/${relativePath}`;
+    return `http://localhost:${port}/link/${relativePath}`;
 }
