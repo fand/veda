@@ -28,7 +28,7 @@
     "signal-exit": "^3.0.2",
     "socket.io": "^2.1.1",
     "socket.io-client": "^2.1.1",
-    "three": "^0.94.0",
+    "three": "^0.95.0",
     "tmp": "^0.0.33",
     "vedajs": "^0.9.0",
     "webpack": "^4.16.2",
