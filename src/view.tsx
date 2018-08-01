@@ -1,32 +1,24 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import App from './components/app';
+import { IRc } from './config';
 
 export default class View {
     private wrapper: HTMLElement;
     private element: HTMLElement;
-    // private canvas: HTMLCanvasElement;
-
     private react: any;
 
     // private settings: HTMLDivElement;
     private isFullscreen = false;
 
-    constructor(wrapper: HTMLElement) {
+    constructor(wrapper: HTMLElement, rc: IRc) {
         this.wrapper = wrapper;
         this.element = document.createElement('div');
         this.element.classList.add('veda');
-        //
-        // this.canvas = document.createElement('canvas');
-        //
-        // this.settings = document.createElement('div');
-        // this.settings.innerHTML = '<h3>settings</h3>';
 
-        // this.element.appendChild(this.canvas);
-        // this.element.appendChild(this.settings);
         this.wrapper.appendChild(this.element);
 
-        this.react = ReactDOM.render(<App/>, this.element);
+        this.react = ReactDOM.render(<App rc={rc}/>, this.element);
     }
 
     destroy(): void {

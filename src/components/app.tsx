@@ -1,10 +1,16 @@
 import * as React from 'react';
+import { IRc } from '../config';
 
-const Settings = () => (
-    <h3>SETTINGS@@@@@@@@!!!!!!!</h3>
-);
+interface IProps {
+    rc: IRc;
+}
 
-export default class App extends React.Component<any, any> {
+const Settings = (props: IProps) => <>
+    <h3>SETTINGS@@@</h3>
+    <p>{JSON.stringify(props.rc)}</p>
+</>;
+
+export default class App extends React.Component<IProps, any> {
     public canvas?: HTMLCanvasElement;
 
     setCanvas = (el: HTMLCanvasElement) => {
@@ -14,7 +20,7 @@ export default class App extends React.Component<any, any> {
     render() {
         return <>
             <canvas ref={this.setCanvas}/>
-            <Settings/>
+            <Settings rc={this.props.rc}/>
         </>;
     }
 }
