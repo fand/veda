@@ -2,6 +2,7 @@ export default class View {
     private wrapper: HTMLElement;
     private element: HTMLElement;
     private canvas: HTMLCanvasElement;
+    private settings: HTMLDivElement;
     private isFullscreen = false;
 
     constructor(wrapper: HTMLElement) {
@@ -12,7 +13,11 @@ export default class View {
 
         this.canvas = document.createElement('canvas');
 
+        this.settings = document.createElement('div');
+        this.settings.innerHTML = '<h3>settings</h3>';
+
         this.element.appendChild(this.canvas);
+        this.element.appendChild(this.settings);
         this.wrapper.appendChild(this.element);
     }
 
