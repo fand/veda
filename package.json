@@ -21,7 +21,7 @@
     "glslify": "^6.2.1",
     "glslify-import": "^3.1.0",
     "is-relative": "^1.0.0",
-    "json5": "^1.0.1",
+    "json5": "^2.0.0",
     "lodash": "^4.17.10",
     "osc-min": "^1.1.1",
     "pify": "^4.0.0",
