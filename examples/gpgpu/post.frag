@@ -1,7 +1,7 @@
 /*{
   "pixelRatio": 1,
-  "frameskip": 1,
-  "vertexCount": 30000,
+  "frameskip": 1,,
+  "vertexCount": 50,
   "vertexMode": "POINTS",
   "PASSES": [
     {

@@ -22,6 +22,7 @@ interface IAppState {
 
 export default class App {
     private player: IPlayable;
+    private serverPlayer: PlayerServer | null = null;
     private state: IAppState;
     private glslangValidatorPath: string;
     private lastShader: IShader = INITIAL_SHADER;
@@ -58,19 +59,24 @@ export default class App {
         }
 
         if (added.server !== undefined) {
-            if (this.player) {
-                this.player.stop();
-            }
+            // if (this.player) {
+            //     this.player.stop();
+            // }
 
             const rc = this.config.createRc();
 
             if (added.server) {
-                this.player = new PlayerServer(added.server, {
+                if (this.serverPlayer) {
+                    this.serverPlayer.stop();
+                }
+                const newPlayer = new PlayerServer(added.server, {
                     rc,
                     isPlaying: this.state.isPlaying,
                     projectPath: this.config.projectPath,
                     lastShader: this.lastShader,
                 });
+                this.serverPlayer = newPlayer;
+                this.player = newPlayer;
             } else {
                 const view = new View((atom.workspace as any).element);
                 this.player = new Player(

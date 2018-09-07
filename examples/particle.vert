@@ -16,12 +16,12 @@ void main() {
   float i = vertexId * .2 + sin(vertexId) * 1.;
 
   vec3 pos = vec3(
-    sin(t + vertexId + i * .1) * sin(t * 1.21 + i),
-    cos(t + vertexId - i * .2) * cos(t * 1.19 + i),
-    cos(t + i) * sin(t + vertexId * .22)
-  );
+    sin(t + vertexId + i * .1) * sin(t * .60 + i),
+    cos(t + vertexId + i * .3) * cos(t * .90 + i),
+    cos(t + i) * sin(t + vertexId * .0)
+  ) * 0.5;
 
-  gl_Position = vec4(pos.x, pos.y * resolution.x / resolution.y, pos.z * .1, 1);
+  gl_Position = vec4(pos.x, pos.y * resolution.x / resolution.y, pos.z * .1, 1) ;
   gl_PointSize = .4 / max(abs(pos.z), .1);
 
   v_color = vec4(
