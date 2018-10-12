@@ -97,19 +97,13 @@
   version "1.4.32"
   resolved "https://registry.yarnpkg.com/@types/socket.io-client/-/socket.io-client-1.4.32.tgz#988a65a0386c274b1c22a55377fab6a30789ac14"
 
-"@types/three@^0.92.14":
-  version "0.92.14"
-  resolved "https://registry.yarnpkg.com/@types/three/-/three-0.92.14.tgz#a9a4febad61b9e6ef6446b8151f1398ac6524dea"
-  dependencies:
-    "@types/webvr-api" "*"
+"@types/three@^0.93.0":
+  version "0.93.0"
+  resolved "https://registry.yarnpkg.com/@types/three/-/three-0.93.0.tgz#2bd9faf2648568eae6c2cafae70fa8c3df619326"
 
 "@types/tmp@^0.0.33":
   version "0.0.33"
   resolved "https://registry.yarnpkg.com/@types/tmp/-/tmp-0.0.33.tgz#1073c4bc824754ae3d10cfab88ab0237ba964e4d"
-
-"@types/webvr-api@*":
-  version "0.0.34"
-  resolved "https://registry.yarnpkg.com/@types/webvr-api/-/webvr-api-0.0.34.tgz#8fa49028de925c7b8bce3d559d3374ce2c89ee28"
 
 "@types/which@^1.3.1":
   version "1.3.1"
