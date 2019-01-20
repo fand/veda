@@ -1,5 +1,8 @@
 import { TextEditor } from 'atom';
 import * as path from 'path';
+import * as fs from 'fs';
+import * as os from 'os';
+// import { exec } from 'child_process';
 import View from './view';
 import { validator, loadFile } from './validator';
 import { IShader, ISoundShader } from './constants';
@@ -9,6 +12,7 @@ import Player from './player';
 import PlayerServer from './player-server';
 import { INITIAL_SHADER, INITIAL_SOUND_SHADER } from './constants';
 import OscLoader from './osc-loader';
+import * as p from 'pify';
 
 const glslify = require('glslify');
 const glslifyImport = require('glslify-import');
@@ -22,6 +26,7 @@ interface IAppState {
 
 export default class App {
     private player: IPlayable;
+    private view: View | null = null;
     private state: IAppState;
     private glslangValidatorPath: string;
     private lastShader: IShader = INITIAL_SHADER;
@@ -32,8 +37,8 @@ export default class App {
 
     constructor(config: Config) {
         const rc = config.rc;
-        const view = new View((atom.workspace as any).element);
-        this.player = new Player(view, rc, false, this.lastShader);
+        this.view = new View((atom.workspace as any).element);
+        this.player = new Player(this.view, rc, false, this.lastShader);
 
         this.config = config;
         this.config.on('change', this.onChange);
@@ -65,6 +70,9 @@ export default class App {
             const rc = this.config.createRc();
 
             if (added.server) {
+                if (this.view !== null) {
+                    this.view.destroy();
+                }
                 this.player = new PlayerServer(added.server, {
                     rc,
                     isPlaying: this.state.isPlaying,
@@ -72,9 +80,9 @@ export default class App {
                     lastShader: this.lastShader,
                 });
             } else {
-                const view = new View((atom.workspace as any).element);
+                this.view = new View((atom.workspace as any).element);
                 this.player = new Player(
-                    view,
+                    this.view,
                     rc,
                     this.state.isPlaying,
                     this.lastShader,
@@ -345,5 +353,74 @@ export default class App {
 
     toggleFullscreen(): void {
         this.player.toggleFullscreen();
+    }
+
+    private isCapturing: boolean = false;
+    private capturingFrames: number = 0;
+    private capturedFrames: number = 0;
+    private captureDir: string = '';
+
+    async startCapturing(): Promise<void> {
+        if (this.view === null) {
+            return;
+        }
+
+        this.isCapturing = true;
+        this.capturingFrames = 0;
+        this.capturedFrames = 0;
+
+        this.captureDir = path.resolve(
+            os.tmpdir(),
+            'veda-capture-' + Date.now().toString(),
+        );
+        await p(fs.mkdir)(this.captureDir);
+
+        atom.notifications.addInfo(
+            `[VEDA] Start capturing to ${this.captureDir} ...`,
+        );
+
+        const capture = async () => {
+            if (!this.isCapturing || this.view === null) {
+                return;
+            }
+
+            const canvas = this.view.getCanvas();
+            const pngDataUrl = canvas.toDataURL('image/png');
+            const filename =
+                this.capturingFrames.toString().padStart(10, '0') + '.png';
+
+            this.capturingFrames++;
+            requestAnimationFrame(capture);
+
+            const pngBuf = new Buffer(
+                pngDataUrl.replace(/^data:image\/\w+;base64,/, ''),
+                'base64',
+            );
+            const dstPath = path.resolve(this.captureDir, filename);
+            await p(fs.writeFile)(dstPath, pngBuf);
+
+            this.capturedFrames++;
+        };
+
+        capture();
+    }
+
+    async stopCapturing(): Promise<void> {
+        this.isCapturing = false;
+
+        const timer = setInterval(() => {
+            if (this.capturingFrames !== this.capturedFrames) {
+                return;
+            }
+
+            clearTimeout(timer);
+
+            // TODO: call ffmpeg here
+            // await p()
+
+            atom.notifications.addSuccess(
+                `[VEDA] Captured to ${this.captureDir}`,
+            );
+        }, 300);
     }
 }
