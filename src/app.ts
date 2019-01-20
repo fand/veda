@@ -9,6 +9,7 @@ import Player from './player';
 import PlayerServer from './player-server';
 import { INITIAL_SHADER, INITIAL_SOUND_SHADER } from './constants';
 import OscLoader from './osc-loader';
+import Capturer, { CaptureMode } from './capturer';
 
 const glslify = require('glslify');
 const glslifyImport = require('glslify-import');
@@ -22,18 +23,20 @@ interface IAppState {
 
 export default class App {
     private player: IPlayable;
+    private view: View | null = null;
     private state: IAppState;
     private glslangValidatorPath: string;
     private lastShader: IShader = INITIAL_SHADER;
     private lastSoundShader: ISoundShader = INITIAL_SOUND_SHADER;
     private osc: OscLoader | null = null;
+    private capturer: Capturer = new Capturer();
 
     private config: Config;
 
     constructor(config: Config) {
         const rc = config.rc;
-        const view = new View((atom.workspace as any).element);
-        this.player = new Player(view, rc, false, this.lastShader);
+        this.view = new View((atom.workspace as any).element);
+        this.player = new Player(this.view, rc, false, this.lastShader);
 
         this.config = config;
         this.config.on('change', this.onChange);
@@ -65,6 +68,9 @@ export default class App {
             const rc = this.config.createRc();
 
             if (added.server) {
+                if (this.view !== null) {
+                    this.view.destroy();
+                }
                 this.player = new PlayerServer(added.server, {
                     rc,
                     isPlaying: this.state.isPlaying,
@@ -72,9 +78,9 @@ export default class App {
                     lastShader: this.lastShader,
                 });
             } else {
-                const view = new View((atom.workspace as any).element);
+                this.view = new View((atom.workspace as any).element);
                 this.player = new Player(
-                    view,
+                    this.view,
                     rc,
                     this.state.isPlaying,
                     this.lastShader,
@@ -125,6 +131,7 @@ export default class App {
         this.player.stopSound();
         this.config.stop();
         this.stopWatching();
+        this.stopCapturing();
     }
 
     watchActiveShader(): void {
@@ -345,5 +352,25 @@ export default class App {
 
     toggleFullscreen(): void {
         this.player.toggleFullscreen();
+    }
+
+    async startCapturing(): Promise<void> {
+        if (this.view === null) {
+            return;
+        }
+        const canvas = this.view.getCanvas();
+        const fps = 60 / this.config.rc.frameskip;
+        const width = canvas.offsetWidth; // We don't consider pixelRatio here so that outputs don't get gigantic
+        const height = canvas.offsetHeight;
+
+        this.capturer.start(canvas, fps, width, height);
+    }
+
+    async stopCapturing(): Promise<void> {
+        this.capturer.stop();
+    }
+
+    setCaptureMode(mode: CaptureMode): void {
+        this.capturer.setCaptureMode(mode);
     }
 }
