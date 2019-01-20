@@ -18,6 +18,7 @@
     "babel-core": "^6.26.3",
     "execa": "^0.10.0",
     "express": "^4.16.3",
+    "ffmpeg-static": "^2.4.0",
     "glslify": "^6.2.1",
     "glslify-import": "^3.1.0",
     "is-relative": "^1.0.0",
