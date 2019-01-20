@@ -7,7 +7,7 @@ import { exec } from 'child_process';
 const ffmpeg = require('ffmpeg-static');
 const shell = require('shell');
 
-type CaptureMode = 'mp4' | 'gif';
+export type CaptureMode = 'mp4' | 'gif';
 
 export default class Capturer {
     private isCapturing: boolean = false;
@@ -109,7 +109,6 @@ export default class Capturer {
 
         atom.notifications.addSuccess(`[VEDA] Captured to ${dst}`);
 
-        // shell.openItem(dst);
         shell.showItemInFolder(dst);
     }
 
@@ -153,5 +152,9 @@ export default class Capturer {
                 dst,
             ].join(' '),
         );
+    }
+
+    setCaptureMode(mode: CaptureMode) {
+        this.mode = mode;
     }
 }

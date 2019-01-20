@@ -78,6 +78,14 @@ module.exports = {
             maximum: 1,
             order: 7,
         },
+        captureMode: {
+            title: 'Capture Mode',
+            description: 'File format to capture images',
+            type: 'string',
+            default: 'mp4',
+            enum: ['mp4', 'gif'],
+            order: 8,
+        },
     },
 
     activate(state: IVedaStatus) {

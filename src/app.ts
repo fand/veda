@@ -9,7 +9,7 @@ import Player from './player';
 import PlayerServer from './player-server';
 import { INITIAL_SHADER, INITIAL_SOUND_SHADER } from './constants';
 import OscLoader from './osc-loader';
-import Capturer from './capturer';
+import Capturer, { CaptureMode } from './capturer';
 
 const glslify = require('glslify');
 const glslifyImport = require('glslify-import');
@@ -368,5 +368,9 @@ export default class App {
 
     async stopCapturing(): Promise<void> {
         this.capturer.stop();
+    }
+
+    setCaptureMode(mode: CaptureMode): void {
+        this.capturer.setCaptureMode(mode);
     }
 }
