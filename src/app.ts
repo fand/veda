@@ -133,6 +133,7 @@ export default class App {
         this.player.stopSound();
         this.config.stop();
         this.stopWatching();
+        this.stopCapturing();
     }
 
     watchActiveShader(): void {
@@ -406,6 +407,9 @@ export default class App {
     }
 
     async stopCapturing(): Promise<void> {
+        if (!this.isCapturing) {
+            return;
+        }
         this.isCapturing = false;
 
         const timer = setInterval(() => {
