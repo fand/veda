@@ -53,8 +53,17 @@ export default class Capturer {
             `[VEDA] Start capturing to ${this.captureDir} ...`,
         );
 
+        let frame = -1;
+        const frameskip = 60 / this.fps;
+
         const capture = async () => {
             if (!this.isCapturing) {
+                return;
+            }
+
+            frame++;
+            if (frame % frameskip !== 0) {
+                requestAnimationFrame(capture);
                 return;
             }
 
@@ -120,7 +129,8 @@ export default class Capturer {
                 ffmpeg.path,
                 `-framerate ${this.fps}`,
                 `-i ${capturedFilesPath}`,
-                `-c:v libx264 -vf "pad=ceil(iw/2)*2:ceil(ih/2)*2"`,
+                `-c:v libx264`,
+                `-vf "pad=ceil(iw/2)*2:ceil(ih/2)*2"`,
                 `-r ${this.fps} -pix_fmt yuv420p`,
                 dst,
             ].join(' '),
