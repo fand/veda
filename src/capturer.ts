@@ -14,6 +14,7 @@ export default class Capturer {
     private capturingFrames: number = 0;
     private capturedFrames: number = 0;
     private captureDir: string = '';
+    private framesDir: string = '';
 
     private mode: CaptureMode = 'mp4';
     private fps: number = 60;
@@ -44,7 +45,9 @@ export default class Capturer {
             os.tmpdir(),
             'veda-capture-' + Date.now().toString(),
         );
+        this.framesDir = path.resolve(this.captureDir, 'frames');
         await p(fs.mkdir)(this.captureDir);
+        await p(fs.mkdir)(this.framesDir);
 
         atom.notifications.addInfo(
             `[VEDA] Start capturing to ${this.captureDir} ...`,
@@ -68,7 +71,7 @@ export default class Capturer {
                 pngDataUrl.replace(/^data:image\/\w+;base64,/, ''),
                 'base64',
             );
-            const dstPath = path.resolve(this.captureDir, filename);
+            const dstPath = path.resolve(this.framesDir, filename);
             await p(fs.writeFile)(dstPath, pngBuf);
 
             this.capturedFrames++;
@@ -111,7 +114,7 @@ export default class Capturer {
     }
 
     private async convertToMp4(dst: string) {
-        const capturedFilesPath = path.resolve(this.captureDir, 'veda-%5d.png');
+        const capturedFilesPath = path.resolve(this.framesDir, 'veda-%5d.png');
 
         await p(exec)(
             [
@@ -126,7 +129,7 @@ export default class Capturer {
     }
 
     private async convertToGif(dst: string) {
-        const capturedFilesPath = path.resolve(this.captureDir, 'veda-%5d.png');
+        const capturedFilesPath = path.resolve(this.framesDir, 'veda-%5d.png');
         const palettePath = path.resolve(this.captureDir, 'palette.png');
         const filters = `fps=${this.fps},scale=${this.width}:${
             this.height
