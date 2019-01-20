@@ -1,8 +1,5 @@
 import { TextEditor } from 'atom';
 import * as path from 'path';
-import * as fs from 'fs';
-import * as os from 'os';
-// import { exec } from 'child_process';
 import View from './view';
 import { validator, loadFile } from './validator';
 import { IShader, ISoundShader } from './constants';
@@ -12,7 +9,7 @@ import Player from './player';
 import PlayerServer from './player-server';
 import { INITIAL_SHADER, INITIAL_SOUND_SHADER } from './constants';
 import OscLoader from './osc-loader';
-import * as p from 'pify';
+import Capturer from './capturer';
 
 const glslify = require('glslify');
 const glslifyImport = require('glslify-import');
@@ -32,6 +29,7 @@ export default class App {
     private lastShader: IShader = INITIAL_SHADER;
     private lastSoundShader: ISoundShader = INITIAL_SOUND_SHADER;
     private osc: OscLoader | null = null;
+    private capturer: Capturer = new Capturer();
 
     private config: Config;
 
@@ -356,75 +354,19 @@ export default class App {
         this.player.toggleFullscreen();
     }
 
-    private isCapturing: boolean = false;
-    private capturingFrames: number = 0;
-    private capturedFrames: number = 0;
-    private captureDir: string = '';
-
     async startCapturing(): Promise<void> {
         if (this.view === null) {
             return;
         }
+        const canvas = this.view.getCanvas();
+        const fps = 60 / this.config.rc.frameskip;
+        const width = canvas.offsetWidth; // We don't consider pixelRatio here so that outputs don't get gigantic
+        const height = canvas.offsetHeight;
 
-        this.isCapturing = true;
-        this.capturingFrames = 0;
-        this.capturedFrames = 0;
-
-        this.captureDir = path.resolve(
-            os.tmpdir(),
-            'veda-capture-' + Date.now().toString(),
-        );
-        await p(fs.mkdir)(this.captureDir);
-
-        atom.notifications.addInfo(
-            `[VEDA] Start capturing to ${this.captureDir} ...`,
-        );
-
-        const capture = async () => {
-            if (!this.isCapturing || this.view === null) {
-                return;
-            }
-
-            const canvas = this.view.getCanvas();
-            const pngDataUrl = canvas.toDataURL('image/png');
-            const filename =
-                this.capturingFrames.toString().padStart(10, '0') + '.png';
-
-            this.capturingFrames++;
-            requestAnimationFrame(capture);
-
-            const pngBuf = new Buffer(
-                pngDataUrl.replace(/^data:image\/\w+;base64,/, ''),
-                'base64',
-            );
-            const dstPath = path.resolve(this.captureDir, filename);
-            await p(fs.writeFile)(dstPath, pngBuf);
-
-            this.capturedFrames++;
-        };
-
-        capture();
+        this.capturer.start(canvas, fps, width, height);
     }
 
     async stopCapturing(): Promise<void> {
-        if (!this.isCapturing) {
-            return;
-        }
-        this.isCapturing = false;
-
-        const timer = setInterval(() => {
-            if (this.capturingFrames !== this.capturedFrames) {
-                return;
-            }
-
-            clearTimeout(timer);
-
-            // TODO: call ffmpeg here
-            // await p()
-
-            atom.notifications.addSuccess(
-                `[VEDA] Captured to ${this.captureDir}`,
-            );
-        }, 300);
+        this.capturer.stop();
     }
 }

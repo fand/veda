@@ -1,0 +1,154 @@
+import * as fs from 'fs';
+import * as os from 'os';
+import * as path from 'path';
+import * as p from 'pify';
+import { exec } from 'child_process';
+
+const ffmpeg = require('ffmpeg-static');
+const shell = require('shell');
+
+type CaptureMode = 'mp4' | 'gif';
+
+export default class Capturer {
+    private isCapturing: boolean = false;
+    private capturingFrames: number = 0;
+    private capturedFrames: number = 0;
+    private captureDir: string = '';
+
+    private mode: CaptureMode = 'mp4';
+    private fps: number = 60;
+    private width: number = 1920;
+    private height: number = 1080;
+
+    setMode(mode: CaptureMode) {
+        this.mode = mode;
+    }
+
+    async start(
+        canvas: HTMLCanvasElement,
+        fps: number,
+        width: number,
+        height: number,
+    ) {
+        // Reset state
+        this.isCapturing = true;
+        this.capturingFrames = 0;
+        this.capturedFrames = 0;
+
+        // Set options
+        this.fps = fps;
+        this.width = width;
+        this.height = height;
+
+        this.captureDir = path.resolve(
+            os.tmpdir(),
+            'veda-capture-' + Date.now().toString(),
+        );
+        await p(fs.mkdir)(this.captureDir);
+
+        atom.notifications.addInfo(
+            `[VEDA] Start capturing to ${this.captureDir} ...`,
+        );
+
+        const capture = async () => {
+            if (!this.isCapturing) {
+                return;
+            }
+
+            const pngDataUrl = canvas.toDataURL('image/png');
+            const filename =
+                'veda-' +
+                this.capturingFrames.toString().padStart(5, '0') +
+                '.png';
+
+            this.capturingFrames++;
+            requestAnimationFrame(capture);
+
+            const pngBuf = new Buffer(
+                pngDataUrl.replace(/^data:image\/\w+;base64,/, ''),
+                'base64',
+            );
+            const dstPath = path.resolve(this.captureDir, filename);
+            await p(fs.writeFile)(dstPath, pngBuf);
+
+            this.capturedFrames++;
+        };
+
+        capture();
+    }
+
+    async stop() {
+        if (!this.isCapturing) {
+            return;
+        }
+        this.isCapturing = false;
+
+        const timer = setInterval(async () => {
+            if (this.capturingFrames !== this.capturedFrames) {
+                return;
+            }
+            clearTimeout(timer);
+            this.finalize();
+        }, 300);
+    }
+
+    private async finalize() {
+        const basename = `veda-${Date.now()}.${this.mode}`;
+        const dst = path.resolve(this.captureDir, basename);
+
+        atom.notifications.addInfo(`[VEDA] Converting images to ${dst}...`);
+
+        if (this.mode === 'mp4') {
+            await this.convertToMp4(dst);
+        } else if (this.mode === 'gif') {
+            await this.convertToGif(dst);
+        }
+
+        atom.notifications.addSuccess(`[VEDA] Captured to ${dst}`);
+
+        // shell.openItem(dst);
+        shell.showItemInFolder(dst);
+    }
+
+    private async convertToMp4(dst: string) {
+        const capturedFilesPath = path.resolve(this.captureDir, 'veda-%5d.png');
+
+        await p(exec)(
+            [
+                ffmpeg.path,
+                `-framerate ${this.fps}`,
+                `-i ${capturedFilesPath}`,
+                `-c:v libx264 -vf "pad=ceil(iw/2)*2:ceil(ih/2)*2"`,
+                `-r ${this.fps} -pix_fmt yuv420p`,
+                dst,
+            ].join(' '),
+        );
+    }
+
+    private async convertToGif(dst: string) {
+        const capturedFilesPath = path.resolve(this.captureDir, 'veda-%5d.png');
+        const palettePath = path.resolve(this.captureDir, 'palette.png');
+        const filters = `fps=${this.fps},scale=${this.width}:${
+            this.height
+        }:flags=lanczos,pad=ceil(iw/2)*2:ceil(ih/2)*2`;
+
+        await p(exec)(
+            [
+                ffmpeg.path,
+                ` -i ${capturedFilesPath}`,
+                ` -vf palettegen ${palettePath}`,
+            ].join(' '),
+        );
+
+        await p(exec)(
+            [
+                ffmpeg.path,
+                `-framerate ${this.fps}`,
+                `-i ${capturedFilesPath}`,
+                `-i ${palettePath}`,
+                `-lavfi "${filters} [x];[x][1:v]paletteuse"`,
+                dst,
+            ].join(' '),
+        );
+    }
+}
