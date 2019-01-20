@@ -1,3 +1,7 @@
+## 2.11.0
+
+- Add commands to capture videos
+
 ## 2.10.2
 
 - Fixed bugs of file path conversion in server mode #94
