@@ -1,8 +1,8 @@
 import * as fs from 'fs';
-import * as os from 'os';
 import * as path from 'path';
 import * as p from 'pify';
 import { exec } from 'child_process';
+import * as mkdirp from 'mkdirp';
 
 const ffmpeg = require('ffmpeg-static');
 const shell = require('shell');
@@ -30,6 +30,7 @@ export default class Capturer {
         fps: number,
         width: number,
         height: number,
+        dst: string,
     ) {
         // Reset state
         this.isCapturing = true;
@@ -42,12 +43,13 @@ export default class Capturer {
         this.height = height;
 
         this.captureDir = path.resolve(
-            os.tmpdir(),
-            'veda-capture-' + Date.now().toString(),
+            dst,
+            'veda-capture',
+            'capture-' + Date.now().toString(),
         );
         this.framesDir = path.resolve(this.captureDir, 'frames');
-        await p(fs.mkdir)(this.captureDir);
-        await p(fs.mkdir)(this.framesDir);
+        await p(mkdirp)(this.captureDir);
+        await p(mkdirp)(this.framesDir);
 
         atom.notifications.addInfo(
             `[VEDA] Start capturing to ${this.captureDir} ...`,

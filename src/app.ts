@@ -362,8 +362,9 @@ export default class App {
         const fps = 60 / this.config.rc.frameskip;
         const width = canvas.offsetWidth; // We don't consider pixelRatio here so that outputs don't get gigantic
         const height = canvas.offsetHeight;
+        const dst = this.config.projectPath;
 
-        this.capturer.start(canvas, fps, width, height);
+        this.capturer.start(canvas, fps, width, height, dst);
     }
 
     async stopCapturing(): Promise<void> {
