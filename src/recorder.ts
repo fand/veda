@@ -7,21 +7,21 @@ import * as mkdirp from 'mkdirp';
 const ffmpeg = require('ffmpeg-static');
 const shell = require('shell');
 
-export type CaptureMode = 'mp4' | 'gif';
+export type RecordingMode = 'mp4' | 'gif';
 
-export default class Capturer {
-    private isCapturing: boolean = false;
-    private capturingFrames: number = 0;
-    private capturedFrames: number = 0;
-    private captureDir: string = '';
+export default class Recorder {
+    private isRecording: boolean = false;
+    private recordingFrames: number = 0;
+    private recordedFrames: number = 0;
+    private recordDir: string = '';
     private framesDir: string = '';
 
-    private mode: CaptureMode = 'mp4';
+    private mode: RecordingMode = 'mp4';
     private fps: number = 60;
     private width: number = 1920;
     private height: number = 1080;
 
-    setMode(mode: CaptureMode) {
+    setMode(mode: RecordingMode) {
         this.mode = mode;
     }
 
@@ -33,33 +33,34 @@ export default class Capturer {
         dst: string,
     ) {
         // Reset state
-        this.isCapturing = true;
-        this.capturingFrames = 0;
-        this.capturedFrames = 0;
+        this.isRecording = true;
+        this.recordingFrames = 0;
+        this.recordedFrames = 0;
 
         // Set options
         this.fps = fps;
         this.width = width;
         this.height = height;
 
-        this.captureDir = path.resolve(
-            dst,
-            'veda-capture',
-            'capture-' + Date.now().toString(),
-        );
-        this.framesDir = path.resolve(this.captureDir, 'frames');
-        await p(mkdirp)(this.captureDir);
+        const timestamp = new Date()
+            .toISOString()
+            .replace(/\..*/, '')
+            .replace(/[^\d]/g, '-');
+
+        this.recordDir = path.resolve(dst, 'veda-recordings', timestamp);
+        this.framesDir = path.resolve(this.recordDir, 'frames');
+        await p(mkdirp)(this.recordDir);
         await p(mkdirp)(this.framesDir);
 
         atom.notifications.addInfo(
-            `[VEDA] Start capturing to ${this.captureDir} ...`,
+            `[VEDA] Start recording to ${this.recordDir} ...`,
         );
 
         let frame = -1;
         const frameskip = 60 / this.fps;
 
         const capture = async () => {
-            if (!this.isCapturing) {
+            if (!this.isRecording) {
                 return;
             }
 
@@ -72,10 +73,10 @@ export default class Capturer {
             const pngDataUrl = canvas.toDataURL('image/png');
             const filename =
                 'veda-' +
-                this.capturingFrames.toString().padStart(5, '0') +
+                this.recordingFrames.toString().padStart(5, '0') +
                 '.png';
 
-            this.capturingFrames++;
+            this.recordingFrames++;
             requestAnimationFrame(capture);
 
             const pngBuf = new Buffer(
@@ -85,20 +86,20 @@ export default class Capturer {
             const dstPath = path.resolve(this.framesDir, filename);
             await p(fs.writeFile)(dstPath, pngBuf);
 
-            this.capturedFrames++;
+            this.recordedFrames++;
         };
 
         capture();
     }
 
     async stop() {
-        if (!this.isCapturing) {
+        if (!this.isRecording) {
             return;
         }
-        this.isCapturing = false;
+        this.isRecording = false;
 
         const timer = setInterval(async () => {
-            if (this.capturingFrames !== this.capturedFrames) {
+            if (this.recordingFrames !== this.recordedFrames) {
                 return;
             }
             clearTimeout(timer);
@@ -108,7 +109,7 @@ export default class Capturer {
 
     private async finalize() {
         const basename = `veda-${Date.now()}.${this.mode}`;
-        const dst = path.resolve(this.captureDir, basename);
+        const dst = path.resolve(this.recordDir, basename);
 
         atom.notifications.addInfo(`[VEDA] Converting images to ${dst}...`);
 
@@ -118,7 +119,7 @@ export default class Capturer {
             await this.convertToGif(dst);
         }
 
-        atom.notifications.addSuccess(`[VEDA] Captured to ${dst}`);
+        atom.notifications.addSuccess(`[VEDA] Recorded to ${dst}`);
 
         shell.showItemInFolder(dst);
     }
@@ -141,7 +142,7 @@ export default class Capturer {
 
     private async convertToGif(dst: string) {
         const capturedFilesPath = path.resolve(this.framesDir, 'veda-%5d.png');
-        const palettePath = path.resolve(this.captureDir, 'palette.png');
+        const palettePath = path.resolve(this.recordDir, 'palette.png');
         const filters = `fps=${this.fps},scale=${this.width}:${
             this.height
         }:flags=lanczos,pad=ceil(iw/2)*2:ceil(ih/2)*2`;
@@ -166,7 +167,9 @@ export default class Capturer {
         );
     }
 
-    setCaptureMode(mode: CaptureMode) {
-        this.mode = mode;
+    setRecordingMode(mode: RecordingMode) {
+        if (mode === 'mp4' || mode === 'gif') {
+            this.mode = mode;
+        }
     }
 }

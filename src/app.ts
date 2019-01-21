@@ -9,7 +9,7 @@ import Player from './player';
 import PlayerServer from './player-server';
 import { INITIAL_SHADER, INITIAL_SOUND_SHADER } from './constants';
 import OscLoader from './osc-loader';
-import Capturer, { CaptureMode } from './capturer';
+import Recorder, { RecordingMode } from './recorder';
 
 const glslify = require('glslify');
 const glslifyImport = require('glslify-import');
@@ -29,7 +29,7 @@ export default class App {
     private lastShader: IShader = INITIAL_SHADER;
     private lastSoundShader: ISoundShader = INITIAL_SOUND_SHADER;
     private osc: OscLoader | null = null;
-    private capturer: Capturer = new Capturer();
+    private recorder: Recorder = new Recorder();
 
     private config: Config;
 
@@ -131,7 +131,7 @@ export default class App {
         this.player.stopSound();
         this.config.stop();
         this.stopWatching();
-        this.stopCapturing();
+        this.stopRecording();
     }
 
     watchActiveShader(): void {
@@ -354,7 +354,7 @@ export default class App {
         this.player.toggleFullscreen();
     }
 
-    async startCapturing(): Promise<void> {
+    async startRecording(): Promise<void> {
         if (this.view === null) {
             return;
         }
@@ -364,14 +364,14 @@ export default class App {
         const height = canvas.offsetHeight;
         const dst = this.config.projectPath;
 
-        this.capturer.start(canvas, fps, width, height, dst);
+        this.recorder.start(canvas, fps, width, height, dst);
     }
 
-    async stopCapturing(): Promise<void> {
-        this.capturer.stop();
+    async stopRecording(): Promise<void> {
+        this.recorder.stop();
     }
 
-    setCaptureMode(mode: CaptureMode): void {
-        this.capturer.setCaptureMode(mode);
+    setRecordingMode(mode: RecordingMode): void {
+        this.recorder.setRecordingMode(mode);
     }
 }

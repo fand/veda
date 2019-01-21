@@ -28,7 +28,7 @@ export default class Wrapper {
         });
 
         this.app = new App(this.config);
-        this.app.setCaptureMode(atom.config.get('veda.captureMode'));
+        this.app.setRecordingMode(atom.config.get('veda.recordingMode'));
 
         atom.config.observe('veda.glslangValidatorPath', x =>
             this.setGlslangValidatorPath(x),
@@ -51,8 +51,8 @@ export default class Wrapper {
         atom.config.observe('veda.fftSmoothingTimeConstant', x =>
             this.config.setGlobalSettings({ fftSmoothingTimeConstant: x }),
         );
-        atom.config.observe('veda.captureMode', x =>
-            this.app.setCaptureMode(x),
+        atom.config.observe('veda.recordingMode', x =>
+            this.app.setRecordingMode(x),
         );
 
         // Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
@@ -69,8 +69,8 @@ export default class Wrapper {
                 'veda:load-sound-shader': () => this.app.playSound(),
                 'veda:stop-sound-shader': () => this.app.stopSound(),
                 'veda:toggle-fullscreen': () => this.app.toggleFullscreen(),
-                'veda:start-capturing': () => this.app.startCapturing(),
-                'veda:stop-capturing': () => this.app.stopCapturing(),
+                'veda:start-recording': () => this.app.startRecording(),
+                'veda:stop-recording': () => this.app.stopRecording(),
             }),
         );
 

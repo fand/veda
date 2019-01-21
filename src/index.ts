@@ -78,9 +78,9 @@ module.exports = {
             maximum: 1,
             order: 7,
         },
-        captureMode: {
-            title: 'Capture Mode',
-            description: 'File format to capture images',
+        recordingMode: {
+            title: 'Recording Mode',
+            description: 'File format to record images',
             type: 'string',
             default: 'mp4',
             enum: ['mp4', 'gif'],

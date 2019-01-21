@@ -9,7 +9,7 @@
   },
   ".veda-enabled": {
     "ctrl-escape": "veda:toggle-fullscreen",
-    "ctrl-<": "veda:start-capturing",
-    "ctrl->": "veda:stop-capturing"
+    "ctrl-<": "veda:start-recording",
+    "ctrl->": "veda:stop-recording"
   }
 }
