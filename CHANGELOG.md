@@ -1,6 +1,10 @@
+## 2.11.1
+
+- Rename recording commands / pahts of recorded files
+
 ## 2.11.0
 
-- Add commands to capture videos
+- Add commands to record videos
 
 ## 2.10.2
 
