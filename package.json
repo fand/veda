@@ -43,6 +43,8 @@
     "autocomplete-glsl"
   ],
   "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.3.0",
     "@types/atom": "^1.31.0",
     "@types/execa": "^0.9.0",
     "@types/json5": "^0.0.30",
@@ -97,14 +99,14 @@
   },
   "ava": {
     "require": [
-      "babel-register",
       "babel-polyfill"
     ],
     "babel": {
-      "presets": [
-        "es2015",
-        "stage-2"
-      ]
+      "testOptions": {
+        "presets": [
+          "@babel/preset-env"
+        ]
+      }
     }
   }
 }
