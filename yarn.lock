@@ -6545,6 +6545,11 @@ three@^0.100.0:
   resolved "https://registry.yarnpkg.com/three/-/three-0.100.0.tgz#262841c0b7d88ebd62af73f28d9f578963b3aa00"
   integrity sha512-/lN2rdE1OqIwJr4/HcSaOisiCY0uVA0sqPpbCG5nil2uICEdS0LfGwSVYTtZDsIpR76r3++h5H3Hzg5D+SJBRQ==
 
+three@^0.102.1:
+  version "0.102.1"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.102.1.tgz#fc08b6b11860cf59e8cd45b7e90e34d1d1a8cbd6"
+  integrity sha512-btHBdww/Es4vdBkB2GjTE9mpj0vy8tgtxkX7ne7uxySXV8zoGxWJv1N88BydxnCqvAfmD4ZUTqPeESO7oDgeOQ==
+
 three@^0.87.1:
   version "0.87.1"
   resolved "https://registry.yarnpkg.com/three/-/three-0.87.1.tgz#466a34edc4543459ced9b9d7d276b65216fe2ba8"
