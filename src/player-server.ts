@@ -120,6 +120,14 @@ export default class PlayerServer implements IPlayable {
         this.io.emit('toggleFullscreen');
     }
 
+    startRecording() {
+        this.io.emit('startRecording');
+    }
+
+    stopRecording() {
+        this.io.emit('stopRecording');
+    }
+
     stdout = (output: Buffer) => {
         atom.notifications.addSuccess(output.toString().trim());
     };

@@ -364,11 +364,13 @@ export default class App {
         const height = canvas.offsetHeight;
         const dst = this.config.projectPath;
 
+        this.player.startRecording();
         this.recorder.start(canvas, fps, width, height, dst);
     }
 
     async stopRecording(): Promise<void> {
         this.recorder.stop();
+        this.player.stopRecording();
     }
 
     setRecordingMode(mode: RecordingMode): void {

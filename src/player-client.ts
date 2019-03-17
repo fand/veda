@@ -69,6 +69,12 @@ export default class PlayerClient {
         this.socket.on('toggleFullscreen', () => {
             this.player && this.player.toggleFullscreen();
         });
+        this.socket.on('startRecording', () => {
+            this.player && this.player.startRecording();
+        });
+        this.socket.on('stopRecording', () => {
+            this.player && this.player.stopRecording();
+        });
         this.socket.on('connect', () => {
             console.log('[VEDA] Connected to the server');
             this.poll();

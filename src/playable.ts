@@ -12,4 +12,6 @@ export interface IPlayable {
     loadSoundShader: (fs: string) => void;
     setOsc: (name: string, data: number[]) => void;
     toggleFullscreen(): void;
+    startRecording(): void;
+    stopRecording(): void;
 }
