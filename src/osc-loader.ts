@@ -2,6 +2,7 @@ import * as path from 'path';
 import { spawn } from 'child_process';
 import { ChildProcess } from 'child_process';
 import { EventEmitter } from 'events';
+import { IOscData } from './constants';
 
 export default class OscLoader extends EventEmitter {
     port: number;
@@ -40,19 +41,22 @@ export default class OscLoader extends EventEmitter {
                 msg = JSON.parse(line);
             } catch (e) {}
 
-            if (msg) {
-                msg.address =
-                    'osc_' + msg.address.replace(/^\//, '').replace('/', '_');
-                this.emit('message', msg);
-
-                // If the address is never used before,
-                // VEDA have to reload the last shader to use the texture
-                if (!this.addresses[msg.address]) {
-                    this.addresses[msg.address] = true;
-                    this.emit('reload');
-                }
-            } else {
+            if (!msg) {
                 console.log(line);
+            }
+
+            const oscData: IOscData = {
+                name: 'osc_' + msg.address.replace(/^\//, '').replace('/', '_'),
+                data: msg.args,
+            };
+
+            this.emit('message', oscData);
+
+            // If the address is never used before,
+            // VEDA have to reload the last shader to use the texture
+            if (!this.addresses[msg.address]) {
+                this.addresses[msg.address] = true;
+                this.emit('reload');
             }
         });
     };

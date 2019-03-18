@@ -2,7 +2,7 @@ import Veda from 'vedajs';
 import View from './view';
 import { IRc, IRcDiff } from './config';
 import { IPlayable } from './playable';
-import { IShader } from './constants';
+import { IShader, IOscData, CommandType, CommandData } from './constants';
 import * as THREE from 'three';
 
 export default class Player implements IPlayable {
@@ -107,33 +107,63 @@ export default class Player implements IPlayable {
         }
     };
 
-    play(): void {
+    command(type: CommandType, data: CommandData): void {
+        switch (type) {
+            case 'PLAY':
+                return this.play();
+            case 'STOP':
+                return this.stop();
+            case 'LOAD_SHADER':
+                return this.loadShader(data as IShader);
+            case 'PLAY_SOUND':
+                return this.playSound();
+            case 'STOP_SOUND':
+                return this.stopSound();
+            case 'LOAD_SOUND_SHADER':
+                return this.loadSoundShader(data as string);
+            case 'SET_OSC':
+                return this.setOsc(data as IOscData);
+            case 'START_RECORDING':
+                return this.startRecording();
+            case 'STOP_RECORDING':
+                return this.stopRecording();
+            case 'TOGGLE_FULLSCREEN':
+                return this.toggleFullscreen();
+            default:
+                console.error('>> Unsupported command', type, data);
+        }
+    }
+
+    private play(): void {
         this.view.show();
         this.veda.play();
     }
 
-    stop(): void {
+    private stop(): void {
         this.view.hide();
         this.veda.stop();
     }
 
-    loadShader(shader: IShader): void {
+    private loadShader(shader: IShader): void {
+        console.log('[VEDA] Updated shader', shader);
         this.veda.loadShader(shader);
     }
 
-    loadSoundShader(fs: string): void {
+    private loadSoundShader(fs: string): void {
         this.veda.loadSoundShader(fs);
     }
 
-    playSound(): void {
+    private playSound(): void {
         this.veda.playSound();
     }
 
-    stopSound(): void {
+    private stopSound(): void {
         this.veda.stopSound();
     }
 
-    setOsc(name: string, data: number[]): void {
+    private setOsc(oscData: IOscData): void {
+        const { name, data } = oscData;
+
         const texture = this.textures[name];
         if (!texture || texture.image.data.length !== data.length) {
             if (texture) {
@@ -158,15 +188,15 @@ export default class Player implements IPlayable {
         }
     }
 
-    toggleFullscreen(): void {
-        this.view.toggleFullscreen();
-    }
-
-    startRecording(): void {
+    private startRecording(): void {
         this.veda.startRecording();
     }
 
-    stopRecording(): void {
+    private stopRecording(): void {
         this.veda.stopRecording();
+    }
+
+    private toggleFullscreen(): void {
+        this.view.toggleFullscreen();
     }
 }

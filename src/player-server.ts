@@ -5,7 +5,7 @@ import { cloneDeep } from 'lodash';
 import { ChildProcess } from 'child_process';
 import { IRc, IRcDiff, IImportedHash } from './config';
 import { IPlayable } from './playable';
-import { IShader } from './constants';
+import { IShader, CommandType, CommandData } from './constants';
 import { convertPathForServer } from './utils';
 
 interface IPlayerState {
@@ -116,8 +116,8 @@ export default class PlayerServer implements IPlayable {
         this.io.emit('setOsc', { name, data });
     }
 
-    toggleFullscreen() {
-        this.io.emit('toggleFullscreen');
+    command(type: CommandType, data?: CommandData) {
+        this.io.emit('command', { type, data });
     }
 
     startRecording() {

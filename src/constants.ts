@@ -41,3 +41,25 @@ export type IShader = IPass[];
 export type ISoundShader = string;
 
 export type IVedaStatus = any;
+
+export interface IOscData {
+    name: string;
+    data: number[];
+}
+
+export type CommandType =
+    | 'PLAY'
+    | 'STOP'
+    | 'LOAD_SHADER'
+    | 'PLAY_SOUND'
+    | 'STOP_SOUND'
+    | 'LOAD_SOUND_SHADER'
+    | 'SET_OSC'
+    | 'START_RECORDING'
+    | 'STOP_RECORDING'
+    | 'TOGGLE_FULLSCREEN';
+export type CommandData = void | IShader | string | IOscData;
+export interface ICommand {
+    type: CommandType;
+    data: CommandData;
+}
