@@ -1,3 +1,7 @@
+## 2.11.2
+
+- Fix timing issue #124
+
 ## 2.11.1
 
 - Rename recording commands / pahts of recorded files
