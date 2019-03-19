@@ -6958,10 +6958,10 @@ vary@~1.1.2:
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
 
-vedajs@^0.9.1:
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/vedajs/-/vedajs-0.9.1.tgz#3ab25687308056a68c31a156665dd8946624ee4d"
-  integrity sha512-5ZHnNt9Gpr55c5o96qGacWFgfE34X6hAwyHWzvUoJeOxxrW0wj4IfVBRo8a0JvCYa6gNAN6QIGlutVu5BpefmQ==
+vedajs@^0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/vedajs/-/vedajs-0.10.0.tgz#8d31418b693f81dff2c21bd18f988a0f68c9e265"
+  integrity sha512-sAR8um6jB7P+Nc9qaVCaPEdm1uIigKODitkcq/mMGvrt4QSfKijyrNrgd6K6d1CTG7I3b7q9j9SutsQfAmygQQ==
   dependencies:
     is-video "^1.0.1"
     three "^0.100.0"
