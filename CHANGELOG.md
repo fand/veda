@@ -1,3 +1,7 @@
+## 2.11.4
+
+- fix: Update shader correctly on server mode (#126)
+
 ## 2.11.3
 
 - Fix timing issue #124

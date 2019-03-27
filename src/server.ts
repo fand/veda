@@ -26,26 +26,8 @@
         socket.on('onChange', (rcDiff: any) => {
             socket.broadcast.emit('onChange', rcDiff);
         });
-        socket.on('play', () => {
-            socket.broadcast.emit('play');
-        });
-        socket.on('stop', () => {
-            socket.broadcast.emit('stop');
-        });
-        socket.on('loadShader', (passes: any) => {
-            socket.broadcast.emit('loadShader', passes);
-        });
-        socket.on('loadSoundShader', (shader: any) => {
-            socket.broadcast.emit('loadSoundShader', shader);
-        });
-        socket.on('playSound', () => {
-            socket.broadcast.emit('playSound');
-        });
-        socket.on('stopSound', () => {
-            socket.broadcast.emit('stopSound');
-        });
-        socket.on('setOsc', (msg: any) => {
-            socket.broadcast.emit('setOsc', msg);
+        socket.on('command', (msg: any) => {
+            socket.broadcast.emit('command', msg);
         });
     });
 

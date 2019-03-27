@@ -68,6 +68,18 @@ export default class PlayerServer implements IPlayable {
         this.io.emit('onChange', rcDiff);
     }
 
+    command(type: CommandType, data?: CommandData) {
+        this.io.emit('command', { type, data });
+
+        // Do server specific stuffs
+        switch (type) {
+            case 'STOP':
+                return this.stop();
+            case 'LOAD_SHADER':
+                return this.loadShader(data as IShader);
+        }
+    }
+
     private convertPaths(IMPORTED: IImportedHash) {
         Object.keys(IMPORTED).forEach(key => {
             IMPORTED[key].PATH = convertPathForServer(
@@ -79,13 +91,7 @@ export default class PlayerServer implements IPlayable {
         return IMPORTED;
     }
 
-    play() {
-        this.io.emit('play');
-    }
-
-    stop() {
-        this.io.emit('stop');
-
+    private stop() {
         try {
             this.server.kill();
         } catch (e) {
@@ -95,48 +101,19 @@ export default class PlayerServer implements IPlayable {
         atom.notifications.addSuccess('[VEDA] Server stopped');
     }
 
-    loadShader(shader: IShader) {
-        this.io.emit('loadShader', shader);
+    private loadShader(shader: IShader) {
         this.state.lastShader = shader;
     }
 
-    loadSoundShader(shader: string) {
-        this.io.emit('loadSoundShader', shader);
-    }
-
-    playSound() {
-        this.io.emit('playSound');
-    }
-
-    stopSound() {
-        this.io.emit('stopSound');
-    }
-
-    setOsc(name: string, data: number[]) {
-        this.io.emit('setOsc', { name, data });
-    }
-
-    command(type: CommandType, data?: CommandData) {
-        this.io.emit('command', { type, data });
-    }
-
-    startRecording() {
-        this.io.emit('startRecording');
-    }
-
-    stopRecording() {
-        this.io.emit('stopRecording');
-    }
-
-    stdout = (output: Buffer) => {
+    private stdout = (output: Buffer) => {
         atom.notifications.addSuccess(output.toString().trim());
     };
 
-    stderr = (output: Buffer) => {
+    private stderr = (output: Buffer) => {
         atom.notifications.addError(output.toString().trim());
     };
 
-    exit = (code: number) => {
+    private exit = (code: number) => {
         console.log('[VEDA] Server exited with code', code);
         this.io.emit('stop');
     };
