@@ -35,8 +35,8 @@ export default class PlayerServer implements IPlayable {
                 cwd: path.resolve(__dirname, '..'),
             },
         );
-        this.server.stdout.on('data', this.stdout);
-        this.server.stderr.on('data', this.stderr);
+        this.server.stdout!.on('data', this.stdout);
+        this.server.stderr!.on('data', this.stderr);
         this.server.on('exit', this.exit);
         this.io = io(`http://localhost:${port}`);
         this.io.on('ready', () => {
