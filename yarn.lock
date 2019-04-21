@@ -672,10 +672,10 @@
   dependencies:
     any-observable "^0.3.0"
 
-"@types/atom@^1.31.1":
-  version "1.31.1"
-  resolved "https://registry.yarnpkg.com/@types/atom/-/atom-1.31.1.tgz#67ff11a90624917f0f99fe30e070fc9e0e6c6f19"
-  integrity sha512-359WfFUWltkUszDjb3SfCmdKXHqXxn2oTn+lGYE0cRfDtVVdYKDXxKoJVThTY2KWNHQ/w1KXL4lTxvFYK0CP5w==
+"@types/atom@^1.36.1":
+  version "1.36.1"
+  resolved "https://registry.yarnpkg.com/@types/atom/-/atom-1.36.1.tgz#01bbe4cbdf07446645e20a64fc5105850f6a789f"
+  integrity sha512-MQ/zyNSTd+1Q1InztnMDWRKfk0bGs1Lah5ggT7JKOqGwEwCNxTXFDuF7WcmEo2sO4d2OzaypmG1AX13N8oyMJQ==
   dependencies:
     "@types/node" "*"
 
