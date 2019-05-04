@@ -63,3 +63,8 @@ export interface ICommand {
     type: CommandType;
     data: CommandData;
 }
+
+export type QueryType = 'TIME';
+export interface IQuery {
+    type: QueryType;
+}

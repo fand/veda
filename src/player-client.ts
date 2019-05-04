@@ -2,7 +2,7 @@ import * as io from 'socket.io-client';
 import Player from './player';
 import View from './view';
 import { IRc, IRcDiff } from './config';
-import { IShader, ICommand } from './constants';
+import { IShader, ICommand, IQuery } from './constants';
 
 interface ICreateOpts {
     rc: IRc;
@@ -42,6 +42,21 @@ export default class PlayerClient {
         this.socket.on('command', (data: ICommand) => {
             this.player && this.player.command(data.type, data.data);
         });
+        this.socket.on(
+            'query',
+            (
+                data: IQuery,
+                callback: (err: string | null, value?: any) => void,
+            ) => {
+                if (!this.player) {
+                    return callback('[VEDA] Player is not initialized.');
+                }
+
+                this.player
+                    .query(data.type)
+                    .then(value => callback(null, value), callback);
+            },
+        );
         this.socket.on('connect', () => {
             console.log('[VEDA] Connected to the server');
             this.poll();

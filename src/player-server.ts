@@ -5,7 +5,7 @@ import { cloneDeep } from 'lodash';
 import { ChildProcess } from 'child_process';
 import { IRc, IRcDiff, IImportedHash } from './config';
 import { IPlayable } from './playable';
-import { IShader, CommandType, CommandData } from './constants';
+import { IShader, CommandType, CommandData, QueryType } from './constants';
 import { convertPathForServer } from './utils';
 
 interface IPlayerState {
@@ -78,6 +78,22 @@ export default class PlayerServer implements IPlayable {
             case 'LOAD_SHADER':
                 return this.loadShader(data as IShader);
         }
+    }
+
+    query(type: QueryType) {
+        return new Promise<any>((resolve, reject) => {
+            this.io.emit(
+                'query',
+                { type },
+                (err: string | null, value?: any) => {
+                    if (err) {
+                        return reject(err);
+                    } else {
+                        return resolve(value);
+                    }
+                },
+            );
+        });
     }
 
     private convertPaths(IMPORTED: IImportedHash) {

@@ -2,7 +2,13 @@ import Veda from 'vedajs';
 import View from './view';
 import { IRc, IRcDiff } from './config';
 import { IPlayable } from './playable';
-import { IShader, IOscData, CommandType, CommandData } from './constants';
+import {
+    IShader,
+    IOscData,
+    CommandType,
+    CommandData,
+    QueryType,
+} from './constants';
 import * as THREE from 'three';
 
 export default class Player implements IPlayable {
@@ -131,6 +137,16 @@ export default class Player implements IPlayable {
                 return this.toggleFullscreen();
             default:
                 console.error('>> Unsupported command', type, data);
+        }
+    }
+
+    query(type: QueryType): Promise<any> {
+        switch (type) {
+            case 'TIME':
+                return Promise.resolve(this.veda.getTime());
+            default:
+                console.error('>> Unsupported query', type);
+                return Promise.reject('Unsupported query');
         }
     }
 
