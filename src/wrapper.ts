@@ -71,7 +71,7 @@ export default class Wrapper {
                 'veda:toggle-fullscreen': () => this.app.toggleFullscreen(),
                 'veda:start-recording': () => this.app.startRecording(),
                 'veda:stop-recording': () => this.app.stopRecording(),
-                'veda:paste-time': () => this.app.pasteTime(),
+                'veda:insert-time': () => this.app.insertTime(),
             }),
         );
 

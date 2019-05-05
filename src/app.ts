@@ -377,7 +377,7 @@ export default class App {
         this.recorder.setRecordingMode(mode);
     }
 
-    pasteTime(): void {
+    insertTime(): void {
         this.player.query('TIME').then(
             (time: number) => {
                 const editor = atom.workspace.getActiveTextEditor();
