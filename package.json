@@ -47,7 +47,7 @@
     "@types/atom": "^1.31.1",
     "@types/execa": "^0.9.0",
     "@types/json5": "^0.0.30",
-    "@types/lodash": "^4.14.123",
+    "@types/lodash": "^4.14.124",
     "@types/mkdirp": "^0.5.2",
     "@types/pify": "^3.0.2",
     "@types/socket.io-client": "^1.4.32",
