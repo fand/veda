@@ -691,10 +691,10 @@
   resolved "https://registry.yarnpkg.com/@types/json5/-/json5-0.0.30.tgz#44cb52f32a809734ca562e685c6473b5754a7818"
   integrity sha512-sqm9g7mHlPY/43fcSNrCYfOeX9zkTTK+euO5E6+CVijSMm5tTjkVdwdqRkY3ljjIAf8679vps5jKUoJBCLsMDA==
 
-"@types/lodash@^4.14.123":
-  version "4.14.123"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.123.tgz#39be5d211478c8dd3bdae98ee75bb7efe4abfe4d"
-  integrity sha512-pQvPkc4Nltyx7G1Ww45OjVqUsJP4UsZm+GWJpigXgkikZqJgRm4c48g027o6tdgubWHwFRF15iFd+Y4Pmqv6+Q==
+"@types/lodash@^4.14.127":
+  version "4.14.127"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.127.tgz#66a094af48e66af04e96d3d2e0f29396fe8139c8"
+  integrity sha512-n4kNk5CA+Tivr2Mhd80CZPZWfdslLXpdLFF5SmOljOtkV9Powkdfg0XP9rRa626lzZs++1cnMoyApkjHVSBH1w==
 
 "@types/mkdirp@^0.5.2":
   version "0.5.2"
