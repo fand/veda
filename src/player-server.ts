@@ -5,7 +5,7 @@ import { cloneDeep } from 'lodash';
 import { ChildProcess } from 'child_process';
 import { IRc, IRcDiff, IImportedHash } from './config';
 import { IPlayable } from './playable';
-import { IShader, CommandType, CommandData } from './constants';
+import { IShader, Command, Query } from './constants';
 import { convertPathForServer } from './utils';
 
 interface IPlayerState {
@@ -68,16 +68,28 @@ export default class PlayerServer implements IPlayable {
         this.io.emit('onChange', rcDiff);
     }
 
-    command(type: CommandType, data?: CommandData) {
-        this.io.emit('command', { type, data });
+    command(command: Command) {
+        this.io.emit('command', command);
 
         // Do server specific stuffs
-        switch (type) {
+        switch (command.type) {
+            case 'LOAD_SHADER':
+                return this.loadShader(command.shader);
             case 'STOP':
                 return this.stop();
-            case 'LOAD_SHADER':
-                return this.loadShader(data as IShader);
         }
+    }
+
+    query(query: Query) {
+        return new Promise<any>((resolve, reject) => {
+            this.io.emit('query', query, (err: any, value?: any) => {
+                if (err) {
+                    return reject(err);
+                } else {
+                    return resolve(value);
+                }
+            });
+        });
     }
 
     private convertPaths(IMPORTED: IImportedHash) {

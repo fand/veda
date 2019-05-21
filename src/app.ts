@@ -62,7 +62,7 @@ export default class App {
 
         if (added.server !== undefined) {
             if (this.player) {
-                this.player.command('STOP');
+                this.player.command({ type: 'STOP' });
             }
 
             const rc = this.config.createRc();
@@ -111,8 +111,8 @@ export default class App {
         this.loadLastSoundShader();
     };
 
-    onOsc = (msg: IOscData) => {
-        this.player.command('SET_OSC', msg);
+    onOsc = (data: IOscData) => {
+        this.player.command({ type: 'SET_OSC', data });
     };
 
     toggle(): void {
@@ -121,14 +121,14 @@ export default class App {
 
     play(): void {
         this.state.isPlaying = true;
-        this.player.command('PLAY');
+        this.player.command({ type: 'PLAY' });
         this.config.play();
     }
 
     stop(): void {
         this.state.isPlaying = false;
-        this.player.command('STOP');
-        this.player.command('STOP_SOUND');
+        this.player.command({ type: 'STOP' });
+        this.player.command({ type: 'STOP_SOUND' });
         this.config.stop();
         this.stopWatching();
         this.stopRecording();
@@ -175,25 +175,30 @@ export default class App {
     }
 
     playSound(): void {
-        this.loadSoundShader().then(() => this.player.command('PLAY_SOUND'));
+        this.loadSoundShader().then(() =>
+            this.player.command({ type: 'PLAY_SOUND' }),
+        );
     }
 
     stopSound(): void {
-        this.player.command('STOP_SOUND');
+        this.player.command({ type: 'STOP_SOUND' });
     }
 
     private loadLastShader(): void {
         if (!this.lastShader) {
             return;
         }
-        this.player.command('LOAD_SHADER', this.lastShader);
+        this.player.command({ type: 'LOAD_SHADER', shader: this.lastShader });
     }
 
     private loadLastSoundShader(): void {
         if (!this.lastSoundShader) {
             return;
         }
-        this.player.command('LOAD_SOUND_SHADER', this.lastSoundShader);
+        this.player.command({
+            type: 'LOAD_SOUND_SHADER',
+            shader: this.lastSoundShader,
+        });
     }
 
     stopWatching(): void {
@@ -339,10 +344,16 @@ export default class App {
             .then(passes => {
                 if (isSound) {
                     this.lastSoundShader = shader;
-                    return this.player.command('LOAD_SOUND_SHADER', shader);
+                    return this.player.command({
+                        type: 'LOAD_SOUND_SHADER',
+                        shader,
+                    });
                 } else {
                     this.lastShader = passes;
-                    return this.player.command('LOAD_SHADER', passes);
+                    return this.player.command({
+                        type: 'LOAD_SHADER',
+                        shader: passes,
+                    });
                 }
             })
             .catch(e => {
@@ -351,7 +362,7 @@ export default class App {
     }
 
     toggleFullscreen(): void {
-        this.player.command('TOGGLE_FULLSCREEN');
+        this.player.command({ type: 'TOGGLE_FULLSCREEN' });
     }
 
     async startRecording(): Promise<void> {
@@ -364,13 +375,13 @@ export default class App {
         const height = canvas.offsetHeight;
         const dst = this.config.projectPath;
 
-        this.player.command('START_RECORDING');
+        this.player.command({ type: 'START_RECORDING' });
         this.recorder.start(canvas, fps, width, height, dst);
     }
 
     async stopRecording(): Promise<void> {
         this.recorder.stop();
-        this.player.command('STOP_RECORDING');
+        this.player.command({ type: 'STOP_RECORDING' });
     }
 
     setRecordingMode(mode: RecordingMode): void {

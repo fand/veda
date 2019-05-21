@@ -29,6 +29,17 @@
         socket.on('command', (msg: any) => {
             socket.broadcast.emit('command', msg);
         });
+        socket.on('query', (msg: any, callback: any) => {
+            const socketIds = Object.keys(io.sockets.sockets).filter(
+                socketId => socketId !== socket.id,
+            );
+
+            if (socketIds.length !== 1) {
+                return callback('[VEDA] A unique browser should be open.');
+            }
+
+            io.sockets.sockets[socketIds[0]].emit('query', msg, callback);
+        });
     });
 
     server.listen(PORT, () => {

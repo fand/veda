@@ -47,19 +47,71 @@ export interface IOscData {
     data: number[];
 }
 
-export type CommandType =
-    | 'PLAY'
-    | 'STOP'
-    | 'LOAD_SHADER'
-    | 'PLAY_SOUND'
-    | 'STOP_SOUND'
-    | 'LOAD_SOUND_SHADER'
-    | 'SET_OSC'
-    | 'START_RECORDING'
-    | 'STOP_RECORDING'
-    | 'TOGGLE_FULLSCREEN';
-export type CommandData = void | IShader | string | IOscData;
-export interface ICommand {
-    type: CommandType;
-    data: CommandData;
+export interface ILoadShaderCommand {
+    type: 'LOAD_SHADER';
+    shader: IShader;
 }
+
+export interface ILoadSoundShaderCommand {
+    type: 'LOAD_SOUND_SHADER';
+    shader: string;
+}
+
+export interface IPlayCommand {
+    type: 'PLAY';
+}
+
+export interface IPlaySoundCommand {
+    type: 'PLAY_SOUND';
+}
+
+export interface ISetOscCommand {
+    type: 'SET_OSC';
+    data: IOscData;
+}
+
+export interface IStartRecordingCommand {
+    type: 'START_RECORDING';
+}
+
+export interface IStopCommand {
+    type: 'STOP';
+}
+
+export interface IStopRecordingCommand {
+    type: 'STOP_RECORDING';
+}
+
+export interface IStopSoundCommand {
+    type: 'STOP_SOUND';
+}
+
+export interface IToggleFullscreenCommand {
+    type: 'TOGGLE_FULLSCREEN';
+}
+
+export type Command =
+    | ILoadShaderCommand
+    | ILoadSoundShaderCommand
+    | IPlayCommand
+    | IPlaySoundCommand
+    | ISetOscCommand
+    | IStartRecordingCommand
+    | IStopCommand
+    | IStopRecordingCommand
+    | IStopSoundCommand
+    | IToggleFullscreenCommand;
+
+export interface IAudioInputsQuery {
+    type: 'AUDIO_INPUTS';
+}
+
+export interface ITimeQuery {
+    type: 'TIME';
+}
+
+export interface IVideoInputsQuery {
+    type: 'VIDEO_INPUTS';
+}
+
+export type Query = IAudioInputsQuery | ITimeQuery | IVideoInputsQuery;
