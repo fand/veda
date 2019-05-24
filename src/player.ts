@@ -2,8 +2,12 @@ import Veda from 'vedajs';
 import View from './view';
 import { IRc, IRcDiff } from './config';
 import { IPlayable } from './playable';
-import { IShader, IOscData, CommandType, CommandData } from './constants';
+import { IShader, IOscData, Command, Query } from './constants';
 import * as THREE from 'three';
+
+function assertNever(x: never): never {
+    throw new Error('Unexpected object: ' + x);
+}
 
 export default class Player implements IPlayable {
     private view: View;
@@ -107,30 +111,52 @@ export default class Player implements IPlayable {
         }
     };
 
-    command(type: CommandType, data: CommandData): void {
-        switch (type) {
+    command(command: Command): void {
+        switch (command.type) {
+            case 'LOAD_SHADER':
+                return this.loadShader(command.shader);
+            case 'LOAD_SOUND_SHADER':
+                return this.loadSoundShader(command.shader);
             case 'PLAY':
                 return this.play();
-            case 'STOP':
-                return this.stop();
-            case 'LOAD_SHADER':
-                return this.loadShader(data as IShader);
             case 'PLAY_SOUND':
                 return this.playSound();
-            case 'STOP_SOUND':
-                return this.stopSound();
-            case 'LOAD_SOUND_SHADER':
-                return this.loadSoundShader(data as string);
             case 'SET_OSC':
-                return this.setOsc(data as IOscData);
+                return this.setOsc(command.data);
             case 'START_RECORDING':
                 return this.startRecording();
+            case 'STOP':
+                return this.stop();
             case 'STOP_RECORDING':
                 return this.stopRecording();
+            case 'STOP_SOUND':
+                return this.stopSound();
             case 'TOGGLE_FULLSCREEN':
                 return this.toggleFullscreen();
             default:
-                console.error('>> Unsupported command', type, data);
+                assertNever(command);
+        }
+    }
+
+    query(query: Query): Promise<any> {
+        switch (query.type) {
+            case 'AUDIO_INPUTS':
+                return navigator.mediaDevices
+                    .enumerateDevices()
+                    .then(devices =>
+                        devices.filter(device => device.kind === 'audioinput'),
+                    );
+            case 'TIME':
+                return Promise.resolve(this.veda.getTime());
+            case 'VIDEO_INPUTS':
+                return navigator.mediaDevices
+                    .enumerateDevices()
+                    .then(devices =>
+                        devices.filter(device => device.kind === 'videoinput'),
+                    );
+            default:
+                assertNever(query);
+                return Promise.reject();
         }
     }
 
