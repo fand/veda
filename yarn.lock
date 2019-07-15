@@ -3260,10 +3260,10 @@ glslify-deps@^1.3.1:
     map-limit "0.0.1"
     resolve "^1.0.0"
 
-glslify-lite@^0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/glslify-lite/-/glslify-lite-0.0.6.tgz#c476fa6f4255669f0c8b9b8210e64f337c77e328"
-  integrity sha512-EBGgfLru6H2dUMmn0eXksQlJx1bJ2CL9ezYSR+f8K8PTz5mBBuxOxA4PvDLUVTfdtcGJR9mHTfIQFRUUT/WnFQ==
+glslify-lite@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/glslify-lite/-/glslify-lite-0.0.7.tgz#48008169d02b79aa0994b297e13ca4b091448522"
+  integrity sha512-V/WQZEPNkqeYevY8+HVSPSMkprTGMj0VvTXghxSV/QgsspzJBkOki0/OsNFi02p2sAuYM+xU8JJRnwlpajGMEw==
   dependencies:
     convert-source-map "^1.6.0"
     get-stdin "^7.0.0"

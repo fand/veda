@@ -18,7 +18,7 @@
     "execa": "^1.0.0",
     "express": "^4.16.4",
     "ffmpeg-static": "^2.4.0",
-    "glslify-lite": "^0.0.6",
+    "glslify-lite": "^0.0.7",
     "is-relative": "^1.0.0",
     "json5": "^2.1.0",
     "lodash": "^4.17.11",
