@@ -3,7 +3,7 @@ import * as path from 'path';
 import View from './view';
 import { validator, loadFile } from './validator';
 import { IShader, ISoundShader, IOscData } from './constants';
-import Config, { IRc, IRcDiff } from './config';
+import Config, { IRcDiff } from './config';
 import { IPlayable } from './playable';
 import Player from './player';
 import PlayerServer from './player-server';
@@ -273,7 +273,7 @@ export default class App {
         );
     }
 
-    private loadShaderOfEditor(
+    private async loadShaderOfEditor(
         editor?: TextEditor,
         isSound?: boolean,
     ): Promise<void> {
@@ -297,71 +297,63 @@ export default class App {
 
         let shader = editor.getText();
 
-        let rc: IRc;
-        return Promise.resolve()
-            .then(() => {
-                const headComment = (shader.match(
-                    /(?:\/\*)((?:.|\n|\r|\n\r)*?)(?:\*\/)/,
-                ) || [])[1];
+        try {
+            // Detect changes of settings
+            const headComment = (shader.match(
+                /(?:\/\*)((?:.|\n|\r|\n\r)*?)(?:\*\/)/,
+            ) || [])[1];
 
-                let diff;
-                if (isSound) {
-                    diff = this.config.setSoundSettingsByString(
-                        filepath,
-                        headComment,
-                    );
-                } else {
-                    diff = this.config.setFileSettingsByString(
-                        filepath,
-                        headComment,
-                    );
-                }
+            let diff;
+            if (isSound) {
+                diff = this.config.setSoundSettingsByString(
+                    filepath,
+                    headComment,
+                );
+            } else {
+                diff = this.config.setFileSettingsByString(
+                    filepath,
+                    headComment,
+                );
+            }
+            const rc = diff.newConfig;
+            this.onAnyChanges(diff);
+            this.player.onChange(diff);
 
-                rc = diff.newConfig;
-                this.onAnyChanges(diff);
-                return this.player.onChange(diff);
-            })
-            .then(() => {
-                if (rc.glslify) {
-                    return glslify
-                        .compile(shader, {
-                            basedir: path.dirname(filepath),
-                        })
-                        .then(s => {
-                            shader = s;
-                        });
-                }
-                return;
-            })
-            .then(() => {
-                if (!isSound) {
-                    return validator(
-                        this.glslangValidatorPath,
-                        shader,
-                        postfix,
-                    );
-                }
-                return;
-            })
-            .then(() => this.createPasses(rc.PASSES, shader, postfix, dirname))
-            .then(passes => {
-                if (isSound) {
-                    this.lastSoundShader = shader;
-                    return this.player.command({
-                        type: 'LOAD_SOUND_SHADER',
-                        shader,
-                    });
-                } else {
-                    this.lastShader = passes;
-                    return this.player.command({
-                        type: 'LOAD_SHADER',
-                        shader: passes,
-                    });
-                }
-            })
-            .catch(e => {
-                console.error(e);
-            });
+            // Compile the shader with glslify-lite
+            if (rc.glslify) {
+                shader = await glslify.compile(shader, {
+                    basedir: path.dirname(filepath),
+                });
+            }
+
+            // Validate compiled shader
+            if (!isSound) {
+                await validator(this.glslangValidatorPath, shader, postfix);
+            }
+
+            const passes = await this.createPasses(
+                rc.PASSES,
+                shader,
+                postfix,
+                dirname,
+            );
+
+            if (isSound) {
+                this.lastSoundShader = shader;
+                return this.player.command({
+                    type: 'LOAD_SOUND_SHADER',
+                    shader,
+                });
+            } else {
+                this.lastShader = passes;
+                return this.player.command({
+                    type: 'LOAD_SHADER',
+                    shader: passes,
+                });
+            }
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     toggleFullscreen(): void {
