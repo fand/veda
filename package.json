@@ -69,7 +69,7 @@
   },
   "scripts": {
     "ci": "run-p lint test build",
-    "test": "ava test --verbose",
+    "test": "ava --verbose",
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
     "dev": "run-s watch",
     "build": "run-p build:ts build:client",
@@ -95,18 +95,6 @@
     "hooks": {
       "pre-commit": "lint-staged",
       "pre-publish": "npm run ci"
-    }
-  },
-  "ava": {
-    "require": [
-      "@babel/polyfill"
-    ],
-    "babel": {
-      "testOptions": {
-        "presets": [
-          "@babel/preset-env"
-        ]
-      }
     }
   }
 }
