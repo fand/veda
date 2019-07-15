@@ -11,8 +11,7 @@ import { INITIAL_SHADER, INITIAL_SOUND_SHADER } from './constants';
 import OscLoader from './osc-loader';
 import Recorder, { RecordingMode } from './recorder';
 
-const glslify = require('glslify');
-const glslifyImport = require('glslify-import');
+import * as glslify from 'glslify-lite';
 
 interface IAppState {
     isPlaying: boolean;
@@ -324,11 +323,15 @@ export default class App {
             })
             .then(() => {
                 if (rc.glslify) {
-                    shader = glslify(shader, {
-                        basedir: path.dirname(filepath),
-                        transform: [glslifyImport],
-                    });
+                    return glslify
+                        .compile(shader, {
+                            basedir: path.dirname(filepath),
+                        })
+                        .then(s => {
+                            shader = s;
+                        });
                 }
+                return;
             })
             .then(() => {
                 if (!isSound) {
