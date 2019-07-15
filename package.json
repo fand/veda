@@ -78,8 +78,6 @@
     "watch": "run-p watch:ts watch:client",
     "watch:ts": "tsc -w",
     "watch:client": "webpack -w --mode development",
-    "prepublish": "npm run ci",
-    "precommit": "lint-staged",
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate"
   },
@@ -92,6 +90,12 @@
       "prettier --write",
       "git add"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-publish": "npm run ci"
+    }
   },
   "ava": {
     "require": [
