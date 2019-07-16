@@ -1,4 +1,4 @@
-import { IVedaStatus } from './constants';
+import { VedaStatus } from './constants';
 import Wrapper from './wrapper';
 
 let wrapper: Wrapper | null = null;
@@ -88,17 +88,17 @@ module.exports = {
         },
     },
 
-    activate(state: IVedaStatus) {
+    activate(state: VedaStatus): void {
         require('atom-package-deps')
             .install('veda')
-            .then(() => this._activate(state));
+            .then((): void => this._activate(state));
     },
 
-    _activate(state: IVedaStatus) {
+    _activate(state: VedaStatus): void {
         wrapper = new Wrapper(state);
     },
 
-    deactivate() {
+    deactivate(): void {
         wrapper && wrapper.destroy();
     },
 };

@@ -5,24 +5,24 @@ import * as JSON5 from 'json5';
 import * as p from 'pify';
 import { throttle } from 'lodash';
 
-interface IImported {
+interface Imported {
     PATH: string;
     SPEED?: number;
 }
 
-export interface IImportedHash {
-    [key: string]: IImported;
+export interface ImportedHash {
+    [key: string]: Imported;
 }
 
-export interface IRcPassModel {
+export interface RcPassModel {
     PATH: string;
     MATERIAL?: string;
 }
 
 export type BlendMode = 'NO' | 'NORMAL' | 'ADD' | 'SUB' | 'MUL';
 
-export interface IRcPass {
-    MODEL?: IRcPassModel;
+export interface RcPass {
+    MODEL?: RcPassModel;
     TARGET?: string;
     vs?: string;
     fs?: string;
@@ -30,10 +30,10 @@ export interface IRcPass {
     BLEND?: BlendMode;
 }
 
-export interface IRc {
+export interface Rc {
     glslangValidatorPath: string;
-    IMPORTED: IImportedHash;
-    PASSES: IRcPass[];
+    IMPORTED: ImportedHash;
+    PASSES: RcPass[];
     pixelRatio: number;
     frameskip: number;
     vertexMode: string;
@@ -51,7 +51,7 @@ export interface IRc {
     soundLength: number;
 }
 
-interface IRcFragmentWithoutImported {
+interface RcFragmentWithoutImported {
     glslangValidatorPath?: string;
     pixelRatio?: number;
     frameskip?: number;
@@ -70,20 +70,25 @@ interface IRcFragmentWithoutImported {
     soundLength?: number;
 }
 
-interface IRcFragment extends IRcFragmentWithoutImported {
-    IMPORTED?: IImportedHash;
-    PASSES?: IRcPass[];
+interface RcFragment extends RcFragmentWithoutImported {
+    IMPORTED?: ImportedHash;
+    PASSES?: RcPass[];
 }
 
-interface IRcDiffFragment extends IRcFragmentWithoutImported {
-    IMPORTED: IImportedHash;
-    PASSES?: IRcPass[];
+interface RcDiffFragment extends RcFragmentWithoutImported {
+    IMPORTED: ImportedHash;
+    PASSES?: RcPass[];
 }
 
-export interface IRcDiff {
-    newConfig: IRc;
-    added: IRcDiffFragment;
-    removed: IRcDiffFragment;
+export interface RcDiff {
+    newConfig: Rc;
+    added: RcDiffFragment;
+    removed: RcDiffFragment;
+}
+
+interface FileData {
+    filename: string;
+    data: string;
 }
 
 const DEFAULT_RC = {
@@ -116,15 +121,15 @@ function resolvePath(val: string, projectPath: string): string {
 
 function parseImported(
     projectPath: string,
-    importedHash?: IImportedHash,
-): IImportedHash | null {
+    importedHash?: ImportedHash,
+): ImportedHash | null {
     if (!importedHash) {
         return null;
     }
-    const newImportedHash: IImportedHash = {};
+    const newImportedHash: ImportedHash = {};
 
-    Object.keys(importedHash).forEach(key => {
-        const imported = (importedHash as any)[key];
+    Object.keys(importedHash).forEach((key): void => {
+        const imported = importedHash[key];
         if (!imported || !imported.PATH) {
             return;
         }
@@ -143,16 +148,21 @@ function parseImported(
     return newImportedHash;
 }
 
-function fixPath(projectPath: string, rc: IRcFragment): IRcFragment {
-    const PASSES = (rc.PASSES || []).map(pass => {
-        if (pass.MODEL && pass.MODEL.PATH) {
-            pass.MODEL.PATH = resolvePath(pass.MODEL.PATH, projectPath);
-        }
-        if (pass.MODEL && pass.MODEL.MATERIAL) {
-            pass.MODEL.MATERIAL = resolvePath(pass.MODEL.MATERIAL, projectPath);
-        }
-        return pass;
-    });
+function fixPath(projectPath: string, rc: RcFragment): RcFragment {
+    const PASSES = (rc.PASSES || []).map(
+        (pass): RcPass => {
+            if (pass.MODEL && pass.MODEL.PATH) {
+                pass.MODEL.PATH = resolvePath(pass.MODEL.PATH, projectPath);
+            }
+            if (pass.MODEL && pass.MODEL.MATERIAL) {
+                pass.MODEL.MATERIAL = resolvePath(
+                    pass.MODEL.MATERIAL,
+                    projectPath,
+                );
+            }
+            return pass;
+        },
+    );
 
     return {
         ...rc,
@@ -162,17 +172,17 @@ function fixPath(projectPath: string, rc: IRcFragment): IRcFragment {
 }
 
 export default class Config extends EventEmitter {
-    rc: IRc;
-    soundRc: IRc;
-    projectPath: string;
+    public rc: Rc;
+    public soundRc: Rc;
+    public projectPath: string;
 
-    private globalRc: IRcFragment = {};
-    private projectRc: IRcFragment = {};
-    private fileRc: IRcFragment = {};
-    private soundFileRc: IRcFragment = {};
+    private globalRc: RcFragment = {};
+    private projectRc: RcFragment = {};
+    private fileRc: RcFragment = {};
+    private soundFileRc: RcFragment = {};
     private isWatching: boolean = false;
 
-    constructor(projectPath: string, rc: IRcFragment) {
+    public constructor(projectPath: string, rc: RcFragment) {
         super();
 
         this.rc = DEFAULT_RC;
@@ -181,7 +191,7 @@ export default class Config extends EventEmitter {
 
         this.projectPath = projectPath;
         if (projectPath) {
-            fs.watch(projectPath, (_, filename) => {
+            fs.watch(projectPath, (_, filename): void => {
                 if (filename === '.liverc' || filename === '.vedarc') {
                     this.load();
                 }
@@ -189,39 +199,41 @@ export default class Config extends EventEmitter {
         }
     }
 
-    play(): void {
+    public play(): void {
         this.isWatching = true;
         this.load();
     }
 
-    stop(): void {
+    public stop(): void {
         this.isWatching = false;
         this.rc = DEFAULT_RC;
         this.soundRc = DEFAULT_RC;
     }
 
-    private readConfigFile = (filename: string) => {
+    private readConfigFile = (filename: string): Promise<FileData> => {
         return p(fs.readFile)(
             path.resolve(this.projectPath, filename),
             'utf8',
-        ).then((data: IRcFragment) => ({ filename, data }));
+        ).then((data: string): FileData => ({ filename, data }));
     };
 
-    load = (): Promise<void> | null => {
+    private load = (): Promise<void> | null => {
         if (!this.isWatching) {
             return null;
         }
 
         // Load .liverc or .vedarc
         return this.readConfigFile('.liverc')
-            .then(d => {
-                console.log(
-                    '[VEDA] `.liverc` is deprecated. Use `.vedarc` instead.',
-                );
-                return d;
-            })
-            .catch(() => this.readConfigFile('.vedarc'))
-            .then(({ filename, data }: any) => {
+            .then(
+                (d): FileData => {
+                    console.log(
+                        '[VEDA] `.liverc` is deprecated. Use `.vedarc` instead.',
+                    );
+                    return d;
+                },
+            )
+            .catch((): Promise<FileData> => this.readConfigFile('.vedarc'))
+            .then(({ filename, data }: FileData): void => {
                 try {
                     const rc = fixPath(this.projectPath, JSON5.parse(data));
                     this.setProjectSettings(rc);
@@ -229,13 +241,13 @@ export default class Config extends EventEmitter {
                     console.log('[VEDA] Failed to parse rc file:', filename);
                 }
             })
-            .catch(() => {
+            .catch((): void => {
                 console.log('[VEDA] config file not found');
             });
     };
 
-    createRc(): IRc {
-        const IMPORTED: IImportedHash = {
+    public createRc(): Rc {
+        const IMPORTED: ImportedHash = {
             ...this.projectRc.IMPORTED,
             ...this.fileRc.IMPORTED,
         };
@@ -249,8 +261,8 @@ export default class Config extends EventEmitter {
         };
     }
 
-    createSoundRc(): IRc {
-        const IMPORTED: IImportedHash = {
+    public createSoundRc(): Rc {
+        const IMPORTED: ImportedHash = {
             ...this.projectRc.IMPORTED,
             ...this.soundFileRc.IMPORTED,
         };
@@ -264,19 +276,19 @@ export default class Config extends EventEmitter {
         };
     }
 
-    setGlobalSettings(rc: IRcFragment) {
+    public setGlobalSettings(rc: RcFragment): void {
         // _globalRc must be extended everytime,
         // because setGlobalSettings can be called for properties one by one.
         this.globalRc = { ...this.globalRc, ...rc };
         this.onChange();
     }
 
-    setProjectSettings(rc: IRcFragment) {
+    public setProjectSettings(rc: RcFragment): void {
         this.projectRc = rc;
         this.onChange();
     }
 
-    setFileSettings(rc: IRcFragment): IRcDiff {
+    public setFileSettings(rc: RcFragment): RcDiff {
         this.fileRc = rc;
         const newRc = this.createRc();
         const diff = this.getDiff(this.rc, newRc);
@@ -284,7 +296,7 @@ export default class Config extends EventEmitter {
         return diff;
     }
 
-    setSoundSettings(rc: IRcFragment): IRcDiff {
+    public setSoundSettings(rc: RcFragment): RcDiff {
         this.soundFileRc = rc;
         const newRc = this.createSoundRc();
         const diff = this.getDiff(this.soundRc, newRc);
@@ -292,33 +304,35 @@ export default class Config extends EventEmitter {
         return diff;
     }
 
-    private parseComment(filepath: string, comment: string): IRcFragment {
-        let rc: IRcFragment = {};
+    private parseComment(filepath: string, comment: string): RcFragment {
+        let rc: RcFragment = {};
         try {
             rc = JSON5.parse(comment);
-        } catch (e) {}
+        } catch (e) {
+            console.error('Failed to parse comment:', e);
+        }
 
         rc = fixPath(path.dirname(filepath), rc);
 
         return rc;
     }
 
-    setFileSettingsByString(filepath: string, comment: string): IRcDiff {
+    public setFileSettingsByString(filepath: string, comment: string): RcDiff {
         return this.setFileSettings(this.parseComment(filepath, comment));
     }
 
-    setSoundSettingsByString(filepath: string, comment: string): IRcDiff {
+    public setSoundSettingsByString(filepath: string, comment: string): RcDiff {
         return this.setSoundSettings(this.parseComment(filepath, comment));
     }
 
-    onChange = throttle(() => {
+    private onChange = throttle((): void => {
         const newRc = this.createRc();
         this.emit('change', this.getDiff(this.rc, newRc));
         this.rc = newRc;
     }, 100);
 
-    private getDiff(oldObj: IRc, newObj: IRc) {
-        const diff: IRcDiff = {
+    private getDiff(oldObj: Rc, newObj: Rc): RcDiff {
+        const diff: RcDiff = {
             newConfig: newObj,
             added: { IMPORTED: {} },
             removed: { IMPORTED: {} },
@@ -328,7 +342,7 @@ export default class Config extends EventEmitter {
         const newIMPORTED = newObj.IMPORTED;
         const oldIMPORTED = oldObj.IMPORTED;
 
-        Object.keys(newIMPORTED).forEach(key => {
+        Object.keys(newIMPORTED).forEach((key): void => {
             const newImport = newIMPORTED[key] || {};
             const oldImport = oldIMPORTED[key] || {};
             if (

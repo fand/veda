@@ -1,26 +1,26 @@
 import Veda from 'vedajs';
 import View from './view';
-import { IRc, IRcDiff } from './config';
-import { IPlayable } from './playable';
-import { IShader, IOscData, Command, Query } from './constants';
+import { Rc, RcDiff } from './config';
+import { Playable } from './playable';
+import { Shader, OscData, Command, Query } from './constants';
 import * as THREE from 'three';
 
 function assertNever(x: never): never {
     throw new Error('Unexpected object: ' + x);
 }
 
-export default class Player implements IPlayable {
+export default class Player implements Playable {
     private view: View;
     private veda: Veda;
     private textures: { [name: string]: THREE.DataTexture } = {};
 
-    constructor(view: View, rc: IRc, isPlaying: boolean, shader: IShader) {
+    public constructor(view: View, rc: Rc, isPlaying: boolean, shader: Shader) {
         this.view = view;
-        this.veda = new Veda({ ...rc } as any);
+        this.veda = new Veda({ ...rc } as any); // eslint-disable-line
         this.veda.setCanvas(this.view.getCanvas());
         window.addEventListener('resize', this.resize);
 
-        Object.keys(rc.IMPORTED || {}).forEach(key => {
+        Object.keys(rc.IMPORTED || {}).forEach((key): void => {
             this.veda.loadTexture(
                 key,
                 rc.IMPORTED[key].PATH,
@@ -41,30 +41,30 @@ export default class Player implements IPlayable {
         }
     }
 
-    destroy(): void {
+    public destroy(): void {
         this.veda.stop();
         this.veda.stopSound();
         window.addEventListener('resize', this.resize);
         this.view.destroy();
     }
 
-    private resize = () => {
+    private resize = (): void => {
         this.veda.resize(window.innerWidth, window.innerHeight);
     };
 
-    onChange = ({ newConfig, added, removed }: IRcDiff) => {
+    public onChange = ({ newConfig, added, removed }: RcDiff): void => {
         console.log('Update config', newConfig);
         // Get paths for videos still in use
         const importedPaths: { [path: string]: boolean } = {};
-        Object.values(newConfig.IMPORTED).forEach(imported => {
+        Object.values(newConfig.IMPORTED).forEach((imported): void => {
             importedPaths[imported.PATH] = true;
         });
 
-        Object.keys(removed.IMPORTED).forEach(key => {
+        Object.keys(removed.IMPORTED).forEach((key): void => {
             const path = removed.IMPORTED[key].PATH;
             this.veda.unloadTexture(key, path, !importedPaths[path]);
         });
-        Object.keys(added.IMPORTED || {}).forEach(key => {
+        Object.keys(added.IMPORTED || {}).forEach((key): void => {
             this.veda.loadTexture(
                 key,
                 added.IMPORTED[key].PATH,
@@ -111,7 +111,7 @@ export default class Player implements IPlayable {
         }
     };
 
-    command(command: Command): void {
+    public command(command: Command): void {
         switch (command.type) {
             case 'LOAD_SHADER':
                 return this.loadShader(command.shader);
@@ -138,21 +138,26 @@ export default class Player implements IPlayable {
         }
     }
 
-    query(query: Query): Promise<any> {
+    // eslint-disable-next-line
+    public query(query: Query): Promise<any> {
         switch (query.type) {
             case 'AUDIO_INPUTS':
                 return navigator.mediaDevices
                     .enumerateDevices()
-                    .then(devices =>
-                        devices.filter(device => device.kind === 'audioinput'),
+                    .then((devices): MediaDeviceInfo[] =>
+                        devices.filter(
+                            (device): boolean => device.kind === 'audioinput',
+                        ),
                     );
             case 'TIME':
                 return Promise.resolve(this.veda.getTime());
             case 'VIDEO_INPUTS':
                 return navigator.mediaDevices
                     .enumerateDevices()
-                    .then(devices =>
-                        devices.filter(device => device.kind === 'videoinput'),
+                    .then((devices): MediaDeviceInfo[] =>
+                        devices.filter(
+                            (device): boolean => device.kind === 'videoinput',
+                        ),
                     );
             default:
                 assertNever(query);
@@ -170,7 +175,7 @@ export default class Player implements IPlayable {
         this.veda.stop();
     }
 
-    private loadShader(shader: IShader): void {
+    private loadShader(shader: Shader): void {
         console.log('[VEDA] Updated shader', shader);
         this.veda.loadShader(shader);
     }
@@ -187,7 +192,7 @@ export default class Player implements IPlayable {
         this.veda.stopSound();
     }
 
-    private setOsc(oscData: IOscData): void {
+    private setOsc(oscData: OscData): void {
         const { name, data } = oscData;
 
         const texture = this.textures[name];
@@ -207,7 +212,7 @@ export default class Player implements IPlayable {
             this.textures[name] = newTexture;
             this.veda.setUniform(name, 't', newTexture);
         } else {
-            data.forEach((d, i) => {
+            data.forEach((d, i): void => {
                 texture.image.data[i] = d;
             });
             texture.needsUpdate = true;

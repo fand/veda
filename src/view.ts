@@ -4,7 +4,7 @@ export default class View {
     private canvas: HTMLCanvasElement;
     private isFullscreen = false;
 
-    constructor(wrapper: HTMLElement) {
+    public constructor(wrapper: HTMLElement) {
         this.wrapper = wrapper;
 
         this.element = document.createElement('div');
@@ -16,23 +16,23 @@ export default class View {
         this.wrapper.appendChild(this.element);
     }
 
-    destroy(): void {
+    public destroy(): void {
         this.element.remove();
     }
 
-    getCanvas(): HTMLCanvasElement {
+    public getCanvas(): HTMLCanvasElement {
         return this.canvas;
     }
 
-    show(): void {
+    public show(): void {
         document.body.classList.add('veda-enabled');
     }
 
-    hide(): void {
+    public hide(): void {
         document.body.classList.remove('veda-enabled');
     }
 
-    toggleFullscreen(): void {
+    public toggleFullscreen(): void {
         this.isFullscreen = !this.isFullscreen;
         if (this.isFullscreen) {
             document.body.classList.add('veda-fullscreen');

@@ -4,8 +4,8 @@ import * as p from 'pify';
 import { exec } from 'child_process';
 import * as mkdirp from 'mkdirp';
 
-const ffmpeg = require('ffmpeg-static');
-const shell = require('shell');
+import ffmpeg = require('ffmpeg-static');
+import shell = require('shell');
 
 export type RecordingMode = 'mp4' | 'gif';
 
@@ -21,17 +21,17 @@ export default class Recorder {
     private width: number = 1920;
     private height: number = 1080;
 
-    setMode(mode: RecordingMode) {
+    public setMode(mode: RecordingMode): void {
         this.mode = mode;
     }
 
-    async start(
+    public async start(
         canvas: HTMLCanvasElement,
         fps: number,
         width: number,
         height: number,
         dst: string,
-    ) {
+    ): Promise<void> {
         // Reset state
         this.isRecording = true;
         this.recordingFrames = 0;
@@ -59,7 +59,7 @@ export default class Recorder {
         let frame = -1;
         const frameskip = 60 / this.fps;
 
-        const capture = async () => {
+        const capture = async (): Promise<void> => {
             if (!this.isRecording) {
                 return;
             }
@@ -92,13 +92,13 @@ export default class Recorder {
         capture();
     }
 
-    async stop() {
+    public async stop(): Promise<void> {
         if (!this.isRecording) {
             return;
         }
         this.isRecording = false;
 
-        const timer = setInterval(async () => {
+        const timer = setInterval(async (): Promise<void> => {
             if (this.recordingFrames !== this.recordedFrames) {
                 return;
             }
@@ -107,7 +107,7 @@ export default class Recorder {
         }, 300);
     }
 
-    private async finalize() {
+    private async finalize(): Promise<void> {
         const basename = `veda-${Date.now()}.${this.mode}`;
         const dst = path.resolve(this.recordDir, basename);
 
@@ -124,7 +124,7 @@ export default class Recorder {
         shell.showItemInFolder(dst);
     }
 
-    private async convertToMp4(dst: string) {
+    private async convertToMp4(dst: string): Promise<void> {
         const capturedFilesPath = path.resolve(this.framesDir, 'veda-%5d.png');
 
         await p(exec)(
@@ -140,7 +140,7 @@ export default class Recorder {
         );
     }
 
-    private async convertToGif(dst: string) {
+    private async convertToGif(dst: string): Promise<void> {
         const capturedFilesPath = path.resolve(this.framesDir, 'veda-%5d.png');
         const palettePath = path.resolve(this.recordDir, 'palette.png');
         const filters = `fps=${this.fps},scale=${this.width}:${this.height}:flags=lanczos,pad=ceil(iw/2)*2:ceil(ih/2)*2`;
@@ -165,7 +165,7 @@ export default class Recorder {
         );
     }
 
-    setRecordingMode(mode: RecordingMode) {
+    public setRecordingMode(mode: RecordingMode): void {
         if (mode === 'mp4' || mode === 'gif') {
             this.mode = mode;
         }

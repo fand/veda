@@ -1,34 +1,28 @@
 #!/usr/bin/env node
-
-interface IOscArgs {
-    value: string;
-}
-
-interface IOsc {
-    oscType: 'bundle' | 'message';
-    elements: IOsc[];
-    args: IOscArgs[];
-}
+import dgram = require('dgram');
+import osc = require('osc-min');
 
 // Parse message recursively and print messages
-function printMessage(msg: IOsc) {
+function printMessage(msg: osc.OscMessage): void {
     if (msg.oscType === 'bundle') {
         msg.elements.forEach(printMessage);
     } else {
-        msg.args = msg.args.map((a: any) => a.value);
-        console.log(JSON.stringify(msg));
+        const msgToShow = {
+            ...msg,
+            args: msg.args.map((a): osc.OscValue => a.value),
+        };
+        console.log(JSON.stringify(msgToShow));
     }
 }
 
 {
-    const PORT = process.argv[2] || 57121;
-
-    const dgram = require('dgram');
-    const osc = require('osc-min');
-    const sock = dgram.createSocket('udp4', (buf: any) => {
+    const PORT = parseInt(process.argv[2]) || 57121;
+    const sock = dgram.createSocket('udp4', (buf: Buffer): void => {
         try {
             printMessage(osc.fromBuffer(buf));
-        } catch (e) {}
+        } catch (e) {
+            console.error(e);
+        }
     });
     sock.bind(PORT);
 }
