@@ -143,9 +143,7 @@ export default class Recorder {
     private async convertToGif(dst: string) {
         const capturedFilesPath = path.resolve(this.framesDir, 'veda-%5d.png');
         const palettePath = path.resolve(this.recordDir, 'palette.png');
-        const filters = `fps=${this.fps},scale=${this.width}:${
-            this.height
-        }:flags=lanczos,pad=ceil(iw/2)*2:ceil(ih/2)*2`;
+        const filters = `fps=${this.fps},scale=${this.width}:${this.height}:flags=lanczos,pad=ceil(iw/2)*2:ceil(ih/2)*2`;
 
         await p(exec)(
             [
