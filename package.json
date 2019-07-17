@@ -36,7 +36,7 @@
   },
   "package-deps": [
     "language-glsl",
-    "linter-glsl",
+    "linter-glslify",
     "autocomplete-glsl"
   ],
   "devDependencies": {
