@@ -133,8 +133,12 @@ export default class Wrapper {
     }
 
     private setGlslangValidatorPath(glslangValidatorPath: string): void {
-        const result = this.checkExistence(glslangValidatorPath);
+        // Do nothins if empty
+        if (!glslangValidatorPath) {
+            return;
+        }
 
+        const result = this.checkExistence(glslangValidatorPath);
         if (result) {
             this.hideError();
             this.config.setGlobalSettings({ glslangValidatorPath: result });

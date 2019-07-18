@@ -92,7 +92,7 @@ interface FileData {
 }
 
 const DEFAULT_RC = {
-    glslangValidatorPath: 'glslangValidator',
+    glslangValidatorPath: '',
     IMPORTED: {},
     PASSES: [],
     pixelRatio: 2,

@@ -10,8 +10,8 @@ import PlayerServer from './player-server';
 import { INITIAL_SHADER, INITIAL_SOUND_SHADER } from './constants';
 import OscLoader from './osc-loader';
 import Recorder, { RecordingMode } from './recorder';
-
 import * as glslify from 'glslify-lite';
+import * as prebuilt from 'glslang-validator-prebuilt';
 
 interface AppState {
     isPlaying: boolean;
@@ -24,7 +24,7 @@ export default class App {
     private player: Playable;
     private view: View | null = null;
     private state: AppState;
-    private glslangValidatorPath: string;
+    private glslangValidatorPath: string = prebuilt.path;
     private lastShader: Shader = INITIAL_SHADER;
     private lastSoundShader: SoundShader = INITIAL_SOUND_SHADER;
     private osc: OscLoader | null = null;
@@ -39,8 +39,6 @@ export default class App {
 
         this.config = config;
         this.config.on('change', this.onChange);
-
-        this.glslangValidatorPath = rc.glslangValidatorPath;
 
         this.state = {
             isPlaying: false,

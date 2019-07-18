@@ -6,12 +6,11 @@ let wrapper: Wrapper | null = null;
 module.exports = {
     config: {
         glslangValidatorPath: {
-            title: 'glslangValidator path',
-            description: `
-                VEDA uses glslangValidator. Install it from https://github.com/KhronosGroup/glslang or homebrew.
-            `.trim(),
+            title: 'Custom glslangValidator path (optional)',
+            description:
+                'VEDA uses prebuilt glslangValidator by default. Specify custom path if you want.',
             type: 'string',
-            default: 'glslangValidator',
+            default: '',
             order: 1,
         },
         pixelRatio: {
