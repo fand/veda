@@ -18,6 +18,7 @@
     "execa": "1.0.0",
     "express": "^4.17.1",
     "ffmpeg-static": "^2.5.0",
+    "glslang-validator-prebuilt": "^0.0.2",
     "glslify-lite": "^0.0.7",
     "is-relative": "^1.0.0",
     "json5": "^2.1.0",
