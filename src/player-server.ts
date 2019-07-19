@@ -3,25 +3,25 @@ import { spawn } from 'child_process';
 import * as io from 'socket.io-client';
 import { cloneDeep } from 'lodash';
 import { ChildProcess } from 'child_process';
-import { IRc, IRcDiff, IImportedHash } from './config';
-import { IPlayable } from './playable';
-import { IShader, Command, Query } from './constants';
+import { Rc, RcDiff, ImportedHash } from './config';
+import { Playable } from './playable';
+import { Shader, Command, Query, QueryResult } from './constants';
 import { convertPathForServer } from './utils';
 
-interface IPlayerState {
-    rc: IRc;
+interface PlayerState {
+    rc: Rc;
     isPlaying: boolean;
     projectPath: string;
-    lastShader: IShader;
+    lastShader: Shader;
 }
 
-export default class PlayerServer implements IPlayable {
+export default class PlayerServer implements Playable {
     private port: number;
-    private state: IPlayerState;
-    private io: any;
+    private state: PlayerState;
+    private io: SocketIOClient.Socket;
     private server: ChildProcess;
 
-    constructor(port: number, state: IPlayerState) {
+    public constructor(port: number, state: PlayerState) {
         this.port = port;
         this.state = state;
         this.server = spawn(
@@ -35,18 +35,22 @@ export default class PlayerServer implements IPlayable {
                 cwd: path.resolve(__dirname, '..'),
             },
         );
-        this.server.stdout!.on('data', this.stdout);
-        this.server.stderr!.on('data', this.stderr);
+        if (this.server.stdout) {
+            this.server.stdout.on('data', this.stdout);
+        }
+        if (this.server.stderr) {
+            this.server.stderr.on('data', this.stderr);
+        }
         this.server.on('exit', this.exit);
         this.io = io(`http://localhost:${port}`);
-        this.io.on('ready', () => {
+        this.io.on('ready', (): void => {
             const newState = cloneDeep(this.state);
             newState.rc.IMPORTED = this.convertPaths(newState.rc.IMPORTED);
             this.io.emit('create', newState);
         });
     }
 
-    destroy() {
+    public destroy(): void {
         this.io.emit('destroy');
         try {
             this.server.kill();
@@ -55,7 +59,7 @@ export default class PlayerServer implements IPlayable {
         }
     }
 
-    onChange(_rcDiff: IRcDiff): void {
+    public onChange(_rcDiff: RcDiff): void {
         const rcDiff = cloneDeep(_rcDiff);
 
         // Convert paths to URLs
@@ -68,7 +72,7 @@ export default class PlayerServer implements IPlayable {
         this.io.emit('onChange', rcDiff);
     }
 
-    command(command: Command) {
+    public command(command: Command): void {
         this.io.emit('command', command);
 
         // Do server specific stuffs
@@ -80,20 +84,25 @@ export default class PlayerServer implements IPlayable {
         }
     }
 
-    query(query: Query) {
-        return new Promise<any>((resolve, reject) => {
-            this.io.emit('query', query, (err: any, value?: any) => {
-                if (err) {
-                    return reject(err);
-                } else {
-                    return resolve(value);
-                }
-            });
+    // eslint-disable-next-line
+    public query(query: Query): Promise<any> {
+        return new Promise<QueryResult>((resolve, reject): void => {
+            this.io.emit(
+                'query',
+                query,
+                (err: Error, value?: QueryResult): void => {
+                    if (err) {
+                        return reject(err);
+                    } else {
+                        return resolve(value);
+                    }
+                },
+            );
         });
     }
 
-    private convertPaths(IMPORTED: IImportedHash) {
-        Object.keys(IMPORTED).forEach(key => {
+    private convertPaths(IMPORTED: ImportedHash): ImportedHash {
+        Object.keys(IMPORTED).forEach((key): void => {
             IMPORTED[key].PATH = convertPathForServer(
                 this.state.projectPath,
                 this.port,
@@ -103,7 +112,7 @@ export default class PlayerServer implements IPlayable {
         return IMPORTED;
     }
 
-    private stop() {
+    private stop(): void {
         try {
             this.server.kill();
         } catch (e) {
@@ -113,19 +122,19 @@ export default class PlayerServer implements IPlayable {
         atom.notifications.addSuccess('[VEDA] Server stopped');
     }
 
-    private loadShader(shader: IShader) {
+    private loadShader(shader: Shader): void {
         this.state.lastShader = shader;
     }
 
-    private stdout = (output: Buffer) => {
+    private stdout = (output: Buffer): void => {
         atom.notifications.addSuccess(output.toString().trim());
     };
 
-    private stderr = (output: Buffer) => {
+    private stderr = (output: Buffer): void => {
         atom.notifications.addError(output.toString().trim());
     };
 
-    private exit = (code: number) => {
+    private exit = (code: number): void => {
         console.log('[VEDA] Server exited with code', code);
         this.io.emit('stop');
     };
