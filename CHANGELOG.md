@@ -1,3 +1,9 @@
+## 2.12.0
+
+- Show correct error positions on shaders using glslify
+- Support `#include` macro
+- Install glslangValidator automatically using [glslang-validator-prebuilt](https://github.com/fand/glslang-validator-prebuilt)
+
 ## 2.11.4
 
 - fix: Update shader correctly on server mode (#126)

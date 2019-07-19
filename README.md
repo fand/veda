@@ -27,10 +27,10 @@
 
 ##### TOC
 
-* [Features](#features)
-* [Install](#install)
-* [Usage](#usage)
-* [Examples](#examples)
+- [Features](#features)
+- [Install](#install)
+- [Usage](#usage)
+- [Examples](#examples)
 
 ## What's this?
 
@@ -41,58 +41,34 @@ Moreover, It supports Audio inputs , MIDI inputs, loading videos and images, etc
 
 `VEDA` has following features.
 
-* Fragment shaders runtime like [GLSL Sandbox](http://glslsandbox.com/)
-* Vertex shader runtime like [vertexshaderart.com](https://www.vertexshaderart.com/)
-* Loading images / videos
-* Additional `uniform` variables useful for live coding
-  * Audio input
-  * MIDI input
-  * OSC input
-  * Webcam input
-  * Keyboard input
-  * Gamepad input
-* Auto completion (thx to [autocomplete-glsl](https://atom.io/packages/autocomplete-glsl/))
-* Linting (thx to [linter-glsl](https://atom.io/packages/linter-glsl/))
+- Fragment shaders runtime like [GLSL Sandbox](http://glslsandbox.com/)
+- Vertex shader runtime like [vertexshaderart.com](https://www.vertexshaderart.com/)
+- Loading images / videos
+- Additional `uniform` variables useful for live coding
+  - Audio input
+  - MIDI input
+  - OSC input
+  - Webcam input
+  - Keyboard input
+  - Gamepad input
+- Auto completion (thx to [autocomplete-glsl](https://atom.io/packages/autocomplete-glsl/))
+- Linting (thx to [linter-glsl](https://atom.io/packages/linter-glsl/))
 
 ## Tutorial
 
-* [English](https://medium.com/@amagitakayosi/vj-live-coding-on-atom-glsl-livecoder-329eec5462df)
-* [日本語](http://blog.gmork.in/entry/2017/08/04/173000)
+- [English](https://medium.com/@amagitakayosi/vj-live-coding-on-atom-glsl-livecoder-329eec5462df)
+- [日本語](http://blog.gmork.in/entry/2017/08/04/173000)
 
 ## Install
 
-### Install `glslangValidator`
-
-`VEDA` requires `glslangValidator`.<br>
-Follow the below steps to install `glslangValidator`.
-
-#### macOS
-
-If you are uning macOS, `glslangValidator` can be installed by homebrew.
-
-```sh
-brew install glslang
-```
-
-#### Windows or Linux
-
-If you are uning Windows or Linux, the best way to install `glslangValidator` is to install Vulkan SDK.<br>
-Get the SDK from here:
-
-https://www.lunarg.com/vulkan-sdk/
-
-After that, add installed `glslangValidator` to your `PATH` environment variable.<br>
-In Windows, `glslangValidator` will be installed in `C:\VulkanSDK\( version )\Bin`.
-
-The path of `glslangValidator` can also be specified in the settings of `VEDA`.
-
-### Install `VEDA`
-
 Just install from Atom GUI or `apm`.
 
-`$ apm install veda`
+```
+$ apm install veda
+```
 
-If Atom shows an error like below, try rebuilding the package from 🐞 icon on the footer.
+Sometimes Atom shows an error like below.
+If you see this, please try rebuilding the package from 🐞 icon on the footer.
 
 ```
 Failed to require the main module of 'veda' because it requires an incompatible native module.
@@ -105,18 +81,18 @@ Run `apm rebuild` in the package directory to resolve.
 
 `VEDA` installs following commands to Atom.
 
-* `toggle`
-  * Start / Stop VEDA.
-* `load-shader` (key: `ctrl-enter`)
-  * Load the shader on current editor.
-* `watch-shader` (key: `ctrl-shift-enter`)
-  * Watch current tab and load the shader automatically.
-* `watch-active-editor` (key: `ctrl-alt-enter`)
-  * Watch active tab and run `watch-shader` automatically.
-* `stop-watching` (key: `ctrl-.`)
-  * Stop `watch-shader` and `watch-active-editor`.
-* `toggle-fullscreen` (key: `ctrl-escape`)
-  * Show the output fullscreen in the window
+- `toggle`
+  - Start / Stop VEDA.
+- `load-shader` (key: `ctrl-enter`)
+  - Load the shader on current editor.
+- `watch-shader` (key: `ctrl-shift-enter`)
+  - Watch current tab and load the shader automatically.
+- `watch-active-editor` (key: `ctrl-alt-enter`)
+  - Watch active tab and run `watch-shader` automatically.
+- `stop-watching` (key: `ctrl-.`)
+  - Stop `watch-shader` and `watch-active-editor`.
+- `toggle-fullscreen` (key: `ctrl-escape`)
+  - Show the output fullscreen in the window
 
 A typical workflow can be like this:
 
@@ -126,36 +102,36 @@ A typical workflow can be like this:
 
 ### Preset `uniform` variables
 
-* `float time`:
-  * The elapsed time since `VEDA` has started.
-* `vec2 resolution`
-  * The resolution of the screen.
-* `vec2 mouse`
-  * Current position of mouse.
-  * `vec2(0)` to `vec2(1)`
-* `sampler2D backbuffer`
-  * Rendered result of last frame.
-  * RGBA format
-* `sampler2D samples`
-  * Samples of the audio input.
-* `sampler2D spectrum`
-  * FFT result of the audio input.
-* `float volume`
-  * The volume of the audio input.
-* `sampler2D midi`
-  * Last MIDI event for each channel of MIDI devices.
-  * `x`: 3rd byte of the event
-* `sampler2D note`
-  * States of note numbers of MIDI devices.
-  * `x`: the volume of the note
+- `float time`:
+  - The elapsed time since `VEDA` has started.
+- `vec2 resolution`
+  - The resolution of the screen.
+- `vec2 mouse`
+  - Current position of mouse.
+  - `vec2(0)` to `vec2(1)`
+- `sampler2D backbuffer`
+  - Rendered result of last frame.
+  - RGBA format
+- `sampler2D samples`
+  - Samples of the audio input.
+- `sampler2D spectrum`
+  - FFT result of the audio input.
+- `float volume`
+  - The volume of the audio input.
+- `sampler2D midi`
+  - Last MIDI event for each channel of MIDI devices.
+  - `x`: 3rd byte of the event
+- `sampler2D note`
+  - States of note numbers of MIDI devices.
+  - `x`: the volume of the note
 
 ### Settings
 
 The settings of `VEDA` can be configured in 3 ways: global settings, project settings, and file settings.
 
-* Global settings are loaded from Settings page of Atom.
-* Project settings are loaded from `.vedarc`.
-* File settings are loaded from the comments of the shader.
+- Global settings are loaded from Settings page of Atom.
+- Project settings are loaded from `.vedarc`.
+- File settings are loaded from the comments of the shader.
 
 The order of priority is as follows:
 
@@ -174,10 +150,10 @@ If there are no project `.vedarc` or valid comments, VEDA will use the global se
 
 Project settings is loaded from `.vedarc` on your project root.
 
-* `.vedarc` must be located in your project's root directory.
-* `.vedarc` is parsed as [JSON5 format](https://github.com/json5/json5).
-  * You can write comments in `.vedarc`.
-* `.vedarc` is loaded on startup and reloaded automatically when you edit it.
+- `.vedarc` must be located in your project's root directory.
+- `.vedarc` is parsed as [JSON5 format](https://github.com/json5/json5).
+  - You can write comments in `.vedarc`.
+- `.vedarc` is loaded on startup and reloaded automatically when you edit it.
 
 For example, when you write `.vedarc` like this:
 
@@ -197,10 +173,10 @@ For example, when you write `.vedarc` like this:
 
 Then `VEDA` interpret like this:
 
-* Load `./1.jpg` as a texture `image1`
-* Draw lines on vertex shaders
-* Enable audio input
-* Enable MIDI input
+- Load `./1.jpg` as a texture `image1`
+- Draw lines on vertex shaders
+- Enable audio input
+- Enable MIDI input
 
 #### File Settings
 
@@ -282,11 +258,11 @@ See [examples](./examples/vertex.vert) for actual usage.
 
 To use these features, you have to enable them by adding following lines to `.vedarc` or header comments.
 
-* Audio inputs: `"audio": true`
-* MIDI inputs: `"midi": true`
-* Webcam inputs: `"camera": true`
-* Keyboard inputs: `"keyboard": true`
-* Gamepad inputs: `"gamepad": true`
+- Audio inputs: `"audio": true`
+- MIDI inputs: `"midi": true`
+- Webcam inputs: `"camera": true`
+- Keyboard inputs: `"keyboard": true`
+- Gamepad inputs: `"gamepad": true`
 
 ### Audio inputs
 
@@ -310,8 +286,8 @@ Each pixel stores the last event of the corresponding MIDI Events.
 
 For example, `texture2D(midi, vec2(144. / 256., 0)).x` yields the note number of last `note on` event of MIDI Channel 1.
 
-* `144.` (0x90): `note on` event of MIDI Channel 1
-* `.x` (2nd byte): Note number
+- `144.` (0x90): `note on` event of MIDI Channel 1
+- `.x` (2nd byte): Note number
 
 See [examples](./examples/midi.frag) for actual usage.
 
@@ -328,11 +304,11 @@ See [examples](./examples/note.frag) for actual usage.
 VEDA accepts OSC messages on the port written in `osc` property of the settings.
 When you write `"osc": 4000` to `.vedarc` or the header comment, messages will be stored and passed as textures:
 
-* Texture name will be automatically generated from addresses.
-  * `/foo`: `sampler2D osc_foo`
-  * `/foo/bar`: `sampler2D osc_foo_bar`
-* Arguments are translated to float. Strings are ignored.
-  * `/foo 0.1 hello 100` yields a texture that contains `[0.1 0 100]`
+- Texture name will be automatically generated from addresses.
+  - `/foo`: `sampler2D osc_foo`
+  - `/foo/bar`: `sampler2D osc_foo_bar`
+- Arguments are translated to float. Strings are ignored.
+  - `/foo 0.1 hello 100` yields a texture that contains `[0.1 0 100]`
 
 See [examples](./examples/osc.frag) for actual usage.
 
@@ -413,9 +389,9 @@ The structure of `IMPORTED` properties is based on [Interactive Shader Format](h
 
 See these examples for actual usage.
 
-* [.vedarc](./examples/.vedarc)
-* [image.frag](./examples/image.frag)
-* [video.frag](./examples/video.frag)
+- [.vedarc](./examples/.vedarc)
+- [image.frag](./examples/image.frag)
+- [video.frag](./examples/video.frag)
 
 ### Multipass Rendering
 
@@ -456,8 +432,8 @@ You can specify numbers for pixels or write expressions using `$WIDTH` and `$HEI
 
 See these examples for actual usage.
 
-* [multipass.frag](./examples/multipass.frag)
-* [multipass.vert](./examples/multipass.vert)
+- [multipass.frag](./examples/multipass.frag)
+- [multipass.vert](./examples/multipass.vert)
 
 ### Combining VS and FS
 
@@ -476,8 +452,8 @@ For example, when you write header comments like below in fragment shader, VEDA 
 
 See these examples for actual usage.
 
-* [combination.frag](./examples/combination.frag) and [combination.vert](./examples/combination.vert)
-* [particles.frag](./examples/particles.frag) and [particles.vert](./examples/particles.vert)
+- [combination.frag](./examples/combination.frag) and [combination.vert](./examples/combination.vert)
+- [particles.frag](./examples/particles.frag) and [particles.vert](./examples/particles.vert)
 
 ### Compute shader
 
@@ -540,8 +516,8 @@ You can load 3D models by passing file path to `MODEL` property in `PASSES`:
 When you load `.obj` files in fragment shader, your shader is applied on the model defined in `.obj` file.
 When you load `.obj` in vertex shader, you can use following attributes:
 
-* `attribute vec3 position`
-* `attribute vec3 normal`
+- `attribute vec3 position`
+- `attribute vec3 normal`
 
 Then
 
@@ -574,9 +550,9 @@ Materials are loaded as textures like `uniform sampler2D material0`, `uniform sa
 
 See examples for more detail.
 
-* `.obj` file ([frag](./examples/obj.frag), [vert](./examples/obj.vert))
-* `.obj` with `.mtl` ([frag](./examples/obj-mtl.vert), [vert](./examples/obj-mtl.vert))
-* `.json` file ([frag](./examples/json.frag), [vert](./examples/json.vert))
+- `.obj` file ([frag](./examples/obj.frag), [vert](./examples/obj.vert))
+- `.obj` with `.mtl` ([frag](./examples/obj-mtl.vert), [vert](./examples/obj-mtl.vert))
+- `.json` file ([frag](./examples/json.frag), [vert](./examples/json.vert))
 
 ### glslify
 
@@ -613,8 +589,8 @@ VEDA supports sound shaders like [Shadertoy](https://www.shadertoy.com/results?f
 
 There are 2 command for sound shaders:
 
-* `Veda: Load Sound Shader` (`alt-enter`): Play current shader as a sound shader.
-* `Veda: Stop Sound Shader` (`alt-.`): Stop sound shaders.
+- `Veda: Load Sound Shader` (`alt-enter`): Play current shader as a sound shader.
+- `Veda: Stop Sound Shader` (`alt-.`): Stop sound shaders.
 
 In sound shader you have to define `vec2 mainSound(float time)` function instead of `void main()`.
 `mainSound` takes current time stamp (`time`) and return the sample for stereo channels (`vec2`).
@@ -658,9 +634,9 @@ This project follows the [all-contributors](https://github.com/kentcdodds/all-co
 
 Takayosi Amagi
 
-* Twitter: [@amagitakayosi](https://twitter.com/amagitakayosi/)
-* GitHub: [fand](https://github.com/fand/)
-* Blog: [マルシテイア](http://amagitakayosi.hatenablog.com/)
+- Twitter: [@amagitakayosi](https://twitter.com/amagitakayosi/)
+- GitHub: [fand](https://github.com/fand/)
+- Blog: [マルシテイア](http://amagitakayosi.hatenablog.com/)
 
 ## License
 
