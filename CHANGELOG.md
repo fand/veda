@@ -14,7 +14,7 @@
 
 ## 2.11.1
 
-- Rename recording commands / pahts of recorded files
+- Rename recording commands / paths of recorded files
 
 ## 2.11.0
 
