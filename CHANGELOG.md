@@ -1,3 +1,7 @@
+## 2.12.1
+
+- Fix video textures not playing
+
 ## 2.12.0
 
 - Show correct error positions on shaders using glslify
