@@ -26,4 +26,5 @@ void main() {
         texture2D(video2, uv) * sin(t + 2.) +
         texture2D(video3, uv) * sin(t + 4.)
     );
+    gl_FragColor.a = 1.;
 }
