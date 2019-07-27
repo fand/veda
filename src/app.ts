@@ -300,9 +300,10 @@ export default class App {
 
         try {
             // Detect changes of settings
-            const headComment = (shader.match(
+            let headComment = (shader.match(
                 /(?:\/\*)((?:.|\n|\r|\n\r)*?)(?:\*\/)/,
             ) || [])[1];
+            headComment = headComment || '{}'; // suppress JSON5 parse errors
 
             let diff;
             if (isSound) {
