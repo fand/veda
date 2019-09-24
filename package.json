@@ -51,7 +51,7 @@
     "@types/lodash": "4.14.139",
     "@types/mkdirp": "0.5.2",
     "@types/pify": "3.0.2",
-    "@types/socket.io": "2.1.2",
+    "@types/socket.io": "2.1.3",
     "@types/socket.io-client": "1.4.32",
     "@types/three": "0.103.2",
     "@types/tmp": "0.1.0",
