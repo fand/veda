@@ -41,7 +41,7 @@
     "autocomplete-glsl"
   ],
   "devDependencies": {
-    "@babel/core": "7.6.3",
+    "@babel/core": "7.6.4",
     "@babel/polyfill": "7.6.0",
     "@babel/preset-env": "7.6.3",
     "@types/atom": "1.36.1",
