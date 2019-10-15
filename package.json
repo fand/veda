@@ -32,7 +32,7 @@
     "socket.io-client": "^2.2.0",
     "three": "^0.109.0",
     "tmp": "^0.1.0",
-    "vedajs": "^0.11.1",
+    "vedajs": "^0.12.0",
     "which": "^1.3.1"
   },
   "package-deps": [
