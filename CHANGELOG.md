@@ -1,3 +1,7 @@
+## 2.12.2
+
+- Fix materials on multiple models not loaded correctly
+
 ## 2.12.1
 
 - Fix video textures not playing
