@@ -1,0 +1,17 @@
+# MTL written from C:\3D_Exchange_Folder\Pokemon.obj
+newmtl Outline
+Kd 0 0 0
+Ns 256
+d 1
+illum 2
+Ka 0 0 0
+Ks 0 0 0
+newmtl Pokemon
+Kd 0.48 0.48 0.48
+Ns 256
+d 1
+illum 2
+Ka 0 0 0
+Ks 0 0 0
+map_Kd Pokemon_Diffuse.jpg
+# bump Pokemon_Emissive.jpg

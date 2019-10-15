@@ -1,0 +1,12 @@
+# Max2Mtl Version 4.0 Mar 10th, 2001
+#
+newmtl QuadMesh1
+Ka  1.0 1.0 1.0
+Kd  1.0 1.0 1.0
+Ks  1.0 1.0 1.0
+d  1.0
+Ns  11.3
+illum 2
+map_Kd appleD.jpg
+#
+# EOF
