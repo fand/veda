@@ -1,3 +1,7 @@
+## 2.13.0
+
+- Fix GIF loader broken by chromium update
+
 ## 2.12.2
 
 - Fix materials on multiple models not loaded correctly
