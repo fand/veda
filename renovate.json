@@ -3,11 +3,11 @@
     "config:base"
   ],
   "labels": ["renovate"],
-  "automerge": true,
+  "automerge": false,
   "major": {
     "automerge": false
   },
   "minor": {
     "groupName": "all dependencies"
-  }  
+  }
 }
