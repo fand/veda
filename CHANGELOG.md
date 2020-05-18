@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.13.1
+## 2.13.2
 
 - Fix OSC loader bug with masseges includes multiple slashes in the address
 
