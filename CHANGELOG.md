@@ -1,3 +1,9 @@
+# Changelog
+
+## 2.13.1
+
+- Fix OSC loader bug with masseges includes multiple slashes in the address
+
 ## 2.13.0
 
 - Fix GIF loader broken by chromium update

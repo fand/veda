@@ -49,7 +49,8 @@ export default class OscLoader extends EventEmitter {
             }
 
             const oscData: OscData = {
-                name: 'osc_' + msg.address.replace(/^\//, '').replace('/', '_'),
+                name:
+                    'osc_' + msg.address.replace(/^\//, '').replace(/\//g, '_'),
                 data: msg.args,
             };
 
