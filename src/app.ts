@@ -385,15 +385,15 @@ export default class App {
         this.recorder.setRecordingMode(mode);
     }
 
-    insertTime(): void {
-        this.player.query('TIME').then(
-            (time: number) => {
+    public insertTime(): void {
+        this.player.query({ type: 'TIME' }).then(
+            (time: number): void => {
                 const editor = atom.workspace.getActiveTextEditor();
                 if (editor) {
                     editor.insertText(time.toString());
                 }
             },
-            (err: string) => {
+            (err: string): void => {
                 console.error(err);
                 atom.notifications.addError('[VEDA] Failed to get time.');
             },
