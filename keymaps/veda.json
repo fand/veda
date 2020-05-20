@@ -5,7 +5,8 @@
     "ctrl-alt-enter": "veda:watch-active-shader",
     "ctrl-.": "veda:stop-watching",
     "alt-enter": "veda:load-sound-shader",
-    "alt-.": "veda:stop-sound-shader"
+    "alt-.": "veda:stop-sound-shader",
+    "ctrl-shift-t": "veda:insert-time"
   },
   ".veda-enabled": {
     "ctrl-escape": "veda:toggle-fullscreen",

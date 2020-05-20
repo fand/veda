@@ -165,6 +165,16 @@ export default class Player implements Playable {
         }
     }
 
+    query(type: QueryType): Promise<any> {
+        switch (type) {
+            case 'TIME':
+                return Promise.resolve(this.veda.getTime());
+            default:
+                console.error('>> Unsupported query', type);
+                return Promise.reject('Unsupported query');
+        }
+    }
+
     private play(): void {
         this.view.show();
         this.veda.play();
