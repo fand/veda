@@ -1,7 +1,7 @@
 {
   "name": "veda",
   "main": "./lib/index",
-  "version": "2.11.4",
+  "version": "2.13.2",
   "description": "VJ / Live Coding environment with GLSL",
   "keywords": [],
   "activationCommands": {
@@ -14,12 +14,12 @@
   },
   "dependencies": {
     "atom-message-panel": "^1.3.0",
-    "atom-package-deps": "^5.0.0",
-    "execa": "^1.0.0",
-    "express": "^4.16.4",
-    "ffmpeg-static": "^2.4.0",
-    "glslify": "^7.0.0",
-    "glslify-import": "^3.1.0",
+    "atom-package-deps": "^5.1.0",
+    "execa": "1.0.0",
+    "express": "^4.17.1",
+    "ffmpeg-static": "^2.5.0",
+    "glslang-validator-prebuilt": "^0.0.2",
+    "glslify-lite": "^0.0.7",
     "is-relative": "^1.0.0",
     "json5": "^2.1.0",
     "lodash": "^4.17.11",
@@ -30,48 +30,51 @@
     "signal-exit": "^3.0.2",
     "socket.io": "^2.2.0",
     "socket.io-client": "^2.2.0",
-    "three": "^0.103.0",
+    "three": "^0.109.0",
     "tmp": "^0.1.0",
-    "vedajs": "^0.10.1",
+    "vedajs": "^0.13.0",
     "which": "^1.3.1"
   },
   "package-deps": [
     "language-glsl",
-    "linter-glsl",
+    "linter-glslify",
     "autocomplete-glsl"
   ],
   "devDependencies": {
-    "@babel/core": "^7.4.0",
-    "@babel/polyfill": "^7.4.0",
-    "@babel/preset-env": "^7.4.2",
-    "@types/atom": "^1.31.1",
-    "@types/execa": "^0.9.0",
-    "@types/json5": "^0.0.30",
-    "@types/lodash": "^4.14.123",
-    "@types/mkdirp": "^0.5.2",
-    "@types/pify": "^3.0.2",
-    "@types/socket.io-client": "^1.4.32",
-    "@types/three": "^0.93.28",
-    "@types/tmp": "^0.0.34",
-    "@types/which": "^1.3.1",
-    "all-contributors-cli": "^6.2.0",
-    "ava": "^1.4.1",
-    "husky": "^1.3.1",
-    "lint-staged": "^8.1.5",
-    "npm-run-all": "^4.1.5",
-    "prettier": "^1.16.4",
-    "ts-loader": "^5.3.3",
-    "tslint": "^5.14.0",
-    "tslint-config-prettier": "^1.18.0",
-    "tslint-plugin-prettier": "^2.0.1",
-    "typescript": "^3.3.4000",
-    "webpack": "^4.29.6",
-    "webpack-cli": "^3.3.0"
+    "@babel/core": "7.6.4",
+    "@babel/polyfill": "7.6.0",
+    "@babel/preset-env": "7.6.3",
+    "@types/atom": "1.36.1",
+    "@types/execa": "0.9.0",
+    "@types/express": "4.17.1",
+    "@types/json5": "0.0.30",
+    "@types/lodash": "4.14.144",
+    "@types/mkdirp": "0.5.2",
+    "@types/pify": "3.0.2",
+    "@types/socket.io": "2.1.4",
+    "@types/socket.io-client": "1.4.32",
+    "@types/three": "0.103.2",
+    "@types/tmp": "0.1.0",
+    "@types/which": "1.3.2",
+    "@typescript-eslint/eslint-plugin": "1.13.0",
+    "@typescript-eslint/parser": "1.13.0",
+    "all-contributors-cli": "6.9.1",
+    "ava": "2.4.0",
+    "eslint": "6.5.1",
+    "eslint-plugin-prettier": "3.1.1",
+    "husky": "3.0.9",
+    "lint-staged": "9.4.2",
+    "npm-run-all": "4.1.5",
+    "prettier": "1.18.2",
+    "ts-loader": "6.2.0",
+    "typescript": "3.6.4",
+    "webpack": "4.41.2",
+    "webpack-cli": "3.3.9"
   },
   "scripts": {
     "ci": "run-p lint test build",
-    "test": "ava test --verbose",
-    "lint": "tslint -c tslint.json 'src/**/*.ts'",
+    "test": "ava --verbose",
+    "lint": "eslint 'src/**/*.ts'",
     "dev": "run-s watch",
     "build": "run-p build:ts build:client",
     "build:ts": "tsc",
@@ -79,14 +82,12 @@
     "watch": "run-p watch:ts watch:client",
     "watch:ts": "tsc -w",
     "watch:client": "webpack -w --mode development",
-    "prepublish": "npm run ci",
-    "precommit": "lint-staged",
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate"
   },
   "lint-staged": {
     "*.{ts}": [
-      "tslint --fix",
+      "eslint --fix 'src/**/*.ts'",
       "git add"
     ],
     "*.{md}": [
@@ -94,16 +95,10 @@
       "git add"
     ]
   },
-  "ava": {
-    "require": [
-      "@babel/polyfill"
-    ],
-    "babel": {
-      "testOptions": {
-        "presets": [
-          "@babel/preset-env"
-        ]
-      }
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-publish": "npm run ci"
     }
   }
 }

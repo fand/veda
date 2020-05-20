@@ -1,15 +1,16 @@
 language: node_js
 sudo: required
 node_js:
-- '6'
+    - 'stable'
+    - 'lts/*'
 cache:
-  directories:
-  - node_modules
+    directories:
+        - node_modules
 before_install: yarn global add greenkeeper-lockfile@1
 before_script: greenkeeper-lockfile-update
 after_script: greenkeeper-lockfile-upload
 script:
-- npm run ci
+    - npm run ci
 env:
-  global:
-    secure: lfWU4tbrUBrvHVCTHtkYSq6ScFqNcyyQElhLypownYht94jSlpGQ35eVvhvizd2hJjjeMqaHK77O4g27HSvHeN0LTEVoxAjGZt50kPKNqg0Zheh9yddI4g6aP8NfjGZaYkEUrlAEw05u9kLgnFPhZKQ2agT+7B047AHD+c5Weo+iEAaxHgbLqDFqSqql/btHA2ey7RhkT7D/paEDnRuV8Th52OTlnU9kzJAqbZFdFDfwEwGrJ1QFFO53E9vjhUU9Asdv9l0xvo/e0HSPct4NxDpoWApa4H9UHwFdNiFJX5dslp6bQnA0tKYuopt7FWNZj6c86GpJeDLL2niopXbE6Nq7YdgeyTKwzMuTbyE/u9GyrdamdG85Jd9ss7WKkhADnj5shNH1HZPCImuvSQu3yEcUunVnJzAq5/81T6GSERvpQgZYH/TmTW+qvmIHkXzMsZNMs6lMPfDLLVWnsBX7uhRT+3OtzkdrvdT3YK4yTUYxzlLLhN7NyQB8E4AzJfh8QSz8+ozkiJcl0YG+3HTZZX662TsWDcr3lyRRfbFXEXPw+95IKtYWQI/ChKK/TC/BvLIqbbQCFPCzmu0zYop1bZY8vbecTGyESUkN7n4at8TNZhW3NbiLW70eSzXLfbKGKMR0PWg5Q6YFORA7af1NpwIars6UgBlHv71i0xCjILQ=
+    global:
+        secure: lfWU4tbrUBrvHVCTHtkYSq6ScFqNcyyQElhLypownYht94jSlpGQ35eVvhvizd2hJjjeMqaHK77O4g27HSvHeN0LTEVoxAjGZt50kPKNqg0Zheh9yddI4g6aP8NfjGZaYkEUrlAEw05u9kLgnFPhZKQ2agT+7B047AHD+c5Weo+iEAaxHgbLqDFqSqql/btHA2ey7RhkT7D/paEDnRuV8Th52OTlnU9kzJAqbZFdFDfwEwGrJ1QFFO53E9vjhUU9Asdv9l0xvo/e0HSPct4NxDpoWApa4H9UHwFdNiFJX5dslp6bQnA0tKYuopt7FWNZj6c86GpJeDLL2niopXbE6Nq7YdgeyTKwzMuTbyE/u9GyrdamdG85Jd9ss7WKkhADnj5shNH1HZPCImuvSQu3yEcUunVnJzAq5/81T6GSERvpQgZYH/TmTW+qvmIHkXzMsZNMs6lMPfDLLVWnsBX7uhRT+3OtzkdrvdT3YK4yTUYxzlLLhN7NyQB8E4AzJfh8QSz8+ozkiJcl0YG+3HTZZX662TsWDcr3lyRRfbFXEXPw+95IKtYWQI/ChKK/TC/BvLIqbbQCFPCzmu0zYop1bZY8vbecTGyESUkN7n4at8TNZhW3NbiLW70eSzXLfbKGKMR0PWg5Q6YFORA7af1NpwIars6UgBlHv71i0xCjILQ=

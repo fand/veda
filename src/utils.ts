@@ -1,11 +1,11 @@
 import * as path from 'path';
-const isRelative = require('is-relative');
+import isRelative = require('is-relative');
 
 export function convertPathForServer(
     projectPath: string,
     port: number,
     target: string,
-) {
+): string {
     if (target.match(/^(?:https?:)?\/\//)) {
         return target;
     }

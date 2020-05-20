@@ -1,3 +1,27 @@
+# Changelog
+
+## 2.13.2
+
+- Fix OSC loader bug with masseges includes multiple slashes in the address
+
+## 2.13.0
+
+- Fix GIF loader broken by chromium update
+
+## 2.12.2
+
+- Fix materials on multiple models not loaded correctly
+
+## 2.12.1
+
+- Fix video textures not playing
+
+## 2.12.0
+
+- Show correct error positions on shaders using glslify
+- Support `#include` macro
+- Install glslangValidator automatically using [glslang-validator-prebuilt](https://github.com/fand/glslang-validator-prebuilt)
+
 ## 2.11.4
 
 - fix: Update shader correctly on server mode (#126)
@@ -8,7 +32,7 @@
 
 ## 2.11.1
 
-- Rename recording commands / pahts of recorded files
+- Rename recording commands / paths of recorded files
 
 ## 2.11.0
 

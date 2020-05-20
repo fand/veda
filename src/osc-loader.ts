@@ -2,14 +2,14 @@ import * as path from 'path';
 import { spawn } from 'child_process';
 import { ChildProcess } from 'child_process';
 import { EventEmitter } from 'events';
-import { IOscData } from './constants';
+import { OscData } from './constants';
 
 export default class OscLoader extends EventEmitter {
-    port: number;
+    public port: number;
     private server: ChildProcess;
     private addresses: { [address: string]: boolean } = {};
 
-    constructor(port: number) {
+    public constructor(port: number) {
         super();
 
         this.port = port;
@@ -20,12 +20,16 @@ export default class OscLoader extends EventEmitter {
                 cwd: path.resolve(__dirname, '..'),
             },
         );
-        this.server.stdout!.on('data', this.stdout);
-        this.server.stderr!.on('data', this.stderr);
+        if (this.server.stdout) {
+            this.server.stdout.on('data', this.stdout);
+        }
+        if (this.server.stderr) {
+            this.server.stderr.on('data', this.stderr);
+        }
         this.server.on('exit', this.exit);
     }
 
-    destroy() {
+    public destroy(): void {
         try {
             this.server.kill();
         } catch (e) {
@@ -33,20 +37,20 @@ export default class OscLoader extends EventEmitter {
         }
     }
 
-    stdout = (output: Buffer) => {
+    private stdout = (output: Buffer): void => {
         const s = output.toString().trim();
-        s.split('\n').forEach(line => {
+        s.split('\n').forEach((line): void => {
             let msg;
             try {
                 msg = JSON.parse(line);
-            } catch (e) {}
-
-            if (!msg) {
-                console.log(line);
+            } catch {
+                console.error('Failed to parse stdout:', line);
+                return;
             }
 
-            const oscData: IOscData = {
-                name: 'osc_' + msg.address.replace(/^\//, '').replace('/', '_'),
+            const oscData: OscData = {
+                name:
+                    'osc_' + msg.address.replace(/^\//, '').replace(/\//g, '_'),
                 data: msg.args,
             };
 
@@ -61,11 +65,11 @@ export default class OscLoader extends EventEmitter {
         });
     };
 
-    stderr = (output: Buffer) => {
+    private stderr = (output: Buffer): void => {
         console.error(output.toString());
     };
 
-    exit = (code: number) => {
+    private exit = (code: number): void => {
         console.log('[VEDA] OSC server exited with code', code);
     };
 }

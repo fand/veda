@@ -1,9 +1,20 @@
-import { CommandType, CommandData, QueryType } from './constants';
-import { IRcDiff } from './config';
+import {
+    Command,
+    Query,
+    QueryResult,
+    AudioInputsQuery,
+    TimeQuery,
+    VideoInputsQuery,
+} from './constants';
+import { RcDiff } from './config';
 
-export interface IPlayable {
+export interface Playable {
     destroy: () => void;
-    onChange: (rcDiff: IRcDiff) => void;
-    command(type: CommandType, payload?: CommandData): void;
-    query(type: QueryType): Promise<any>;
+    onChange: (rcDiff: RcDiff) => void;
+    command(command: Command): void;
+    query(
+        query: AudioInputsQuery | VideoInputsQuery,
+    ): Promise<MediaDeviceInfo[]>;
+    query(query: TimeQuery): Promise<number>;
+    query(query: Query): Promise<QueryResult>;
 }

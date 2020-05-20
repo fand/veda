@@ -1,24 +1,75 @@
 declare module 'atom-message-panel' {
     export class MessagePanelView {
-        constructor(opts: { title: string });
-        attach(): void;
-        toggle(): void;
-        clear(): void;
-        add(view: PlainMessageView): void;
-        close(): void;
+        public constructor(opts: { title: string });
+        public attach(): void;
+        public toggle(): void;
+        public clear(): void;
+        public add(view: PlainMessageView): void;
+        public close(): void;
     }
     export class PlainMessageView {
-        constructor(opts: { message: string; className: string });
+        public constructor(opts: { message: string; className: string });
     }
 }
 
 declare module 'glslify' {
-    interface IGlslifyOpts {
+    interface GlslifyOpts {
         basedir?: string;
         transform?: string[];
     }
-    function glsl(shaderSource: string, opts: IGlslifyOpts): string;
-    export function compile(src: string, opts: IGlslifyOpts): string;
-    export function file(filename: string, opts: IGlslifyOpts): string;
+    function glsl(shaderSource: string, opts: GlslifyOpts): string;
+    export function compile(src: string, opts: GlslifyOpts): string;
+    export function file(filename: string, opts: GlslifyOpts): string;
     export default glsl;
+}
+
+declare module 'osc-min' {
+    type OscType =
+        | 'string'
+        | 'float'
+        | 'integer'
+        | 'blob'
+        | 'true'
+        | 'false'
+        | 'null'
+        | 'bang '
+        | 'timetag'
+        | 'array'
+        | 'double';
+
+    type OscValueElement =
+        | string
+        | number
+        | boolean
+        | Buffer
+        | null
+        | undefined;
+
+    type OscValue = OscValueElement | OscValueElement[];
+
+    interface OscArgs {
+        type: OscType;
+        value: OscValue;
+    }
+
+    interface OscMessage {
+        oscType: 'bundle' | 'message';
+        elements: OscMessage[];
+        args: OscArgs[];
+    }
+
+    export function fromBuffer(buf: Buffer): OscMessage;
+}
+
+declare module 'is-relative' {
+    function isRelative(path: string): boolean;
+    export = isRelative;
+}
+
+declare module 'ffmpeg-static' {
+    export const path: string;
+}
+
+declare module 'shell' {
+    export function showItemInFolder(path: string): void;
 }

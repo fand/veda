@@ -13,4 +13,5 @@ void main() {
         1. - texture2D(image2, uv),
         cos(time * 2.) * .5 + .5
     );
+    gl_FragColor.a = 1.;
 }

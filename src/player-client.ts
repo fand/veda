@@ -1,29 +1,29 @@
 import * as io from 'socket.io-client';
 import Player from './player';
 import View from './view';
-import { IRc, IRcDiff } from './config';
-import { IShader, ICommand, IQuery } from './constants';
+import { Rc, RcDiff } from './config';
+import { Shader, Command, Query, QueryResult } from './constants';
 
-interface ICreateOpts {
-    rc: IRc;
+interface CreateOpts {
+    rc: Rc;
     isPlaying: boolean;
-    lastShader: IShader;
+    lastShader: Shader;
 }
 
 export default class PlayerClient {
-    private socket: any;
+    private socket: SocketIOClient.Socket;
     private player: Player | null = null;
-    private wrapper: any = document.body;
+    private wrapper: HTMLElement = document.body;
     private timer: number | null = null;
 
-    constructor() {
+    public constructor() {
         this.socket = io({
             autoConnect: false,
         });
 
         this.socket.on(
             'create',
-            ({ rc, isPlaying, lastShader }: ICreateOpts) => {
+            ({ rc, isPlaying, lastShader }: CreateOpts): void => {
                 if (this.timer) {
                     clearTimeout(this.timer);
                 }
@@ -33,44 +33,44 @@ export default class PlayerClient {
                 }
             },
         );
-        this.socket.on('destroy', () => {
+        this.socket.on('destroy', (): void => {
             this.player && this.player.destroy();
         });
-        this.socket.on('onChange', (rcDiff: IRcDiff) => {
+        this.socket.on('onChange', (rcDiff: RcDiff): void => {
             this.player && this.player.onChange(rcDiff);
         });
-        this.socket.on('command', (data: ICommand) => {
-            this.player && this.player.command(data.type, data.data);
+        this.socket.on('command', (command: Command): void => {
+            this.player && this.player.command(command);
         });
         this.socket.on(
             'query',
             (
-                data: IQuery,
-                callback: (err: string | null, value?: any) => void,
-            ) => {
+                query: Query,
+                callback: (err: string | null, value?: QueryResult) => void,
+            ): void => {
                 if (!this.player) {
                     return callback('[VEDA] Player is not initialized.');
                 }
 
                 this.player
-                    .query(data.type)
-                    .then(value => callback(null, value), callback);
+                    .query(query)
+                    .then((value): void => callback(null, value), callback);
             },
         );
-        this.socket.on('connect', () => {
+        this.socket.on('connect', (): void => {
             console.log('[VEDA] Connected to the server');
             this.poll();
         });
-        this.socket.on('disconnect', () => {
+        this.socket.on('disconnect', (): void => {
             console.log('[VEDA] Disconnected');
         });
     }
 
-    connect() {
+    public connect(): void {
         this.socket.open();
     }
 
-    poll = () => {
+    private poll = (): void => {
         this.socket.emit('ready');
         this.timer = window.setTimeout(this.poll, 1000);
     };

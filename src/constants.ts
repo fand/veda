@@ -1,3 +1,5 @@
+import { BlendMode } from './config';
+
 export const INITIAL_FRAGMENT_SHADER = `
 precision mediump float;
 uniform float time;
@@ -23,48 +25,98 @@ export const INITIAL_SHADER = [
     },
 ];
 
-interface IPassModel {
+interface PassModel {
     PATH: string;
 }
 
-interface IPass {
-    MODEL?: IPassModel;
+export interface Pass {
+    MODEL?: PassModel;
     TARGET?: string;
     vs?: string;
     fs?: string;
     FLOAT?: boolean;
     WIDTH?: string;
     HEIGHT?: string;
+    BLEND?: BlendMode;
 }
 
-export type IShader = IPass[];
-export type ISoundShader = string;
+export type Shader = Pass[];
+export type SoundShader = string;
 
-export type IVedaStatus = any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type VedaStatus = any;
 
-export interface IOscData {
+export interface OscData {
     name: string;
     data: number[];
 }
 
-export type CommandType =
-    | 'PLAY'
-    | 'STOP'
-    | 'LOAD_SHADER'
-    | 'PLAY_SOUND'
-    | 'STOP_SOUND'
-    | 'LOAD_SOUND_SHADER'
-    | 'SET_OSC'
-    | 'START_RECORDING'
-    | 'STOP_RECORDING'
-    | 'TOGGLE_FULLSCREEN';
-export type CommandData = void | IShader | string | IOscData;
-export interface ICommand {
-    type: CommandType;
-    data: CommandData;
+export interface LoadShaderCommand {
+    type: 'LOAD_SHADER';
+    shader: Shader;
 }
 
-export type QueryType = 'TIME';
-export interface IQuery {
-    type: QueryType;
+export interface LoadSoundShaderCommand {
+    type: 'LOAD_SOUND_SHADER';
+    shader: string;
 }
+
+export interface PlayCommand {
+    type: 'PLAY';
+}
+
+export interface PlaySoundCommand {
+    type: 'PLAY_SOUND';
+}
+
+export interface SetOscCommand {
+    type: 'SET_OSC';
+    data: OscData;
+}
+
+export interface StartRecordingCommand {
+    type: 'START_RECORDING';
+}
+
+export interface StopCommand {
+    type: 'STOP';
+}
+
+export interface StopRecordingCommand {
+    type: 'STOP_RECORDING';
+}
+
+export interface StopSoundCommand {
+    type: 'STOP_SOUND';
+}
+
+export interface ToggleFullscreenCommand {
+    type: 'TOGGLE_FULLSCREEN';
+}
+
+export type Command =
+    | LoadShaderCommand
+    | LoadSoundShaderCommand
+    | PlayCommand
+    | PlaySoundCommand
+    | SetOscCommand
+    | StartRecordingCommand
+    | StopCommand
+    | StopRecordingCommand
+    | StopSoundCommand
+    | ToggleFullscreenCommand;
+
+export interface AudioInputsQuery {
+    type: 'AUDIO_INPUTS';
+}
+
+export interface TimeQuery {
+    type: 'TIME';
+}
+
+export interface VideoInputsQuery {
+    type: 'VIDEO_INPUTS';
+}
+
+export type Query = AudioInputsQuery | TimeQuery | VideoInputsQuery;
+export type QueryResult = number | MediaDeviceInfo[];
