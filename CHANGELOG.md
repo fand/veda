@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.14.0
+
+- Support glslify in multipass shaders
+- Add texture size to uniform as `vec2 [name]Size`
+- Fix error on rebuild
+
 ## 2.13.2
 
 - Fix OSC loader bug with masseges includes multiple slashes in the address
