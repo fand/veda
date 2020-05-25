@@ -216,6 +216,7 @@ export default class App {
         shader: string,
         postfix: string,
         dirname: string,
+        useGlslify: boolean,
     ): Promise<Pass[]> {
         if (rcPasses.length === 0) {
             rcPasses.push({});
@@ -246,6 +247,7 @@ export default class App {
                             pass.vs = await loadFile(
                                 this.glslangValidatorPath,
                                 path.resolve(dirname, rcPass.vs),
+                                useGlslify
                             );
                             if (
                                 i === lastPass &&
@@ -258,6 +260,7 @@ export default class App {
                             pass.fs = await loadFile(
                                 this.glslangValidatorPath,
                                 path.resolve(dirname, rcPass.fs),
+                                useGlslify
                             );
                             if (
                                 i === lastPass &&
@@ -338,6 +341,7 @@ export default class App {
                 shader,
                 postfix,
                 dirname,
+                rc.glslify
             );
 
             if (isSound) {

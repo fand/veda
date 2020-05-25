@@ -1,11 +1,4 @@
-precision highp float;
-uniform int FRAMEINDEX;
-uniform sampler2D velocityTexture;
-uniform sampler2D positionTexture;
-uniform vec2 resolution;
-uniform vec2 mouse;
-uniform vec3 mouseButtons;
-uniform float time;
+#include "./common.glsl"
 
 void main(){
     if (FRAMEINDEX == 0) {

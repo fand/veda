@@ -1,16 +1,5 @@
-precision highp float;
-uniform int FRAMEINDEX;
-uniform sampler2D velocityTexture;
-uniform sampler2D positionTexture;
-uniform sampler2D key;
-uniform vec2 resolution;
-uniform vec2 mouse;
-uniform vec3 mouseButtons;
-uniform float time;
+#pragma glslify: import('./common.glsl')
 const float SPEED = 0.03;
-
-const float PI = 3.1415926;
-const float PI2 = PI * 2.0;
 
 vec3 reset() {
     vec2 p = gl_FragCoord.st / resolution * 100.;

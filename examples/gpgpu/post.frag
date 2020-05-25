@@ -3,6 +3,7 @@
   "frameskip": 1,
   "vertexCount": 30000,
   "vertexMode": "POINTS",
+  "glslify": true,
   "PASSES": [
     {
       fs: "./velocity.frag",
