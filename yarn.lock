@@ -8035,10 +8035,10 @@ vary@~1.1.2:
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
 
-vedajs@^0.14.0:
-  version "0.14.0"
-  resolved "https://registry.yarnpkg.com/vedajs/-/vedajs-0.14.0.tgz#be8631ec3e205c53d1f3b21a362da98842b8a6e4"
-  integrity sha512-ac0hcZMXFqmphBoKd5z9JyGrboxccDLWAHbuBXxb7MYhfUv1uKDbJa+hklEVwoZQAa3qoGeUlocvje3HmHuJOg==
+vedajs@^0.15.0:
+  version "0.15.0"
+  resolved "https://registry.yarnpkg.com/vedajs/-/vedajs-0.15.0.tgz#28af980567994eda2ea9a8cdacea6c04246fffa1"
+  integrity sha512-PH5iYqX1gFtAyD8IKh8mBHe3QkgbBNeJdOx3pUXmrGdFULRcFXuAHHen1CTwD/4QvLcziJDy/8AYbN2jkHyB0A==
   dependencies:
     "@fand/gifuct-js" "^1.0.0"
     is-video "^1.0.1"
