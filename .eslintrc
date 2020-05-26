@@ -6,8 +6,8 @@
     },
     "extends": [
         "eslint:recommended",
-        "plugin:prettier/recommended",
-        "plugin:@typescript-eslint/recommended"
+        "plugin:@typescript-eslint/recommended",
+        "prettier"
     ],
     "globals": {
         "atom": true
@@ -17,5 +17,8 @@
     "parserOptions": {
         "sourceType": "module",
         "project": "./tsconfig.json"
+    },
+    "rules": {
+        "@typescript-eslint/no-inferrable-types": 0
     }
 }
