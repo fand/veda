@@ -24,4 +24,5 @@ void main() {
 
     gl_FragColor = fract(texture2D(camera, uv) * 3.);
     gl_FragColor.r *= .7;
+    gl_FragColor.a = 1.;
 }
