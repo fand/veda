@@ -63,9 +63,11 @@ export default class Player implements Playable {
         Object.keys(removed.IMPORTED).forEach((key): void => {
             const path = removed.IMPORTED[key].PATH;
 
-            // Unload and remove texture
-            const pathToRemove = !importedPaths[path] ? path : undefined;
-            this.veda.unloadTexture(key, pathToRemove);
+            // Unload and remove texture if it's not replaced
+            if (added.IMPORTED[key] === undefined) {
+                const pathToRemove = !importedPaths[path] ? path : undefined;
+                this.veda.unloadTexture(key, pathToRemove);
+            }
         });
         Object.keys(added.IMPORTED || {}).forEach((key): void => {
             this.veda.loadTexture(
