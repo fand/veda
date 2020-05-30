@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.14.2
+
+- Fix errors on replacing textures
+- Fix webcam example not working
+
 ## 2.14.0
 
 - Support glslify in multipass shaders
