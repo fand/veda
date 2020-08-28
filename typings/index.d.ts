@@ -67,7 +67,8 @@ declare module 'is-relative' {
 }
 
 declare module 'ffmpeg-static' {
-    export const path: string;
+    const path: string;
+    export = path;
 }
 
 declare module 'shell' {

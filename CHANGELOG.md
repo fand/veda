@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.14.3
+
+- Fix errors on recording videos #246
+
 ## 2.14.2
 
 - Fix errors on replacing textures

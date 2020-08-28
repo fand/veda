@@ -4,7 +4,7 @@ import * as p from 'pify';
 import { exec } from 'child_process';
 import * as mkdirp from 'mkdirp';
 
-import ffmpeg = require('ffmpeg-static');
+import * as ffmpegPath from 'ffmpeg-static';
 import shell = require('shell');
 
 export type RecordingMode = 'mp4' | 'gif';
@@ -49,8 +49,8 @@ export default class Recorder {
 
         this.recordDir = path.resolve(dst, 'veda-recordings', timestamp);
         this.framesDir = path.resolve(this.recordDir, 'frames');
-        await p(mkdirp)(this.recordDir);
-        await p(mkdirp)(this.framesDir);
+        await mkdirp(this.recordDir);
+        await mkdirp(this.framesDir);
 
         atom.notifications.addInfo(
             `[VEDA] Start recording to ${this.recordDir} ...`,
@@ -129,7 +129,7 @@ export default class Recorder {
 
         await p(exec)(
             [
-                ffmpeg.path,
+                ffmpegPath,
                 `-framerate ${this.fps}`,
                 `-i ${capturedFilesPath}`,
                 `-c:v libx264`,
@@ -147,7 +147,7 @@ export default class Recorder {
 
         await p(exec)(
             [
-                ffmpeg.path,
+                ffmpegPath,
                 ` -i ${capturedFilesPath}`,
                 ` -vf palettegen ${palettePath}`,
             ].join(' '),
@@ -155,7 +155,7 @@ export default class Recorder {
 
         await p(exec)(
             [
-                ffmpeg.path,
+                ffmpegPath,
                 `-framerate ${this.fps}`,
                 `-i ${capturedFilesPath}`,
                 `-i ${palettePath}`,
