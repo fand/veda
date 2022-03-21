@@ -3533,10 +3533,10 @@ fd-slicer@~1.1.0:
   dependencies:
     pend "~1.2.0"
 
-ffmpeg-static@^4.2.2:
-  version "4.2.2"
-  resolved "https://registry.yarnpkg.com/ffmpeg-static/-/ffmpeg-static-4.2.2.tgz#29f23ac94d691d3f6a8d4229f8d3787a077209d9"
-  integrity sha512-0m07Lb7Wz91xw2g3vBzcrwhcm9D9kWWA/ZheWt6dOhIJrxanFVw1XUe9ewxF9RGBkcdt43UksrpJkL2gvl00Ew==
+ffmpeg-static@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/ffmpeg-static/-/ffmpeg-static-5.0.0.tgz#adb2d083c5160e034c1053164d214953e061e368"
+  integrity sha512-z96jGVa8uCVMnyrTvbDZe0d5zbvIVQnfBN+vKDZoVK+ssYpfUJGEmo2DkuY43CA9Ytlsk+5ZVTFTqzvKw1gSaA==
   dependencies:
     "@derhuerst/http-basic" "^8.2.0"
     env-paths "^2.2.0"
@@ -4046,10 +4046,10 @@ glsl-tokenizer@^2.0.0, glsl-tokenizer@^2.0.2, glsl-tokenizer@^2.1.5:
   dependencies:
     through2 "^0.6.3"
 
-glslang-validator-prebuilt@^0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/glslang-validator-prebuilt/-/glslang-validator-prebuilt-0.0.6.tgz#2b65df503f8cd9757c318e324914596ee44b6d1d"
-  integrity sha512-kd6UxEwoWWxjpzV8QZuaILnNygkbR7QZ/X/82Gpm8+r1+1xlkrJz8ZeZ5nlVzEPSWNzP+ydKUGeTiSE6IKxZCA==
+glslang-validator-prebuilt@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/glslang-validator-prebuilt/-/glslang-validator-prebuilt-0.0.7.tgz#8a62e436a6bdc9e3a1bdd28c3289640b3d4a9cea"
+  integrity sha512-8vUM3TTzjeMsVEPcX7VYhRDvcDXogBrD75QTHBHjtBDCurVJFABmDZjvh1TwCHK7M8fi1Nz2SHzPdYmGmpfcGg==
   dependencies:
     decompress "^4.2.1"
     download "^8.0.0"
@@ -8138,10 +8138,10 @@ vary@~1.1.2:
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
 
-vedajs@^0.15.0:
-  version "0.15.0"
-  resolved "https://registry.yarnpkg.com/vedajs/-/vedajs-0.15.0.tgz#28af980567994eda2ea9a8cdacea6c04246fffa1"
-  integrity sha512-PH5iYqX1gFtAyD8IKh8mBHe3QkgbBNeJdOx3pUXmrGdFULRcFXuAHHen1CTwD/4QvLcziJDy/8AYbN2jkHyB0A==
+vedajs@^0.16.0:
+  version "0.16.0"
+  resolved "https://registry.yarnpkg.com/vedajs/-/vedajs-0.16.0.tgz#f6b3fefce31ad28eeccf0b7a02ee8e9e66a3dadb"
+  integrity sha512-m+9elMXMDmnLTs8/1guShWUS+cHZ223v/bjeqX+dw4FwmbmjjKhvUY2rCFbWjsUF1WqMrlEtyNsHzpyJygY9NQ==
   dependencies:
     "@fand/gifuct-js" "^1.0.0"
     is-video "^1.0.1"
