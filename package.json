@@ -15,7 +15,7 @@
     "dependencies": {
         "atom-message-panel": "^1.3.0",
         "atom-package-deps": "^8.0.0",
-        "execa": "6.1.0",
+        "execa": "5.1.1",
         "express": "^4.17.3",
         "ffmpeg-static": "^5.0.0",
         "glslang-validator-prebuilt": "^0.0.7",
