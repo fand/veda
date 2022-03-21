@@ -90,10 +90,10 @@
         "pre-commit": "lint-staged"
     },
     "lint-staged": {
-        "*.{ts}": [
+        "*.ts": [
             "eslint --fix 'src/**/*.ts'"
         ],
-        "*.{md}": [
+        "*.md": [
             "prettier --write"
         ]
     },
