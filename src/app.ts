@@ -338,8 +338,8 @@ export default class App {
                 await validator(this.glslangValidatorPath, shader, postfix);
             }
 
-            let matcharray = (shader.split('\n')[0].match(/(#version 300 es)/) || []);
-            let isGLSL3 = !!matcharray[0];
+            const matcharray = (shader.split('\n')[0].match(/(#version 300 es)/) || []);
+            const isGLSL3 = !!matcharray[0];
             const passes = await this.createPasses(
                 rc.PASSES,
                 shader,

@@ -1,4 +1,4 @@
-import * as io from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
 import Player from './player';
 import View from './view';
 import { Rc, RcDiff } from './config';
@@ -11,7 +11,7 @@ interface CreateOpts {
 }
 
 export default class PlayerClient {
-    private socket: SocketIOClient.Socket;
+    private socket: Socket;
     private player: Player | null = null;
     private wrapper: HTMLElement = document.body;
     private timer: number | null = null;

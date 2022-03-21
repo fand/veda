@@ -88,6 +88,7 @@ module.exports = {
     },
 
     activate(state: VedaStatus): void {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
         require('atom-package-deps')
             .install('veda')
             .then((): void => this._activate(state));

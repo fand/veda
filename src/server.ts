@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import http = require('http');
 import express = require('express');
-import createSocket = require('socket.io');
+import { Server } from 'socket.io';
 
 {
     const PORT = process.argv[2] || 3000;
@@ -13,7 +13,7 @@ import createSocket = require('socket.io');
     app.use('/link', express.static(DIR));
 
     const server = http.createServer(app);
-    const io = createSocket(server);
+    const io = new Server(server);
 
     io.on('connection', (socket): void => {
         socket.on('ready', (): void => {
@@ -40,7 +40,7 @@ import createSocket = require('socket.io');
                 return callback('[VEDA] A unique browser should be open.');
             }
 
-            io.sockets.sockets[socketIds[0]].emit('query', msg, callback);
+            io.sockets.sockets.get(socketIds[0])?.emit('query', msg, callback);
         });
     });
 

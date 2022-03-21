@@ -1,6 +1,6 @@
 import { readFile, writeFile } from 'fs';
 import * as path from 'path';
-import * as execa from 'execa';
+import { execa } from 'execa';
 import * as tmp from 'tmp';
 import * as p from 'pify';
 import * as glslify from 'glslify-lite';
@@ -27,12 +27,12 @@ export async function validator(
 export async function loadFile(
     glslangValidatorPath: string,
     filePath: string,
-    useGlslify: boolean = false
+    useGlslify: boolean = false,
 ): Promise<string> {
     if (useGlslify) {
         return await glslify.file(filePath, {
             basedir: path.dirname(filePath),
-        })
+        });
     }
 
     const result = await execa(glslangValidatorPath, [filePath]);

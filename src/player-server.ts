@@ -1,6 +1,6 @@
 import * as path from 'path';
 import { spawn } from 'child_process';
-import * as io from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
 import { cloneDeep } from 'lodash';
 import { ChildProcess } from 'child_process';
 import { Rc, RcDiff, ImportedHash } from './config';
@@ -18,7 +18,7 @@ interface PlayerState {
 export default class PlayerServer implements Playable {
     private port: number;
     private state: PlayerState;
-    private io: SocketIOClient.Socket;
+    private io: Socket;
     private server: ChildProcess;
 
     public constructor(port: number, state: PlayerState) {
@@ -90,7 +90,7 @@ export default class PlayerServer implements Playable {
             this.io.emit(
                 'query',
                 query,
-                (err: Error, value?: QueryResult): void => {
+                (err: Error, value: QueryResult): void => {
                     if (err) {
                         return reject(err);
                     } else {
