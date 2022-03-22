@@ -16,19 +16,21 @@ vec2 rotate(in vec2 p, in float t) {
 }
 
 vec2 crop(in vec2 uv, in vec2 res) {
-    float aspect = resolution.y / resolution.x;
-    if (aspect > (res.y / res.x)) {
-        // if taller
-        return vec2(
-            (uv.x - .5) / aspect + .5,
-            uv.y
-        );
+    float aspect = resolution.x / resolution.y;
+    float a2 = (res.x / res.y);
+
+    if (aspect > a2) {
+      // if wider
+      return vec2(
+        uv.x,
+        (uv.y - .5) * (a2 / aspect) + .5
+      );
     } else {
-        // if wider
-        return vec2(
-            uv.x,
-            (uv.y - .5) * aspect + .5
-        );
+      // if taller
+      return vec2(
+        (uv.x - .5) * (aspect / a2) + .5,
+        uv.y
+      );
     }
 }
 
