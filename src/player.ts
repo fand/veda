@@ -21,11 +21,11 @@ export default class Player implements Playable {
         window.addEventListener('resize', this.resize);
 
         Object.keys(rc.IMPORTED || {}).forEach((key): void => {
-            this.veda.loadTexture(
-                key,
-                rc.IMPORTED[key].PATH,
-                rc.IMPORTED[key].SPEED,
-            );
+            this.veda
+                .loadTexture(key, rc.IMPORTED[key].PATH, rc.IMPORTED[key].SPEED)
+                .catch((e) => {
+                    console.error(`[VEDA] failed to load texture ${key}`, e);
+                });
         });
 
         this.onChange({

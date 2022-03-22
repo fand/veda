@@ -213,69 +213,81 @@ export default class App {
 
     private createPasses(
         rcPasses: Pass[],
-        shader: string,
-        postfix: string,
+        openedShader: string,
+        openedFilepath: string,
+        extension: string,
         dirname: string,
         useGlslify: boolean,
-        isGLSL3: boolean
+        isGLSL3: boolean,
     ): Promise<Pass[]> {
         if (rcPasses.length === 0) {
             rcPasses.push({});
         }
 
-        const lastPass = rcPasses.length - 1;
+        const finalPass = rcPasses.length - 1;
 
         return Promise.all(
-            rcPasses.map(
-                async (rcPass: Pass, i: number): Promise<Pass> => {
-                    const pass: Pass = {
-                        MODEL: rcPass.MODEL,
-                        TARGET: rcPass.TARGET,
-                        FLOAT: rcPass.FLOAT,
-                        WIDTH: rcPass.WIDTH,
-                        HEIGHT: rcPass.HEIGHT,
-                        BLEND: rcPass.BLEND,
-                        GLSL3: isGLSL3
-                    };
+            rcPasses.map(async (rcPass, i) => {
+                const pass: Pass = {
+                    MODEL: rcPass.MODEL,
+                    TARGET: rcPass.TARGET,
+                    FLOAT: rcPass.FLOAT,
+                    WIDTH: rcPass.WIDTH,
+                    HEIGHT: rcPass.HEIGHT,
+                    BLEND: rcPass.BLEND,
+                    GLSL3: isGLSL3,
+                };
 
-                    if (!rcPass.fs && !rcPass.vs) {
-                        if (postfix === '.vert' || postfix === '.vs') {
-                            pass.vs = shader;
-                        } else {
-                            pass.fs = shader;
-                        }
+                if (!rcPass.fs && !rcPass.vs) {
+                    if (extension === '.vert' || extension === '.vs') {
+                        pass.vs = openedShader;
                     } else {
-                        if (rcPass.vs) {
+                        pass.fs = openedShader;
+                    }
+                } else {
+                    // TODO: load from editor if the file is same as opened file
+                    if (rcPass.vs) {
+                        const filepath = path.resolve(dirname, rcPass.vs);
+                        if (filepath === openedFilepath) {
+                            pass.vs = openedShader;
+                        } else {
                             pass.vs = await loadFile(
                                 this.glslangValidatorPath,
-                                path.resolve(dirname, rcPass.vs),
-                                useGlslify
+                                filepath,
+                                useGlslify,
                             );
-                            if (
-                                i === lastPass &&
-                                (postfix === '.frag' || postfix === '.fs')
-                            ) {
-                                pass.fs = shader;
-                            }
                         }
-                        if (rcPass.fs) {
-                            pass.fs = await loadFile(
-                                this.glslangValidatorPath,
-                                path.resolve(dirname, rcPass.fs),
-                                useGlslify
-                            );
-                            if (
-                                i === lastPass &&
-                                (postfix === '.vert' || postfix === '.vs')
-                            ) {
-                                pass.vs = shader;
-                            }
+
+                        if (
+                            i === finalPass &&
+                            (extension === '.frag' || extension === '.fs')
+                        ) {
+                            pass.fs = openedShader;
                         }
                     }
+                    if (rcPass.fs) {
+                        const filepath = path.resolve(dirname, rcPass.fs);
+                        if (filepath === openedFilepath) {
+                            pass.fs = openedShader;
+                        } else {
+                            pass.fs = await loadFile(
+                                this.glslangValidatorPath,
+                                filepath,
+                                useGlslify,
+                            );
+                        }
 
-                    return pass;
-                },
-            ),
+                        if (
+                            i === finalPass &&
+                            (extension === '.vert' || extension === '.vs')
+                        ) {
+                            pass.vs = openedShader;
+                        }
+                    }
+                }
+
+                return pass;
+            }),
         );
     }
 
@@ -283,13 +295,14 @@ export default class App {
         editor?: TextEditor,
         isSound?: boolean,
     ): Promise<void> {
+        // Do nothing if no files are open/active
         if (editor === undefined) {
-            // This case occurs when no files are open/active
-            return Promise.resolve();
+            return;
         }
+
         const filepath = editor.getPath();
         if (filepath === undefined) {
-            return Promise.resolve();
+            return;
         }
 
         const dirname = path.dirname(filepath);
@@ -299,7 +312,7 @@ export default class App {
             console.error("The filename for current doesn't seems to be GLSL.");
             return Promise.resolve();
         }
-        const postfix = m[1];
+        const extension = m[1];
 
         let shader = editor.getText();
 
@@ -335,18 +348,20 @@ export default class App {
 
             // Validate compiled shader
             if (!isSound) {
-                await validator(this.glslangValidatorPath, shader, postfix);
+                await validator(this.glslangValidatorPath, shader, extension);
             }
 
-            const matcharray = (shader.split('\n')[0].match(/(#version 300 es)/) || []);
+            const matcharray =
+                shader.split('\n')[0].match(/(#version 300 es)/) || [];
             const isGLSL3 = !!matcharray[0];
             const passes = await this.createPasses(
                 rc.PASSES,
                 shader,
-                postfix,
+                filepath,
+                extension,
                 dirname,
                 rc.glslify,
-                isGLSL3
+                isGLSL3,
             );
 
             if (isSound) {
