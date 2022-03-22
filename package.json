@@ -21,7 +21,7 @@
         "glslang-validator-prebuilt": "^0.0.7",
         "glslify-lite": "^0.0.7",
         "is-relative": "^1.0.0",
-        "json5": "^2.2.0",
+        "json5": "^2.2.1",
         "lodash": "^4.17.21",
         "mkdirp": "^1.0.4",
         "osc-min": "^1.1.1",
