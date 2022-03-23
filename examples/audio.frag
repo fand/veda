@@ -2,14 +2,12 @@
 precision mediump float;
 uniform float time;
 uniform vec2  resolution;
-uniform sampler2D texture;
 uniform sampler2D spectrum;
 uniform sampler2D samples;
 uniform float volume;
 
 void main (void) {
     vec2 uv = gl_FragCoord.xy / resolution.xy;
-    vec4 color = texture2D(texture, uv);
 
     float freq = texture2D(spectrum, vec2(uv.x, .5)).r;
     float wave = texture2D(samples, vec2(uv.x, .5)).r;

@@ -2,13 +2,12 @@
 // Epylepsy Warning! Coded while listening: The Knife - Silent Shout
 precision mediump float;
 uniform vec2 resolution;
-uniform sampler2D texture;
 uniform sampler2D spectrum;
 uniform sampler2D samples;
 uniform float volume;
 uniform float time;
 
- void main( void )
+void main( void )
 {
     vec2 p = gl_FragCoord.xy / resolution.xy;
     float freq = texture2D(spectrum, vec2(p.x, .5)).r;
