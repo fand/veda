@@ -70,11 +70,15 @@ export default class Player implements Playable {
             }
         });
         Object.keys(added.IMPORTED || {}).forEach((key): void => {
-            this.veda.loadTexture(
-                key,
-                added.IMPORTED[key].PATH,
-                added.IMPORTED[key].SPEED,
-            );
+            this.veda
+                .loadTexture(
+                    key,
+                    added.IMPORTED[key].PATH,
+                    added.IMPORTED[key].SPEED,
+                )
+                .catch((e) => {
+                    console.error(`[VEDA] failed to load texture ${key}`, e);
+                });
         });
         if (added.vertexMode) {
             this.veda.setVertexMode(added.vertexMode);
