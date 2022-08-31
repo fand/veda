@@ -1,0 +1,43 @@
+<title>Load Veda.js as ESM</title>
+<style>
+    html,
+    body {
+        padding: 0;
+    }
+    h1,
+    p {
+        color: white;
+        background: rgba(0, 0, 0, 0.8);
+    }
+    #canvas {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+</style>
+
+<h1>Load Veda.js as ESM</h1>
+<p>yo.</p>
+
+<canvas id="canvas"></canvas>
+
+<script type="module">
+    import Veda from './veda.js';
+
+    const veda = new Veda();
+
+    veda.setCanvas(document.querySelector('#canvas'));
+    veda.loadFragmentShader(`
+uniform vec2 resolution;
+uniform float time;
+void main() {
+    vec2 uv = gl_FragCoord.xy / resolution;
+    gl_FragColor = vec4(uv, fract(time), 1);
+}
+`);
+
+    veda.play();
+</script>
