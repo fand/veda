@@ -16,6 +16,16 @@ export default [
     {
         input: 'src/index.ts',
         output: {
+            file: 'dist/veda.esm.js',
+            format: 'esm',
+            exports: 'named',
+            sourcemap: true,
+        },
+        plugins: [typescript({}), nodeResolve(), commonjs()],
+    },
+    {
+        input: 'src/index.ts',
+        output: {
             file: 'dist/veda.umd.js',
             format: 'umd',
             name: 'Veda',

@@ -31,7 +31,6 @@
     "signal-exit": "^3.0.7",
     "socket.io": "^4.4.1",
     "socket.io-client": "^4.4.1",
-    "three": "0.135",
     "tmp": "^0.2.1",
     "vedajs": "*",
     "which": "^2.0.2"
@@ -55,7 +54,6 @@
     "@types/pify": "5.0.1",
     "@types/socket.io": "3.0.2",
     "@types/socket.io-client": "3.0.0",
-    "@types/three": "0.135",
     "@types/tmp": "0.2.3",
     "@types/which": "2.0.1",
     "@typescript-eslint/eslint-plugin": "5.15.0",

@@ -43,7 +43,10 @@
   ],
   "license": "MIT",
   "main": "dist/veda.cjs.js",
-  "module": "lib/index.js",
+  "exports": {
+    "require": "./dist/veda.cjs.js",
+    "import": "./dist/veda.esm.js"
+  },
   "repository": "https://github.com/fand/vedajs",
   "scripts": {
     "build": "run-p build:ts build:rollup",
