@@ -1,4 +1,5 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npm run pre-commit
+yarn workspace veda pre-commit
+yarn workspace vedajs pre-commit

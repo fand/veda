@@ -1,0 +1,15 @@
+{
+  "name": "vedajs-example-editor",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite"
+  },
+  "dependencies": {
+    "vedajs": "*"
+  },
+  "devDependencies": {
+    "vite": "^3.0.7"
+  }
+}

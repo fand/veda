@@ -1,0 +1,23 @@
+{
+  "name": "vedajs-example-bundled",
+  "version": "0.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "yarn dev:copy && run-p dev:trigger dev:serve",
+    "dev:serve": "serve ./public",
+    "dev:trigger": "chokidar '../../packages/vedajs/dist' -c 'yarn dev:copy'",
+    "dev:copy": "copyfiles -f ../../packages/vedajs/dist/* public/vedajs"
+  },
+  "author": "AMAGI <mail@amagi.dev>",
+  "license": "MIT",
+  "dependencies": {
+    "vedajs": "*"
+  },
+  "devDependencies": {
+    "chokidar-cli": "^3.0.0",
+    "copyfiles": "^2.4.1",
+    "cpy": "^9.0.1",
+    "npm-run-all": "^4.1.5",
+    "serve": "^14.0.1"
+  }
+}
