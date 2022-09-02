@@ -1,5 +1,5 @@
 import { TextEditor, Disposable } from 'atom';
-import * as path from 'path';
+import path from 'path';
 import View from './view';
 import { validator, loadFile } from './validator';
 import { Shader, SoundShader, OscData, Pass } from './constants';

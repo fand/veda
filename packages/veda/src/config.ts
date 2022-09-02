@@ -1,8 +1,8 @@
 import { EventEmitter } from 'events';
-import * as fs from 'fs';
-import * as path from 'path';
-import * as JSON5 from 'json5';
-import * as p from 'pify';
+import fs from 'fs';
+import path from 'path';
+import JSON5 from 'json5';
+import p from 'pify';
 import { throttle } from 'lodash';
 import type { ImportedHash, Rc, RcDiff, RcFragment, RcPass } from './types';
 

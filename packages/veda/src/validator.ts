@@ -1,8 +1,8 @@
 import { readFile, writeFile } from 'fs';
-import * as path from 'path';
-import * as execa from 'execa';
-import * as tmp from 'tmp';
-import * as p from 'pify';
+import path from 'path';
+import execa from 'execa';
+import tmp from 'tmp';
+import p from 'pify';
 import * as glslify from 'glslify-lite';
 
 export async function validator(

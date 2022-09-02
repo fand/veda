@@ -1,7 +1,7 @@
 import { AtomEnvironment, CompositeDisposable } from 'atom';
 import { MessagePanelView, PlainMessageView } from 'atom-message-panel';
-import * as fs from 'fs';
-import * as which from 'which';
+import fs from 'fs';
+import which from 'which';
 import App from './app';
 import Config from './config';
 import type { VedaStatus } from './constants';

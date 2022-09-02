@@ -1,8 +1,7 @@
-import * as path from 'path';
-import { spawn } from 'child_process';
+import path from 'path';
+import { spawn, ChildProcess } from 'child_process';
 import { io, Socket } from 'socket.io-client';
 import { cloneDeep } from 'lodash';
-import { ChildProcess } from 'child_process';
 import { Playable } from './playable';
 import { convertPathForServer } from './utils';
 import type { Rc, RcDiff, ImportedHash } from './types';

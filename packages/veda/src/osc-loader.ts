@@ -1,6 +1,5 @@
-import * as path from 'path';
-import { spawn } from 'child_process';
-import { ChildProcess } from 'child_process';
+import path from 'path';
+import { spawn, ChildProcess } from 'child_process';
 import { EventEmitter } from 'events';
 import type { OscData } from './constants';
 

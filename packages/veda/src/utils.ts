@@ -1,4 +1,4 @@
-import * as path from 'path';
+import path from 'path';
 import isRelative = require('is-relative');
 
 export function convertPathForServer(
