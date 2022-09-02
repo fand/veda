@@ -49,21 +49,16 @@
   },
   "repository": "https://github.com/fand/vedajs",
   "scripts": {
-    "build": "run-p build:ts build:rollup",
-    "build:ts": "tsc -d",
-    "build:rollup": "rollup -c",
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
     "precommit": "lint-staged",
     "prepublish": "npm run test && npm run build",
     "test": "eslint src/**/*.ts",
     "format": "tslint -c tslint.json --fix 'src/**/*.ts'",
-    "dev": "yarn watch",
-    "watch": "run-p watch:ts watch:rollup",
-    "watch:ts": "tsc -w",
-    "watch:rollup": "rollup -c -w",
     "prepare": "husky install",
     "pre-commit": "lint-staged"
   },
-  "types": "lib/index.d.ts",
+  "types": "dist/index.d.ts",
   "lint-staged": {
     "*.ts": [
       "eslint --fix 'src/**/*.ts'"
