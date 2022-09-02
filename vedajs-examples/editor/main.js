@@ -1,4 +1,5 @@
-import Veda from '../../../src';
+import Veda from 'vedajs';
+
 const textarea = document.querySelector('textarea');
 const canvas = document.querySelector('canvas');
 const INITIAL_FS = `
@@ -18,17 +19,19 @@ const veda = new Veda();
 veda.setCanvas(canvas);
 
 const update = () => {
-  veda.loadShader([{
-    fs: textarea.value.trim(),
-  }]);
+    veda.loadShader([
+        {
+            fs: textarea.value.trim(),
+        },
+    ]);
 };
 
 update();
 setInterval(update, 1000);
 
 window.addEventListener('resize', () => {
-  canvas.width = window.innerWidth * 0.5;
-  canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth * 0.5;
+    canvas.height = window.innerHeight;
 });
 
 veda.play();
