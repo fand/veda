@@ -19,6 +19,7 @@
     "dev": "turbo run dev",
     "clean": "turbo run clean",
     "lint": "turbo run lint",
+    "test": "turbo run test",
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate"
   }

@@ -73,7 +73,7 @@
   },
   "scripts": {
     "ci": "run-p lint test build",
-    "test": "vitest test",
+    "test": "vitest run test",
     "lint": "eslint 'src/**/*.ts'",
     "build": "run-p build:ts build:client",
     "build:ts": "tsc",
