@@ -1,4 +1,4 @@
-import Veda from '../../../src';
+import Veda from 'vedajs';
 
 const veda = new Veda({ frameskip: 2 });
 
@@ -10,8 +10,9 @@ veda.setCanvas(document.querySelector('canvas')!);
 // This line causes TypeScript error!
 // veda.setCanvas(document.querySelector('body'));
 
-veda.loadShader([{
-  fs: `
+veda.loadShader([
+    {
+        fs: `
     precision mediump float;
     uniform float time;
     uniform vec2 mouse;
@@ -22,5 +23,6 @@ veda.loadShader([{
       gl_FragColor = vec4(uv,0.5+0.5*sin(time),1.0);
     }
   `,
-}]);
+    },
+]);
 veda.play();

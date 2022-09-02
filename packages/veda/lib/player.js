@@ -25,7 +25,11 @@ class Player {
                 }
             });
             Object.keys(added.IMPORTED || {}).forEach((key) => {
-                this.veda.loadTexture(key, added.IMPORTED[key].PATH, added.IMPORTED[key].SPEED);
+                this.veda
+                    .loadTexture(key, added.IMPORTED[key].PATH, added.IMPORTED[key].SPEED)
+                    .catch((e) => {
+                    console.error(`[VEDA] failed to load texture ${key}`, e);
+                });
             });
             if (added.vertexMode) {
                 this.veda.setVertexMode(added.vertexMode);

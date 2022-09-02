@@ -112,9 +112,10 @@ class App {
             return;
         }
         this.watchShader();
-        this.state.activeEditorDisposer = atom.workspace.onDidChangeActiveTextEditor(() => {
-            this.watchShader();
-        });
+        this.state.activeEditorDisposer =
+            atom.workspace.onDidChangeActiveTextEditor(() => {
+                this.watchShader();
+            });
     }
     watchShader() {
         if (this.state.editorDisposer) {

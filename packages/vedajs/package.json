@@ -53,6 +53,7 @@
     "prepublish": "npm run test && npm run build",
     "test": "eslint src/**/*.ts",
     "format": "tslint -c tslint.json --fix 'src/**/*.ts'",
+    "dev": "yarn watch",
     "watch": "run-p watch:ts watch:rollup",
     "watch:ts": "tsc -w",
     "watch:rollup": "rollup -c -w",

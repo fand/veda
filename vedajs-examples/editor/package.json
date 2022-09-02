@@ -1,6 +1,7 @@
 {
-  "name": "veda-example",
-  "author": "fand <fand.gmork@gmail.com>",
+  "name": "vedajs-example-editor",
+  "version": "0.0.0",
+  "author": "AMAGI <mail@amagi.dev>",
   "license": "MIT",
   "devDependencies": {
     "ts-loader": "^4.1.0",
@@ -12,6 +13,6 @@
     "start": "webpack-dev-server"
   },
   "dependencies": {
-    "vedajs": "^0.8.1"
+    "vedajs": "*"
   }
 }

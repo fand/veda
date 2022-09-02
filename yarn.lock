@@ -7171,13 +7171,6 @@ is-utf8@^0.2.0, is-utf8@^0.2.1:
   resolved "https://registry.yarnpkg.com/is-utf8/-/is-utf8-0.2.1.tgz#4b0da1442104d1b336340e80797e865cf39f7d72"
   integrity sha1-Sw2hRCEE0bM2NA6AeX6GXPOffXI=
 
-is-video@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/is-video/-/is-video-1.0.1.tgz#7bc67760b0103d402bc1f10bb542f16a3687773b"
-  integrity sha1-e8Z3YLAQPUArwfELtULxajaHdzs=
-  dependencies:
-    video-extensions "^1.0.0"
-
 is-weakref@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/is-weakref/-/is-weakref-1.0.2.tgz#9529f383a9338205e89765e0392efc2f100f06f2"
@@ -10892,32 +10885,10 @@ textextensions@^2.5.0:
   resolved "https://registry.yarnpkg.com/textextensions/-/textextensions-2.6.0.tgz#d7e4ab13fe54e32e08873be40d51b74229b00fc4"
   integrity sha512-49WtAWS+tcsy93dRt6P0P3AMD2m5PvXRhuEA0kaXos5ZLlujtYmpmFsB+QvWUSxE1ZsstmYXfQ7L40+EcQgpAQ==
 
-three-mtl-loader@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/three-mtl-loader/-/three-mtl-loader-1.0.2.tgz#d0060f1afb8bc2c166ea56cebad250d73da18563"
-  integrity sha512-GqDrWC5rbi+0/gp999S4lpCSHroBEfe9NqmH165orG0QhXeknL/eSNVMJUWBNgg2sBW7vlqVNWD/P0kdHeGC9g==
-  dependencies:
-    three "^0.87.1"
-
-three-obj-loader@^1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/three-obj-loader/-/three-obj-loader-1.1.3.tgz#4d540a256fcf2a59a6c6e0cd51a623efd76fd87d"
-  integrity sha512-usuOOTAqeM7J7dyae/I9ltFnfy1g47Hsr3byTvBTeH9LYz5vb2i8rLd2Hi1HEr0MbB5H4p9YrqFaDGcijXEVNw==
-
 three@0.135:
   version "0.135.0"
   resolved "https://registry.yarnpkg.com/three/-/three-0.135.0.tgz#cff4ec8edd3c51ce9bc7e88d13e8eafed4d0ddfc"
   integrity sha512-kuEpuuxRzLv0MDsXai9huCxOSQPZ4vje6y0gn80SRmQvgz6/+rI0NAvCRAw56zYaWKMGMfqKWsxF9Qa2Z9xymQ==
-
-three@^0.100.0:
-  version "0.100.0"
-  resolved "https://registry.yarnpkg.com/three/-/three-0.100.0.tgz#262841c0b7d88ebd62af73f28d9f578963b3aa00"
-  integrity sha512-/lN2rdE1OqIwJr4/HcSaOisiCY0uVA0sqPpbCG5nil2uICEdS0LfGwSVYTtZDsIpR76r3++h5H3Hzg5D+SJBRQ==
-
-three@^0.87.1:
-  version "0.87.1"
-  resolved "https://registry.yarnpkg.com/three/-/three-0.87.1.tgz#466a34edc4543459ced9b9d7d276b65216fe2ba8"
-  integrity sha1-Rmo07cRUNFnO2bnX0na2Uhb+K6g=
 
 through2@^0.6.3:
   version "0.6.5"
@@ -11517,22 +11488,6 @@ vary@^1, vary@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
-
-vedajs@^0.16.0:
-  version "0.16.0"
-  resolved "https://registry.yarnpkg.com/vedajs/-/vedajs-0.16.0.tgz#f6b3fefce31ad28eeccf0b7a02ee8e9e66a3dadb"
-  integrity sha512-m+9elMXMDmnLTs8/1guShWUS+cHZ223v/bjeqX+dw4FwmbmjjKhvUY2rCFbWjsUF1WqMrlEtyNsHzpyJygY9NQ==
-  dependencies:
-    "@fand/gifuct-js" "^1.0.0"
-    is-video "^1.0.1"
-    three "^0.100.0"
-    three-mtl-loader "^1.0.2"
-    three-obj-loader "^1.1.3"
-
-video-extensions@^1.0.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/video-extensions/-/video-extensions-1.2.0.tgz#62f449f403b853f02da40964cbf34143f7d96731"
-  integrity sha512-TriMl18BHEsh2KuuSA065tbu4SNAC9fge7k8uKoTTofTq89+Xsg4K1BGbmSVETwUZhqSjd9KwRCNwXAW/buXMg==
 
 vinyl-file@^3.0.0:
   version "3.0.0"

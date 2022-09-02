@@ -1,13 +1,16 @@
 {
-  "name": "typescript",
+  "name": "vedajs-example-typescript",
   "version": "0.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server"
   },
-  "author": "fand <fand@gmork.in>",
+  "author": "AMAGI <mail@amagi.dev>",
   "license": "MIT",
+  "dependencies": {
+    "vedajs": "*"
+  },
   "devDependencies": {
     "ts-loader": "^4.1.0",
     "typescript": "^2.8.1",

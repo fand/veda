@@ -138,11 +138,10 @@ export default class App {
         }
 
         this.watchShader();
-        this.state.activeEditorDisposer = atom.workspace.onDidChangeActiveTextEditor(
-            (): void => {
+        this.state.activeEditorDisposer =
+            atom.workspace.onDidChangeActiveTextEditor((): void => {
                 this.watchShader();
-            },
-        );
+            });
     }
 
     public watchShader(): void {

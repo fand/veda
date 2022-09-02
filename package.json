@@ -1,19 +1,23 @@
 {
   "name": "veda-monorepo",
-  "private": "true",
+  "private": true,
   "version": "0.0.0",
   "description": "VJ / Live Coding environment with GLSL",
   "keywords": [],
   "repository": "https://github.com/fand/veda",
   "license": "MIT",
   "workspaces": [
-    "packages/**"
+    "packages/**",
+    "vedajs-examples/**"
   ],
   "devDependencies": {
     "all-contributors-cli": "6.20.0",
     "turbo": "^1.4.3"
   },
   "scripts": {
-    "pre-commit": "lint-staged"
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "clean": "turbo run clean",
+    "lint": "turbo run lint"
   }
 }
