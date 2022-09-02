@@ -16,7 +16,7 @@
   },
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev",
+    "dev": "turbo run --filter=veda... dev",
     "clean": "turbo run clean",
     "lint": "turbo run lint",
     "test": "turbo run test",
