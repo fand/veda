@@ -1,21 +1,18 @@
 {
   "name": "vedajs-example-typescript",
+  "private": true,
   "version": "0.0.0",
-  "description": "",
-  "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "webpack-dev-server"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
-  "author": "AMAGI <mail@amagi.dev>",
-  "license": "MIT",
   "dependencies": {
     "vedajs": "*"
   },
   "devDependencies": {
-    "ts-loader": "^4.1.0",
-    "typescript": "^2.8.1",
-    "webpack": "^4.4.1",
-    "webpack-cli": "^2.0.13",
-    "webpack-dev-server": "^3.1.1"
+    "typescript": "^4.6.4",
+    "vite": "^3.0.7"
   }
 }
