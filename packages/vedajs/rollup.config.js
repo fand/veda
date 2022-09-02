@@ -1,4 +1,5 @@
-import typescript from '@rollup/plugin-typescript';
+import esbuild from 'rollup-plugin-esbuild';
+import dts from 'rollup-plugin-dts';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 
@@ -11,7 +12,7 @@ export default [
             exports: 'named',
             sourcemap: true,
         },
-        plugins: [typescript({}), nodeResolve(), commonjs()],
+        plugins: [esbuild(), nodeResolve(), commonjs()],
     },
     {
         input: 'src/index.ts',
@@ -21,7 +22,7 @@ export default [
             exports: 'named',
             sourcemap: true,
         },
-        plugins: [typescript({}), nodeResolve(), commonjs()],
+        plugins: [esbuild(), nodeResolve(), commonjs()],
     },
     {
         input: 'src/index.ts',
@@ -32,6 +33,11 @@ export default [
             exports: 'default',
             sourcemap: true,
         },
-        plugins: [typescript({}), nodeResolve(), commonjs()],
+        plugins: [esbuild(), nodeResolve(), commonjs()],
+    },
+    {
+        input: 'src/index.ts',
+        output: [{ file: 'dist/veda.d.ts', format: 'es' }],
+        plugins: [dts()],
     },
 ];
