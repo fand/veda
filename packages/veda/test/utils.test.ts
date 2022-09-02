@@ -1,5 +1,5 @@
 import { test } from 'vitest';
-import { convertPathForServer } from '../lib/utils';
+import { convertPathForServer } from '../src/utils';
 
 const is = (t) => (a, b) => t.expect(a).toEqual(b);
 

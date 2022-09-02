@@ -136,14 +136,16 @@ function parseImported(
         }
         let importedPath = imported.PATH;
 
-        if (!/^\/$/.test(importedPath)) {
+        if (!/^\//.test(importedPath)) {
             importedPath = resolvePath(importedPath, projectPath);
         }
 
         newImportedHash[key] = {
             PATH: importedPath,
-            SPEED: imported.SPEED || 1,
         };
+        if (imported.SPEED) {
+            newImportedHash[key].SPEED = imported.SPEED;
+        }
     });
 
     return newImportedHash;
@@ -282,7 +284,9 @@ export default class Config extends EventEmitter {
         this.onChange();
     }
 
-    public setFileSettings(rc: RcFragment): RcDiff {
+    public setFileSettings(filepath: string, rc: RcFragment): RcDiff {
+        rc = fixPath(path.dirname(filepath), rc);
+
         this.fileRc = rc;
         const newRc = this.createRc();
         const diff = this.getDiff(this.rc, newRc);
@@ -290,7 +294,9 @@ export default class Config extends EventEmitter {
         return diff;
     }
 
-    public setSoundSettings(rc: RcFragment): RcDiff {
+    public setSoundSettings(filepath: string, rc: RcFragment): RcDiff {
+        rc = fixPath(path.dirname(filepath), rc);
+
         this.soundFileRc = rc;
         const newRc = this.createSoundRc();
         const diff = this.getDiff(this.soundRc, newRc);
@@ -298,7 +304,7 @@ export default class Config extends EventEmitter {
         return diff;
     }
 
-    private parseComment(filepath: string, comment: string): RcFragment {
+    private parseComment(comment: string): RcFragment {
         let rc: RcFragment = {};
         try {
             rc = JSON5.parse(comment);
@@ -306,17 +312,15 @@ export default class Config extends EventEmitter {
             console.error('Failed to parse comment:', e);
         }
 
-        rc = fixPath(path.dirname(filepath), rc);
-
         return rc;
     }
 
     public setFileSettingsByString(filepath: string, comment: string): RcDiff {
-        return this.setFileSettings(this.parseComment(filepath, comment));
+        return this.setFileSettings(filepath, this.parseComment(comment));
     }
 
     public setSoundSettingsByString(filepath: string, comment: string): RcDiff {
-        return this.setSoundSettings(this.parseComment(filepath, comment));
+        return this.setSoundSettings(filepath, this.parseComment(comment));
     }
 
     private onChange = throttle((): void => {
