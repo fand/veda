@@ -150,20 +150,15 @@ function parseImported(
 }
 
 function fixPath(projectPath: string, rc: RcFragment): RcFragment {
-    const PASSES = (rc.PASSES || []).map(
-        (pass): RcPass => {
-            if (pass.MODEL && pass.MODEL.PATH) {
-                pass.MODEL.PATH = resolvePath(pass.MODEL.PATH, projectPath);
-            }
-            if (pass.MODEL && pass.MODEL.MATERIAL) {
-                pass.MODEL.MATERIAL = resolvePath(
-                    pass.MODEL.MATERIAL,
-                    projectPath,
-                );
-            }
-            return pass;
-        },
-    );
+    const PASSES = (rc.PASSES || []).map((pass): RcPass => {
+        if (pass.MODEL && pass.MODEL.PATH) {
+            pass.MODEL.PATH = resolvePath(pass.MODEL.PATH, projectPath);
+        }
+        if (pass.MODEL && pass.MODEL.MATERIAL) {
+            pass.MODEL.MATERIAL = resolvePath(pass.MODEL.MATERIAL, projectPath);
+        }
+        return pass;
+    });
 
     return {
         ...rc,
@@ -225,14 +220,12 @@ export default class Config extends EventEmitter {
 
         // Load .liverc or .vedarc
         return this.readConfigFile('.liverc')
-            .then(
-                (d): FileData => {
-                    console.log(
-                        '[VEDA] `.liverc` is deprecated. Use `.vedarc` instead.',
-                    );
-                    return d;
-                },
-            )
+            .then((d): FileData => {
+                console.log(
+                    '[VEDA] `.liverc` is deprecated. Use `.vedarc` instead.',
+                );
+                return d;
+            })
             .catch((): Promise<FileData> => this.readConfigFile('.vedarc'))
             .then(({ filename, data }: FileData): void => {
                 try {

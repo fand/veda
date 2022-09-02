@@ -1,38 +1,38 @@
-import test from 'ava';
+import { test } from 'vitest';
 import Config from '../lib/config';
 
-const wait = dur => new Promise(r => setTimeout(r, dur));
+const deepEqual = (t) => (a, b, c) => t.expect(a).toStrictEqual(b, c);
 
 const DEFAULT_RC = new Config('', {}).rc;
 
-test('createRc returns DEFAULT_RC by default', t => {
+test('createRc returns DEFAULT_RC by default', (t) => {
     const c = new Config('', {});
     const newRc = c.createRc();
-    t.deepEqual(newRc, DEFAULT_RC);
+    deepEqual(t)(newRc, DEFAULT_RC);
 });
 
-test('setFileSettings changes Config', t => {
+test('setFileSettings changes Config', (t) => {
     const c = new Config('', {});
     c.setFileSettings({ vertexCount: 123 });
     const newRc = c.createRc();
-    t.deepEqual(newRc, { ...DEFAULT_RC, vertexCount: 123 });
+    deepEqual(t)(newRc, { ...DEFAULT_RC, vertexCount: 123 });
 });
 
-test('setProjectSettings changes Config', t => {
+test('setProjectSettings changes Config', (t) => {
     const c = new Config('', {});
     c.setProjectSettings({ vertexCount: 123 });
     const newRc = c.createRc();
-    t.deepEqual(newRc, { ...DEFAULT_RC, vertexCount: 123 });
+    deepEqual(t)(newRc, { ...DEFAULT_RC, vertexCount: 123 });
 });
 
-test('setGlobalSettings changes Config', t => {
+test('setGlobalSettings changes Config', (t) => {
     const c = new Config('', {});
     c.setGlobalSettings({ vertexCount: 123 });
     const newRc = c.createRc();
-    t.deepEqual(newRc, { ...DEFAULT_RC, vertexCount: 123 });
+    deepEqual(t)(newRc, { ...DEFAULT_RC, vertexCount: 123 });
 });
 
-test('setFileSettings > setProjectSettings > setGlobalSettings', t => {
+test('setFileSettings > setProjectSettings > setGlobalSettings', (t) => {
     const c = new Config('', {});
     c.setFileSettings({ vertexCount: 123 });
     c.setProjectSettings({ vertexCount: 456, vertexMode: 'LINES' });
@@ -42,7 +42,7 @@ test('setFileSettings > setProjectSettings > setGlobalSettings', t => {
         audio: true,
     });
     const newRc = c.createRc();
-    t.deepEqual(newRc, {
+    deepEqual(t)(newRc, {
         ...DEFAULT_RC,
         vertexCount: 123,
         vertexMode: 'LINES',
@@ -50,13 +50,14 @@ test('setFileSettings > setProjectSettings > setGlobalSettings', t => {
     });
 });
 
-test('setFileSettings returns diffs and newConfig', async t => {
+test('setFileSettings returns diffs and newConfig', async (t) => {
     const c = new Config('', {});
     const diff1 = c.setFileSettings({
         IMPORTED: { foo: { PATH: './foo.mp4' } },
         vertexCount: 123,
     });
-    t.deepEqual(
+
+    deepEqual(t)(
         diff1.newConfig,
         {
             ...DEFAULT_RC,
@@ -65,7 +66,7 @@ test('setFileSettings returns diffs and newConfig', async t => {
         },
         'newConfig contains whole config object',
     );
-    t.deepEqual(
+    deepEqual(t)(
         diff1.added,
         {
             IMPORTED: { foo: { PATH: './foo.mp4' } },
@@ -73,13 +74,13 @@ test('setFileSettings returns diffs and newConfig', async t => {
         },
         'added properties are correct',
     );
-    t.deepEqual(diff1.removed, { IMPORTED: {} }, 'removed is empty');
+    deepEqual(t)(diff1.removed, { IMPORTED: {} }, 'removed is empty');
 
     const diff2 = c.setFileSettings({
         IMPORTED: { foo: { PATH: './bar.mp4' } },
         vertexCount: 456,
     });
-    t.deepEqual(
+    deepEqual(t)(
         diff2.newConfig,
         {
             ...DEFAULT_RC,
@@ -88,7 +89,7 @@ test('setFileSettings returns diffs and newConfig', async t => {
         },
         'newConfig is updated',
     );
-    t.deepEqual(
+    deepEqual(t)(
         diff2.added,
         {
             IMPORTED: { foo: { PATH: './bar.mp4' } },
@@ -96,7 +97,7 @@ test('setFileSettings returns diffs and newConfig', async t => {
         },
         'changing PATH puts the imports into added.IMPORTED',
     );
-    t.deepEqual(
+    deepEqual(t)(
         diff2.removed,
         {
             IMPORTED: { foo: { PATH: './foo.mp4' } },
@@ -105,13 +106,13 @@ test('setFileSettings returns diffs and newConfig', async t => {
     );
 });
 
-test('rc and soundRc is isolated', async t => {
+test('rc and soundRc is isolated', async (t) => {
     const c = new Config('', {});
     const diff1 = c.setFileSettings({
         IMPORTED: { foo: { PATH: './foo.mp4' } },
         vertexCount: 123,
     });
-    t.deepEqual(
+    deepEqual(t)(
         diff1.newConfig,
         {
             ...DEFAULT_RC,
@@ -120,8 +121,8 @@ test('rc and soundRc is isolated', async t => {
         },
         'newConfig contains whole config object',
     );
-    t.deepEqual(c.rc, diff1.newConfig, 'setFileSettings updates rc');
-    t.deepEqual(
+    deepEqual(t)(c.rc, diff1.newConfig, 'setFileSettings updates rc');
+    deepEqual(t)(
         c.soundRc,
         DEFAULT_RC,
         "setFileSettings doesn't updates soundRc",
@@ -132,7 +133,7 @@ test('rc and soundRc is isolated', async t => {
         IMPORTED: { foo: { PATH: './foo.mp4' } },
         vertexCount: 123,
     });
-    t.deepEqual(
+    deepEqual(t)(
         diff2.newConfig,
         {
             ...DEFAULT_RC,
@@ -141,32 +142,33 @@ test('rc and soundRc is isolated', async t => {
         },
         'newConfig contains whole config object',
     );
-    t.deepEqual(
+    deepEqual(t)(
         c1.soundRc,
         diff2.newConfig,
         'setSoundSettings updates soundRc',
     );
-    t.deepEqual(c1.rc, DEFAULT_RC, "setSoundSettings doesn't updates rc");
+    deepEqual(t)(c1.rc, DEFAULT_RC, "setSoundSettings doesn't updates rc");
 });
 
-test('setFileSettingsByString works the same as setFileSettings', async t => {
-    const c = new Config('', {});
+test('setFileSettingsByString works the same as setFileSettings', (t) => {
     const c1 = new Config('', {});
-    c.setFileSettings({
+    c1.setFileSettings({
         IMPORTED: { foo: { PATH: './foo.mp4' } },
         vertexCount: 123,
     });
+
     const c2 = new Config('', {});
-    c.setFileSettingsByString(
+    c2.setFileSettingsByString(
         JSON.stringify({
             IMPORTED: { foo: { PATH: './foo.mp4' } },
             vertexCount: 123,
         }),
     );
-    t.deepEqual(c1.rc, c2.rc);
+
+    deepEqual(t)(c1.rc, c2.rc);
 });
 
-test('setSoundSettingsByString works the same as setSoundSettings', async t => {
+test('setSoundSettingsByString works the same as setSoundSettings', async (t) => {
     const c = new Config('', {});
     const c1 = new Config('', {});
     c.setSoundSettings({
@@ -178,5 +180,5 @@ test('setSoundSettingsByString works the same as setSoundSettings', async t => {
             soundLength: 1.23,
         }),
     );
-    t.deepEqual(c1.rc, c2.rc);
+    deepEqual(t)(c1.rc, c2.rc);
 });
