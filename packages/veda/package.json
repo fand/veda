@@ -1,6 +1,6 @@
 {
   "name": "veda",
-  "main": "./lib/index",
+  "main": "./lib/index.js",
   "version": "2.14.3",
   "description": "VJ / Live Coding environment with GLSL",
   "keywords": [],
@@ -42,7 +42,6 @@
     "autocomplete-glsl"
   ],
   "devDependencies": {
-    "@ava/babel": "^2.0.0",
     "@babel/core": "7.17.8",
     "@babel/polyfill": "7.12.1",
     "@babel/preset-env": "7.16.11",
@@ -61,8 +60,6 @@
     "@types/which": "2.0.1",
     "@typescript-eslint/eslint-plugin": "5.15.0",
     "@typescript-eslint/parser": "5.15.0",
-    "all-contributors-cli": "6.20.0",
-    "ava": "4.1.0",
     "eslint": "8.11.0",
     "eslint-config-prettier": "^8.5.0",
     "husky": "^7.0.0",
@@ -87,8 +84,6 @@
     "watch": "run-p watch:ts watch:client",
     "watch:ts": "tsc -w",
     "watch:client": "webpack -w --mode development",
-    "contributors:add": "all-contributors add",
-    "contributors:generate": "all-contributors generate",
     "prepare": "husky install",
     "pre-commit": "lint-staged"
   },

@@ -18,6 +18,8 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "clean": "turbo run clean",
-    "lint": "turbo run lint"
+    "lint": "turbo run lint",
+    "contributors:add": "all-contributors add",
+    "contributors:generate": "all-contributors generate"
   }
 }

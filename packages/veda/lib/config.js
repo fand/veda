@@ -43,13 +43,15 @@ function parseImported(projectPath, importedHash) {
             return;
         }
         let importedPath = imported.PATH;
-        if (!/^\/$/.test(importedPath)) {
+        if (!/^\//.test(importedPath)) {
             importedPath = resolvePath(importedPath, projectPath);
         }
         newImportedHash[key] = {
             PATH: importedPath,
-            SPEED: imported.SPEED || 1,
         };
+        if (imported.SPEED) {
+            newImportedHash[key].SPEED = imported.SPEED;
+        }
     });
     return newImportedHash;
 }
@@ -141,21 +143,23 @@ class Config extends events_1.EventEmitter {
         this.projectRc = rc;
         this.onChange();
     }
-    setFileSettings(rc) {
+    setFileSettings(filepath, rc) {
+        rc = fixPath(path.dirname(filepath), rc);
         this.fileRc = rc;
         const newRc = this.createRc();
         const diff = this.getDiff(this.rc, newRc);
         this.rc = newRc;
         return diff;
     }
-    setSoundSettings(rc) {
+    setSoundSettings(filepath, rc) {
+        rc = fixPath(path.dirname(filepath), rc);
         this.soundFileRc = rc;
         const newRc = this.createSoundRc();
         const diff = this.getDiff(this.soundRc, newRc);
         this.soundRc = newRc;
         return diff;
     }
-    parseComment(filepath, comment) {
+    parseComment(comment) {
         let rc = {};
         try {
             rc = JSON5.parse(comment);
@@ -163,14 +167,13 @@ class Config extends events_1.EventEmitter {
         catch (e) {
             console.error('Failed to parse comment:', e);
         }
-        rc = fixPath(path.dirname(filepath), rc);
         return rc;
     }
     setFileSettingsByString(filepath, comment) {
-        return this.setFileSettings(this.parseComment(filepath, comment));
+        return this.setFileSettings(filepath, this.parseComment(comment));
     }
     setSoundSettingsByString(filepath, comment) {
-        return this.setSoundSettings(this.parseComment(filepath, comment));
+        return this.setSoundSettings(filepath, this.parseComment(comment));
     }
     getDiff(oldObj, newObj) {
         const diff = {
