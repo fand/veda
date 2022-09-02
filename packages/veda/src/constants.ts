@@ -1,4 +1,4 @@
-import { BlendMode } from './config';
+import type { BlendMode } from './types';
 
 export const INITIAL_FRAGMENT_SHADER = `
 precision mediump float;

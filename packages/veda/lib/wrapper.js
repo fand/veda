@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const app_1 = require("./app");
-const config_1 = require("./config");
 const atom_1 = require("atom");
+const atom_message_panel_1 = require("atom-message-panel");
 const fs = require("fs");
 const which = require("which");
-const atom_message_panel_1 = require("atom-message-panel");
+const app_1 = require("./app");
+const config_1 = require("./config");
 class Wrapper {
     constructor(state) {
         this.messages = null;

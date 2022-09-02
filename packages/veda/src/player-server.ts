@@ -3,10 +3,10 @@ import { spawn } from 'child_process';
 import { io, Socket } from 'socket.io-client';
 import { cloneDeep } from 'lodash';
 import { ChildProcess } from 'child_process';
-import { Rc, RcDiff, ImportedHash } from './config';
 import { Playable } from './playable';
-import { Shader, Command, Query, QueryResult } from './constants';
 import { convertPathForServer } from './utils';
+import type { Rc, RcDiff, ImportedHash } from './types';
+import type { Shader, Command, Query, QueryResult } from './constants';
 
 interface PlayerState {
     rc: Rc;

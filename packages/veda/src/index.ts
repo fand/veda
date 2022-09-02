@@ -1,4 +1,4 @@
-import { VedaStatus } from './constants';
+import type { VedaStatus } from './constants';
 import Wrapper from './wrapper';
 
 let wrapper: Wrapper | null = null;
