@@ -1,10 +1,13 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const events_1 = require("events");
-const fs = require("fs");
-const path = require("path");
-const JSON5 = require("json5");
-const p = require("pify");
+const fs_1 = __importDefault(require("fs"));
+const path_1 = __importDefault(require("path"));
+const json5_1 = __importDefault(require("json5"));
+const pify_1 = __importDefault(require("pify"));
 const lodash_1 = require("lodash");
 const DEFAULT_RC = {
     glslangValidatorPath: '',
@@ -30,7 +33,7 @@ function resolvePath(val, projectPath) {
     if (val.match('https?://')) {
         return val;
     }
-    return path.resolve(projectPath, val);
+    return path_1.default.resolve(projectPath, val);
 }
 function parseImported(projectPath, importedHash) {
     if (!importedHash) {
@@ -76,7 +79,7 @@ class Config extends events_1.EventEmitter {
         this.soundFileRc = {};
         this.isWatching = false;
         this.readConfigFile = (filename) => {
-            return p(fs.readFile)(path.resolve(this.projectPath, filename), 'utf8').then((data) => ({ filename, data }));
+            return (0, pify_1.default)(fs_1.default.readFile)(path_1.default.resolve(this.projectPath, filename), 'utf8').then((data) => ({ filename, data }));
         };
         this.load = () => {
             if (!this.isWatching) {
@@ -90,7 +93,7 @@ class Config extends events_1.EventEmitter {
                 .catch(() => this.readConfigFile('.vedarc'))
                 .then(({ filename, data }) => {
                 try {
-                    const rc = fixPath(this.projectPath, JSON5.parse(data));
+                    const rc = fixPath(this.projectPath, json5_1.default.parse(data));
                     this.setProjectSettings(rc);
                 }
                 catch (e) {
@@ -111,7 +114,7 @@ class Config extends events_1.EventEmitter {
         this.setGlobalSettings(rc);
         this.projectPath = projectPath;
         if (projectPath) {
-            fs.watch(projectPath, (_, filename) => {
+            fs_1.default.watch(projectPath, (_, filename) => {
                 if (filename === '.liverc' || filename === '.vedarc') {
                     this.load();
                 }
@@ -144,7 +147,7 @@ class Config extends events_1.EventEmitter {
         this.onChange();
     }
     setFileSettings(filepath, rc) {
-        rc = fixPath(path.dirname(filepath), rc);
+        rc = fixPath(path_1.default.dirname(filepath), rc);
         this.fileRc = rc;
         const newRc = this.createRc();
         const diff = this.getDiff(this.rc, newRc);
@@ -152,7 +155,7 @@ class Config extends events_1.EventEmitter {
         return diff;
     }
     setSoundSettings(filepath, rc) {
-        rc = fixPath(path.dirname(filepath), rc);
+        rc = fixPath(path_1.default.dirname(filepath), rc);
         this.soundFileRc = rc;
         const newRc = this.createSoundRc();
         const diff = this.getDiff(this.soundRc, newRc);
@@ -162,7 +165,7 @@ class Config extends events_1.EventEmitter {
     parseComment(comment) {
         let rc = {};
         try {
-            rc = JSON5.parse(comment);
+            rc = json5_1.default.parse(comment);
         }
         catch (e) {
             console.error('Failed to parse comment:', e);

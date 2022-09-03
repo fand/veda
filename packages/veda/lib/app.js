@@ -1,4 +1,27 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,17 +31,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const path = require("path");
-const view_1 = require("./view");
+const path_1 = __importDefault(require("path"));
+const view_1 = __importDefault(require("./view"));
 const validator_1 = require("./validator");
-const player_1 = require("./player");
-const player_server_1 = require("./player-server");
+const player_1 = __importDefault(require("./player"));
+const player_server_1 = __importDefault(require("./player-server"));
 const constants_1 = require("./constants");
-const osc_loader_1 = require("./osc-loader");
-const recorder_1 = require("./recorder");
-const glslify = require("glslify-lite");
-const prebuilt = require("glslang-validator-prebuilt");
+const osc_loader_1 = __importDefault(require("./osc-loader"));
+const recorder_1 = __importDefault(require("./recorder"));
+const glslify = __importStar(require("glslify-lite"));
+const prebuilt = __importStar(require("glslang-validator-prebuilt"));
 class App {
     constructor(config) {
         this.view = null;
@@ -196,7 +222,7 @@ class App {
             }
             else {
                 if (rcPass.vs) {
-                    const filepath = path.resolve(dirname, rcPass.vs);
+                    const filepath = path_1.default.resolve(dirname, rcPass.vs);
                     if (filepath === openedFilepath) {
                         pass.vs = openedShader;
                     }
@@ -209,7 +235,7 @@ class App {
                     }
                 }
                 if (rcPass.fs) {
-                    const filepath = path.resolve(dirname, rcPass.fs);
+                    const filepath = path_1.default.resolve(dirname, rcPass.fs);
                     if (filepath === openedFilepath) {
                         pass.fs = openedShader;
                     }
@@ -234,7 +260,7 @@ class App {
             if (filepath === undefined) {
                 return;
             }
-            const dirname = path.dirname(filepath);
+            const dirname = path_1.default.dirname(filepath);
             const m = (filepath || '').match(/(\.(?:glsl|frag|vert|fs|vs))$/);
             if (!m) {
                 console.error("The filename for current doesn't seems to be GLSL.");
@@ -257,7 +283,7 @@ class App {
                 this.player.onChange(diff);
                 if (rc.glslify) {
                     shader = yield glslify.compile(shader, {
-                        basedir: path.dirname(filepath),
+                        basedir: path_1.default.dirname(filepath),
                     });
                 }
                 if (!isSound) {

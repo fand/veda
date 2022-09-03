@@ -1,11 +1,14 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const atom_1 = require("atom");
 const atom_message_panel_1 = require("atom-message-panel");
-const fs = require("fs");
-const which = require("which");
-const app_1 = require("./app");
-const config_1 = require("./config");
+const fs_1 = __importDefault(require("fs"));
+const which_1 = __importDefault(require("which"));
+const app_1 = __importDefault(require("./app"));
+const config_1 = __importDefault(require("./config"));
 class Wrapper {
     constructor(state) {
         this.messages = null;
@@ -71,9 +74,9 @@ class Wrapper {
     }
     checkExistence(path) {
         let result = null;
-        if (fs.existsSync(path) && fs.statSync(path).isFile()) {
+        if (fs_1.default.existsSync(path) && fs_1.default.statSync(path).isFile()) {
             try {
-                fs.accessSync(path, fs.X_OK);
+                fs_1.default.accessSync(path, fs_1.default.X_OK);
                 result = path;
             }
             catch (error) {
@@ -82,7 +85,7 @@ class Wrapper {
         }
         else {
             try {
-                result = which.sync(path);
+                result = which_1.default.sync(path);
             }
             catch (error) {
                 console.log(error);

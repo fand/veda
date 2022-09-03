@@ -1,8 +1,11 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const socket_io_client_1 = require("socket.io-client");
-const player_1 = require("./player");
-const view_1 = require("./view");
+const player_1 = __importDefault(require("./player"));
+const view_1 = __importDefault(require("./view"));
 class PlayerClient {
     constructor() {
         this.player = null;

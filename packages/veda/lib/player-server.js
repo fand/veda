@@ -1,6 +1,9 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const path = require("path");
+const path_1 = __importDefault(require("path"));
 const child_process_1 = require("child_process");
 const socket_io_client_1 = require("socket.io-client");
 const lodash_1 = require("lodash");
@@ -20,11 +23,11 @@ class PlayerServer {
         this.port = port;
         this.state = state;
         this.server = (0, child_process_1.spawn)('node', [
-            path.resolve(__dirname, 'server.js'),
+            path_1.default.resolve(__dirname, 'server.js'),
             port.toString(),
             this.state.projectPath,
         ], {
-            cwd: path.resolve(__dirname, '..'),
+            cwd: path_1.default.resolve(__dirname, '..'),
         });
         if (this.server.stdout) {
             this.server.stdout.on('data', this.stdout);
