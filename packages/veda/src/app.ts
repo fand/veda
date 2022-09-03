@@ -1,10 +1,10 @@
 import { TextEditor, Disposable } from 'atom';
-import * as path from 'path';
+import path from 'path';
 import View from './view';
 import { validator, loadFile } from './validator';
 import { Shader, SoundShader, OscData, Pass } from './constants';
-import Config, { RcDiff } from './config';
-import { Playable } from './playable';
+import type Config from './config';
+import type { Playable } from './playable';
 import Player from './player';
 import PlayerServer from './player-server';
 import { INITIAL_SHADER, INITIAL_SOUND_SHADER } from './constants';
@@ -12,6 +12,7 @@ import OscLoader from './osc-loader';
 import Recorder, { RecordingMode } from './recorder';
 import * as glslify from 'glslify-lite';
 import * as prebuilt from 'glslang-validator-prebuilt';
+import type { RcDiff } from './types';
 
 interface AppState {
     isPlaying: boolean;

@@ -1,10 +1,10 @@
+import { AtomEnvironment, CompositeDisposable } from 'atom';
+import { MessagePanelView, PlainMessageView } from 'atom-message-panel';
+import fs from 'fs';
+import which from 'which';
 import App from './app';
 import Config from './config';
-import { AtomEnvironment, CompositeDisposable } from 'atom';
-import * as fs from 'fs';
-import * as which from 'which';
-import { MessagePanelView, PlainMessageView } from 'atom-message-panel';
-import { VedaStatus } from './constants';
+import type { VedaStatus } from './constants';
 
 export default class Wrapper {
     private app: App;

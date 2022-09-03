@@ -1,9 +1,9 @@
 import Veda from 'vedajs';
-import View from './view';
-import { Rc, RcDiff } from './config';
-import { Playable } from './playable';
-import { Shader, OscData, Command, Query } from './constants';
 import * as THREE from 'three';
+import type View from './view';
+import type { Playable } from './playable';
+import type { Rc, RcDiff } from './types';
+import type { Shader, OscData, Command, Query } from './constants';
 
 function assertNever(x: never): never {
     throw new Error('Unexpected object: ' + x);

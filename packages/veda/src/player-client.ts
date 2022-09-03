@@ -1,8 +1,8 @@
 import { io, Socket } from 'socket.io-client';
 import Player from './player';
 import View from './view';
-import { Rc, RcDiff } from './config';
-import { Shader, Command, Query, QueryResult } from './constants';
+import type { Rc, RcDiff } from './types';
+import type { Shader, Command, Query, QueryResult } from './constants';
 
 interface CreateOpts {
     rc: Rc;

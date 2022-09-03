@@ -1,8 +1,7 @@
-import * as path from 'path';
-import { spawn } from 'child_process';
-import { ChildProcess } from 'child_process';
+import path from 'path';
+import { spawn, ChildProcess } from 'child_process';
 import { EventEmitter } from 'events';
-import { OscData } from './constants';
+import type { OscData } from './constants';
 
 export default class OscLoader extends EventEmitter {
     public port: number;

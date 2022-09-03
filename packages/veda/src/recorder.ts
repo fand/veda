@@ -1,8 +1,8 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import * as p from 'pify';
+import fs from 'fs';
+import path from 'path';
 import { exec } from 'child_process';
-import * as mkdirp from 'mkdirp';
+import p from 'pify';
+import mkdirp from 'mkdirp';
 
 import * as ffmpegPath from 'ffmpeg-static';
 import shell = require('shell');

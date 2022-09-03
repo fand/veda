@@ -6,7 +6,7 @@ import {
     TimeQuery,
     VideoInputsQuery,
 } from './constants';
-import { RcDiff } from './config';
+import type { RcDiff } from './types';
 
 export interface Playable {
     destroy: () => void;
